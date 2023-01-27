@@ -1,6 +1,6 @@
-import shutil
-from time import sleep
-from random import choice
+# import shutil
+# from time import sleep
+# from random import choice
 # import ctypes
 # import PILasda
 # import ssl
