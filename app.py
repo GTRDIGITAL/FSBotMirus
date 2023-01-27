@@ -59,6 +59,7 @@ def FS_process():
 		option=0
 
 	folderpath="/home/fsbot/storage"
+	# folderpath="D:/apps/fsbot/out"
 
 	if request.method == 'POST':
 
@@ -106,12 +107,12 @@ def FS_process():
 		# PBC_CY=mapping.create_sheet("Trial Balance2")
 		# PBC_CY.sheet_view.showGridLines = False
 		if(option==0):
-			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
-			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Eng - Copy.xlsx')			
+			# mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
+			mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Eng - Copy.xlsx')			
 
 		else:
-			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro - Copy.xlsx')
-			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
+			# mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro - Copy.xlsx')
+			mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
 		ws=mapping.active		
 		TBCY = openpyxl.load_workbook(triald)
 		TBCY1 = TBCY.active
@@ -278,7 +279,7 @@ def FS_process():
 	test.cell(row=6,column=2).value=mainActivity
 	test.cell(row=7,column=2).value=year
 
-	listaMapare=['2678','308','348E','348','368','378','388','4428','4511','4518','4531','4538','456','473','481','482','581']
+	listaMapare=['161','1614','1615','1617','1618','1621','1622','1624','1625','1627','1623','1626','1661','1663','2671','2672','2673','2674','2675','2676','2677','2678','2679','308','348E','348','368','378','388','4428','445','4451','4452','4458','446','4482','4481','4511','4518','4531','4538','456','456','471','472','473','4751','4752','4753','4754','4758','481','482','581']
 	listaBalanta=list(set(Account))
 	listasetmapare=list(set(listaMapare))
 	print(listaBalanta)
@@ -342,8 +343,8 @@ def FS_process():
 	n10prov.print_area="A10:G22"
 	n15pers.print_area="A10:C27"
 	n16opex.print_area="A10:C30"
-	mapping.save(folderpath+"/Financial Statements "+str(company)+".xlsx")
-	return send_from_directory(folderpath,"/Financial Statements "+str(company)+".xlsx",as_attachment=True)
+	mapping.save(str(folderpath)+"/Financial Statements-"+str(company)+".xlsx")
+	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
 
 if __name__ == '__main__':
-   	app.run(debug="True",host="0.0.0.0", port=3000)
+   	app.run()
