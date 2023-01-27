@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- <link ref="stylesheet" href="main.CSS"> -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   <!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+   <!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <a href="/"id="logo">
+        <img src="/static/mirus.png" Style="position:left; left:80;"><a href="/"></a>
+        
+        
+    </a>
+
+<style>body {
+    margin: 0;
+    height: 100vh;
+    /* display: flex; */
+    /* align-items: center; */
+ 
+    justify-content: left;
+    background: rgb(72,25,122);
+    background: linear-gradient(0deg, rgba(72,25,122,0.8578781854538691) 0%, rgba(179,145,215,0.7990546560421043) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
+}</style>
+</head>
+<body>
+    {% block content %}
+    
+    <div class="container" >
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger" style="float:center;" >
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }} . <br>Click <a href="/" class="alert-link">here</a> to return to the homepage.</br>
+        </div>
+        <!-- <button type="btn-home" name="instructions" onclick="location.href = '/';" class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;">  Home</button> -->
+        {% endfor %}
+    
+        {% block page_content %}{% endblock %}
+    </div>
+    {% endblock %}
+</body>
+</html>

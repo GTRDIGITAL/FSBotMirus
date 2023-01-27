@@ -108,7 +108,7 @@ def FS_process():
 		# PBC_CY.sheet_view.showGridLines = False
 		if(option==0):
 			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
-			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Eng - Copy.xlsx')			
+			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/sasa.xlsx')			
 
 		else:
 			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro - Copy.xlsx')
