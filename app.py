@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from werkzeug.utils import secure_filename
 from flask import flash
 from flask import Flask, render_template, request, send_from_directory, after_this_request, redirect, url_for
-from openpyxl.descriptors import (
+from openpyxl.descriptors import ( 
 	String,
 	Sequence,
 	Integer,
