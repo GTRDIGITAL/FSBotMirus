@@ -107,8 +107,11 @@ def FS_process():
 		# PBC_CY.sheet_view.showGridLines = False
 		if(option==0):
 			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
+			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Eng - Copy.xlsx')			
+
 		else:
 			mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro - Copy.xlsx')
+			# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
 		ws=mapping.active		
 		TBCY = openpyxl.load_workbook(triald)
 		TBCY1 = TBCY.active
@@ -314,8 +317,8 @@ def FS_process():
 	f20=mapping["2. F20"]
 	f30=mapping["3. F30"]
 	f40=mapping["4. F40"]
-	soce=mapping["5. F10"]
-	socf=mapping["6. F10"]
+	soce=mapping["5. SOCE"]
+	socf=mapping["6.SOCF"]
 	n3nca=mapping["N3 - NCA"]
 	n4inv=mapping["N4 - Inventories"]
 	n5tr=mapping["N5 - TR"]
@@ -339,8 +342,8 @@ def FS_process():
 	n10prov.print_area="A10:G22"
 	n15pers.print_area="A10:C27"
 	n16opex.print_area="A10:C30"
-	mapping.save(folderpath+"/Trial Balance.xlsx")
-	return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+	mapping.save(folderpath+"/Financial Statements "+str(company)+".xlsx")
+	return send_from_directory(folderpath,"/Financial Statements "+str(company)+".xlsx",as_attachment=True)
 
 if __name__ == '__main__':
    	app.run(debug="True",host="0.0.0.0", port=3000)
