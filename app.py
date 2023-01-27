@@ -2,7 +2,7 @@ import shutil
 from time import sleep
 from random import choice
 import ctypes
-# import PIL
+# import PILasda
 import ssl
 from openpyxl.styles.borders import Border, Side
 from openpyxl import Workbook
