@@ -115,11 +115,11 @@ def FS_process():
 		# PBC_CY.sheet_view.showGridLines = False
 		if(option2==0):
 			if(option==0):
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_EN.xlsx')
 				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/sasa.xlsx')			
 
 			else:
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/AS_RO.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_RO.xlsx')
 				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
