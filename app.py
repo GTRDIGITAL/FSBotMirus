@@ -116,11 +116,11 @@ def FS_process():
 		if(option2==0):
 			if(option==0):
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_EN.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/sasa.xlsx')			
+				# mapping=openpyxl.load_workbook('D:/apps/FSBotRepo/FSBotMirus/exceltemp/SF Entitati mici_EN.xlsx')			
 
 			else:
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_RO.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
+				# mapping=openpyxl.load_workbook('D:/apps/FSBotRepo/FSBotMirus/exceltemp/SF Entitati mici_RO.xlsx')
+				mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -326,12 +326,12 @@ def FS_process():
 			f20=mapping["2. F20"]
 			f30=mapping["3. F30"]
 			f40=mapping["4. F40"]
-			soce=mapping["5. SOCE"]
-			socf=mapping["6.SOCF"]
+			# soce=mapping["5. SOCE"]
+			# socf=mapping["6.SOCF"]
 			n3nca=mapping["N3 - NCA"]
 			n4inv=mapping["N4 - Inventories"]
-			n5tr=mapping["N5 - TR"]
 			n7cash=mapping["N7 - Cash"]
+			n5tr=mapping["N5 - TR"]
 			n9tp=mapping["N9 - TP"]
 			n10prov=mapping["N10 - Provisions"]
 			n15pers=mapping["N15 - Personnel"]
