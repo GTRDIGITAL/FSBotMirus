@@ -65,8 +65,8 @@ def FS_process():
 		option2=0
 
 
-	# folderpath="/home/fsbot/storage"
-	folderpath="D:/apps/fsbot/out"
+	folderpath="/home/fsbot/storage"
+	# folderpath="D:/apps/fsbot/out"
 
 	if request.method == 'POST':
 
