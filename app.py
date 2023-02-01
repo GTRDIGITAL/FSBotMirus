@@ -65,8 +65,8 @@ def FS_process():
 		option2=0
 
 
-	folderpath="/home/fsbot/storage"
-	# folderpath="D:/apps/fsbot/out"
+	# folderpath="/home/fsbot/storage"
+	folderpath="D:/apps/fsbot/out"
 
 	if request.method == 'POST':
 
@@ -119,8 +119,8 @@ def FS_process():
 				# mapping=openpyxl.load_workbook('D:/apps/FSBotRepo/FSBotMirus/exceltemp/SF Entitati mici_EN.xlsx')			
 
 			else:
-				# mapping=openpyxl.load_workbook('D:/apps/FSBotRepo/FSBotMirus/exceltemp/SF Entitati mici_RO.xlsx')
-				mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_EN.xlsx')
+				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -341,8 +341,8 @@ def FS_process():
 			f20.print_area="A11:E91"
 			f30.print_area="A17:F292"
 			f40.print_area="A10:H79"
-			soce.print_area="E8:L38"
-			socf.print_area="A7:C51"
+			# soce.print_area="E8:L38"
+			# socf.print_area="A7:C51"
 			n3nca.print_area="A10:O73"
 			n4inv.print_area="A10:G24"
 			n5tr.print_area="A10:F47"
