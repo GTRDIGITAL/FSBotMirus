@@ -356,11 +356,11 @@ def FS_process():
 
 		else:
 			if(option==0):
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS ENG.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS ENG.xlsx')			
 
 			else:
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS RO.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
