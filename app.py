@@ -66,7 +66,7 @@ def FS_process():
 
 
 	folderpath="/home/fsbot/storage"
-	# folderpath="D:/apps/fsbot/out"
+	# folderpath="C:\\Users\\denis.david\\Desktop\\Mirusv4\\auditAppsMirus\\Output\\JE"
 
 	if request.method == 'POST':
 
@@ -116,11 +116,11 @@ def FS_process():
 		if(option2==0):
 			if(option==0):
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_EN.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/FSBotRepo/FSBotMirus/exceltemp/SF Entitati mici_EN.xlsx')			
+				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_EN.xlsx')			
 
 			else:
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_EN.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
+				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -247,7 +247,7 @@ def FS_process():
 				test.cell(row=i+14,column=13).value='=IFERROR(L'+str(14+i)+'/H'+str(14+i)+'," ")'
 			for i in range(1,len(Account)+1):
 				# test.cell(row=i+14,column=14).value='''=_xlfn.IF(A'''+str(14+i)+'''="BS"'''+''',IFERROR(VLOOKUP(TRIM($E'''+str(14+i)+'),'+"'BS Mapping std'"+'!$A:$D,4,0),VLOOKUP(TRIM($D'+str(14+i)+'),'+"'BS Mapping std'"+'!$A:$D,4,0)),IFNA(VLOOKUP(TRIM($E'+str(14+i)+'),'+"'PL mapping Std'"+'!$A:$D,4,0),VLOOKUP(TRIM($D'+str(14+i)+'),'+"'PL mapping Std'"+'!$A:$D,4,0)))'
-				test.cell(row=i+14,column=14).value='''=IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$D,4,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$D,4,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$D,4,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$D,4,0)))'''.format(i+14)
+				test.cell(row=i+14,column=14).value='''=IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$C,3,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$C,3,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$C,3,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$C,3,0)))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=15).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:C,3,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:C,3,0))"
 			for i in range(1,len(Account)+1):
@@ -257,9 +257,9 @@ def FS_process():
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=18).value="=_xlfn.IFERROR(IFERROR(VLOOKUP(E"+str(14+i)+",'F40 mapping'!A:E,5,0),VLOOKUP(D"+str(14+i)+",'F40 mapping'!A:E,5,0)),0)"
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=19).value="=_xlfn.IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:E,5,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:E,5,0)),IFERROR(VLOOKUP(E"+str(14+i)+",'PL mapping Std'!A:F,6,0),VLOOKUP(D"+str(14+i)+",'PL mapping Std'!A:F,6,0)))"
+				test.cell(row=i+14,column=19).value="=_xlfn.IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:F,6,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:F,6,0)),IFERROR(VLOOKUP(E"+str(14+i)+",'PL mapping Std'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'PL mapping Std'!A:D,4,0)))"
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=20).value="=_xlfn.IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:F,6,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:F,6,0)),IFERROR(VLOOKUP(E"+str(14+i)+",'PL mapping Std'!A:G,7,0),VLOOKUP(D"+str(14+i)+",'PL mapping Std'!A:G,7,0)))"
+				test.cell(row=i+14,column=20).value="=_xlfn.IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:G,7,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:G,7,0)),IFERROR(VLOOKUP(E"+str(14+i)+",'PL mapping Std'!A:E,5,0),VLOOKUP(D"+str(14+i)+",'PL mapping Std'!A:E,5,0)))"
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$H,8,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$H,8,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
@@ -313,8 +313,8 @@ def FS_process():
 				test2.cell(row=14+x,column=11).value="=VLOOKUP(F{0},'Trial Balance'!F:K,6,0)".format(x+14)
 				test2.cell(row=x+14,column=12).value='=K'+str(14+x)+'-H'+str(14+x)+''
 				test2.cell(row=x+14,column=13).value='=IFERROR(L'+str(14+x)+'/H'+str(14+x)+'," ")'
-				test2.cell(row=x+14,column=14).value="=VLOOKUP(F{0},'Trial Balance'!F:N,9,0)".format(x+14)
-				test2.cell(row=14+x,column=15).value='Bifunctional - Please asses'
+				test2.cell(row=x+14,column=14).value='''=IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$D,4,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$D,4,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$D,4,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$D,4,0)))'''.format(x+14)
+				# test2.cell(row=14+x,column=14).value='Bifunctional - Please asses'
 					# else:
 					# 	print("nu sunt la fel")
 
@@ -356,12 +356,12 @@ def FS_process():
 
 		else:
 			if(option==0):
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng - Copy.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/sasa.xlsx')			
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Eng.xlsx')
+				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS ENG.xlsx')			
 
 			else:
-				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro - Copy.xlsx')
-				# mapping=openpyxl.load_workbook('D:/apps/fsbot/Situati financiare/exceltemp/Template FS Ro - Copy.xlsx')
+				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS Ro.xlsx')
+				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
