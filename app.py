@@ -42,6 +42,11 @@ var_rute=[]
 @app.route('/')
 def FS():
 	return render_template('FS.html')
+
+@app.route('/Instructions', methods=['GET'])
+def downloadPMG():
+	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
+	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
 @app.route('/', methods=['POST', 'GET'])
 def FS_process():
 	company = request.form['company']
@@ -240,7 +245,7 @@ def FS_process():
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=4).value='=Left(F'+str(14+i)+',3)'
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',4)&"0",Left(F'+str(14+i)+',4))'
+				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',3)&"0",Left(F'+str(14+i)+',4))'
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=12).value='=K'+str(14+i)+'-H'+str(14+i)+''
 			for i in range(1,len(Account)+1):
@@ -481,7 +486,7 @@ def FS_process():
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=4).value='=Left(F'+str(14+i)+',3)'
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',4)&"0",Left(F'+str(14+i)+',4))'
+				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',3)&"0",Left(F'+str(14+i)+',4))'
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=12).value='=K'+str(14+i)+'-H'+str(14+i)+''
 			for i in range(1,len(Account)+1):
