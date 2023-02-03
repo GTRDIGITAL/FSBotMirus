@@ -240,7 +240,7 @@ def FS_process():
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=4).value='=Left(F'+str(14+i)+',3)'
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=5).value='=Left(F'+str(14+i)+',4)'
+				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',4)&"0",Left(F'+str(14+i)+',4))'
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=12).value='=K'+str(14+i)+'-H'+str(14+i)+''
 			for i in range(1,len(Account)+1):
@@ -454,7 +454,7 @@ def FS_process():
 				return render_template("index.html")
 
 			for i in range(1, len(Account)+1):
-				test.cell(row=i+14, column=6).value=Account[i-1]
+				test.cell(row=i+14, column=6).value=str(Account[i-1])
 
 			for i in range (1, len(Description)+1):
 				test.cell(row=i+14, column=7).value= Description[i-1]
@@ -481,7 +481,7 @@ def FS_process():
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=4).value='=Left(F'+str(14+i)+',3)'
 			for i in range(1,len(Account)+1):
-				test.cell(row=i+14,column=5).value='=Left(F'+str(14+i)+',4)'
+				test.cell(row=i+14,column=5).value='=IF(F'+str(14+i)+'="121",Left(F'+str(14+i)+',4)&"0",Left(F'+str(14+i)+',4))'
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=12).value='=K'+str(14+i)+'-H'+str(14+i)+''
 			for i in range(1,len(Account)+1):
