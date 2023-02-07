@@ -127,7 +127,7 @@ def FS_process():
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/SF Entitati mici_RO.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_RO.xlsx')
 			ws=mapping.active		
-			TBCY = openpyxl.load_workbook(triald)
+			TBCY = openpyxl.load_workbook(triald,data_only=True)
 			TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
