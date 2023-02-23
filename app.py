@@ -604,7 +604,7 @@ def FS_process():
 
 @app.route('/TrialBalances/Instructions', methods=['GET'])
 def downloadTB():
-		filepath = "/home/fsbot/storage/Instructions - Trial Balance.docx"
+		filepath = "/home/fsbot/storage"
  
 		return send_from_directory(filepath,"Instructions - Trial Balance.docx", as_attachment=True)
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY')
