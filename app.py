@@ -1360,7 +1360,7 @@ def TB_process():
 			for i in listanoua2:
 				if (column==i):
 					F10TB.column_dimensions[column].width = 10
-
+#a
 
 		
 		file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
