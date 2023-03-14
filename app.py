@@ -1279,6 +1279,7 @@ def TB_process():
 
 		F10TB.cell(row=8, column=14).value="332" 
 		F10TB.cell(row=8, column=14).font=font
+		#wrerwe
 
 		for i in range(14,18):
 			F10TB.cell(row=1, column=i).font=font2
