@@ -18,6 +18,7 @@ from openpyxl.descriptors import (
 	Integer,
 	)
 from openpyxl.descriptors.serialisable import Serialisable
+import xml.etree.ElementTree as ET
 import PyPDF2
 from openpyxl.styles import Color, PatternFill, Font, Border
 from openpyxl.styles import colors
