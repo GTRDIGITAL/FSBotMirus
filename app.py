@@ -25,8 +25,8 @@ from openpyxl.styles import colors
 from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
-import datetime
-# from datetime import datetime
+# import datetime
+from datetime import datetime
 import os
 from string import ascii_uppercase
 app=Flask(__name__)
@@ -616,16 +616,12 @@ def TB():
 def TB_process():
 
 	namec = request.form['client']
-	# ant= datetime.datetime.strptime(
-	# 				 request.form['yearEnd'],
-	# 				 '%Y-%m-%d')
-	threshol = request.form['threshold']
+	ant= datetime.strptime(
+					 request.form['yearEnd'],
+					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	isChecked1=request.form.get("Stdmapp")
-	isChecked2=request.form.get("forml")
-	isChecked3=request.form.get("forms")
 	isChecked4=request.form.get("pyEx")
-	# denis=datetime.datetime.now()
+	# denis=datetime.now()
 
 
 		# if isChecked1=="": #daca e bifat
@@ -1009,7 +1005,7 @@ def TB_process():
 
 		F10TB.cell(row=2, column=11).value="Date:"
 		F10TB.cell(row=2, column=11).font=font
-		# F10TB.cell(row=2, column=12).value=datetime.datetime.now()
+		# F10TB.cell(row=2, column=12).value=datetime.now()
 		F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
 		F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
 
@@ -1383,16 +1379,16 @@ def my_formVAT():
 	return render_template('VAT.html')
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw', methods=['POST', 'GET'])
 def my_form_post():
-	yearEnd1 = datetime.datetime.strptime(
-		request.form['yearEnd'],
-		'%Y-%m-%d')
+	# yearEnd1 = datetime.strptime(
+	# 	request.form['yearEnd'],
+	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	datePrepared1 = datetime.datetime.strptime(
+	datePrepared1 = datetime.strptime(
 		request.form['preparedDate'],
 		'%Y-%m-%d')
 	refference1 = request.form['reff']
-	denis=datetime.datetime.now()
+	# denis=datetime.now()
 #
 # 	# yearEnd = str(request.form['yearEnd'])
 # 	# processed_text = client.upper()
@@ -1721,7 +1717,7 @@ def my_form_post():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.datetime.now()
+		now=datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
