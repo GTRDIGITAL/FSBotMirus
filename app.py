@@ -616,7 +616,7 @@ def TB():
 def TB_process():
 
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	threshol = request.form['threshold']
