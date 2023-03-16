@@ -616,9 +616,9 @@ def TB():
 def TB_process():
 
 	namec = request.form['client']
-	ant= datetime.datetime.strptime(
-					 request.form['yearEnd'],
-					 '%Y-%m-%d')
+	# ant= datetime.datetime.strptime(
+	# 				 request.form['yearEnd'],
+	# 				 '%Y-%m-%d')
 	threshol = request.form['threshold']
 	preparedBy1 = request.form['preparedBy']
 	isChecked1=request.form.get("Stdmapp")
@@ -997,7 +997,7 @@ def TB_process():
 
 		F10TB.cell(row=2, column=1).value="Period end:"
 		F10TB.cell(row=2, column=1).font=font
-		F10TB.cell(row=2, column=2).value=ant
+		# F10TB.cell(row=2, column=2).value=ant
 		F10TB.cell(row=2, column=2).font=font
 		F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
 
