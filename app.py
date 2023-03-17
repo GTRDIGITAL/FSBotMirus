@@ -757,7 +757,8 @@ def TB_process():
 			return render_template("index.html")
 			# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 			# sys.exit()
-
+		for k in range(0,len(Account)):
+			Accountp[k]=str(Account[k])
 		try:
 			Description=[b.value for b in TBCY1[tbCyDescription][tbrow:luntb+1]]
 		except:
@@ -845,6 +846,9 @@ def TB_process():
 					return render_template("index.html")
 					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 					# sys.exit()
+
+				for k in range(0,len(Accountp)):
+					Accountp[k]=str(Accountp[k])
 
 				try:
 					Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntb+1]]
