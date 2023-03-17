@@ -1169,16 +1169,14 @@ def TB_process():
 
 
 		for i in range(1, len(mylist)+1):
-			try:
-				F10TB.cell(row=i+14, column=5).value=int(mylist[i-1])
-			except:
-				F10TB.cell(row=i+14, column=5).value=str(mylist[i-1])
+			F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+
 
 		for i in range  (  1, len(mylist)+1):
 			if(mylist[i-1] in Account):
-				F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+				F10TB.cell(row=i+14, column=6).value='=VLOOKUP(text(E{0},"0"),PBC_CY!D:E,2,0)'.format(i+14)
 			else:
-				F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+				F10TB.cell(row=i+14, column=6).value='=VLOOKUP(text(E{0},"0"),PBC_PY!D:E,2,0)'.format(i+14)
 
 		for i in range (1,len(mylist)+1):
 			x=str(mylist[i-1])
