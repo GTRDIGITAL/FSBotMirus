@@ -1142,7 +1142,7 @@ def TB_process():
 
 				acc=Account
 
-				mylist2 = list(dict.fromkeys(acc))
+				mylist2 = list(set(dict.fromkeys(acc)))
 				mylist=[]
 				for xxx in range(0,len(mylist2)):
 					mylist.append(str(mylist2[xxx]))
