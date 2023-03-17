@@ -1169,7 +1169,7 @@ def TB_process():
 
 
 		for i in range(1, len(mylist)+1):
-			F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+			F10TB.cell(row=i+14, column=5).value=str(mylist[i-1])
 
 
 		for i in range  (  1, len(mylist)+1):
