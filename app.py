@@ -1702,7 +1702,7 @@ def my_form_post():
 
 		#content
 		Sheet2.cell(row = 1, column = 3).value =clientname1
-		Sheet2.cell(row = 2, column = 3).value =yearEnd1
+		# Sheet2.cell(row = 2, column = 3).value =yearEnd1
 		Sheet2.cell(row = 2, column = 3).number_format='mm/dd/yyyy'
 		Sheet2.cell(row = 1, column = 11).value =preparedBy1
 		Sheet2.cell(row = 2, column = 11).value =datePrepared1
@@ -2489,7 +2489,7 @@ def my_form_post():
 
 		#content
 		Sheet3.cell(row = 1, column = 2).value =clientname1
-		Sheet3.cell(row = 2, column = 2).value =yearEnd1
+		# Sheet3.cell(row = 2, column = 2).value =yearEnd1
 		Sheet3.cell(row = 2, column = 2).number_format='mm/dd/yyyy'
 		Sheet3.cell(row = 1, column = 15).value =preparedBy1
 		Sheet3.cell(row = 2, column = 15).value =datePrepared1
