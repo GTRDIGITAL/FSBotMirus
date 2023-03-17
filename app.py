@@ -1140,7 +1140,7 @@ def TB_process():
 		if isChecked4=="":
 			try:
 
-				acc=str(Account)+str(Accountp)
+				acc=Account+Accountp
 
 				mylist2 = list(dict.fromkeys(acc))
 				mylist=[]
@@ -1207,10 +1207,10 @@ def TB_process():
 			else:
 				F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 				F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-			if(int(mylist[i-1][:1])==6):
+			if(int(str(mylist[i-1])[:1])==6):
 				F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 				F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-			if(int(mylist[i-1][:1])==7):
+			if(int(str(mylist[i-1])[:1])==7):
 				F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 				F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
 
