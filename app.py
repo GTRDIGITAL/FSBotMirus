@@ -1561,7 +1561,7 @@ def my_form_post():
 
 		Sheet1.cell(row = 1, column = 3).value =clientname1
 		Sheet1.cell(row = 1, column = 3).value =clientname1
-		Sheet1.cell(row = 2, column = 3).value =yearEnd1
+		# Sheet1.cell(row = 2, column = 3).value =yearEnd1
 		Sheet1.cell(row = 2, column = 3).number_format = 'mm/dd/yyyy'
 		Sheet1.cell(row = 1, column = 16).value =preparedBy1
 		Sheet1.cell(row = 2, column = 16).value =datePrepared1
