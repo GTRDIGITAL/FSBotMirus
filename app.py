@@ -2946,10 +2946,10 @@ def my_form_post():
 		std = wb["Sheet"]
 		wb.remove(std)
 		folderpath = "/home/fsbot/storage/vat"
-		file_pathFS = os.path.join(folderpath, "VAT test"+" "+clientname1+" "+str(denis)+".xlsx")
+		file_pathFS = os.path.join(folderpath, "VAT test"+" "+clientname1+".xlsx")
 		wb.save(file_pathFS)
 		# out.save(folderpath + "/" + "T10 - VAT Test" + ".xlsx")
-		return send_from_directory(folderpath, "VAT Test" + " " + clientname1 +" "+str(denis)+ ".xlsx", as_attachment=True)
+		return send_from_directory(folderpath, "VAT Test" + " " + clientname1 + ".xlsx", as_attachment=True)
 
 	return render_template("VAT.html")
 		
