@@ -1169,7 +1169,10 @@ def TB_process():
 
 
 		for i in range(1, len(mylist)+1):
-			F10TB.cell(row=i+14, column=5).value=int(mylist[i-1])
+			try:
+				F10TB.cell(row=i+14, column=5).value=int(mylist[i-1])
+			except:
+				F10TB.cell(row=i+14, column=5).value=str(mylist[i-1])
 
 		for i in range  (  1, len(mylist)+1):
 			if(mylist[i-1] in Account):
