@@ -1140,7 +1140,7 @@ def TB_process():
 		if isChecked4=="":
 			try:
 
-				acc=Account+Accountp
+				acc=Account
 
 				mylist2 = list(dict.fromkeys(acc))
 				mylist=[]
