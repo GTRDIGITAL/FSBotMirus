@@ -758,7 +758,7 @@ def TB_process():
 			# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 			# sys.exit()
 		for k in range(0,len(Account)):
-			Accountp[k]=str(Account[k])
+			Account[k]=str(Account[k])
 		try:
 			Description=[b.value for b in TBCY1[tbCyDescription][tbrow:luntb+1]]
 		except:
