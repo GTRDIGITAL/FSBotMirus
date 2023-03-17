@@ -1140,7 +1140,7 @@ def TB_process():
 		if isChecked4=="":
 			try:
 
-				acc=Account+Accountp
+				acc=str(Account)+str(Accountp)
 
 				mylist2 = list(dict.fromkeys(acc))
 				mylist=[]
@@ -1169,7 +1169,7 @@ def TB_process():
 
 
 		for i in range(1, len(mylist)+1):
-			F10TB.cell(row=i+14, column=5).value=str(mylist[i-1])
+			F10TB.cell(row=i+14, column=5).value=mylist[i-1]
 
 
 		for i in range  (  1, len(mylist)+1):
