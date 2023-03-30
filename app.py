@@ -462,7 +462,7 @@ def FS_process():
 				return render_template("index.html")
 
 			for i in range(1, len(Account)+1):
-				test.cell(row=i+14, column=6).value=str(Account[i-1])
+				test.cell(row=i+14, column=6).value=Account[i-1]
 
 			for i in range (1, len(Description)+1):
 				test.cell(row=i+14, column=7).value= Description[i-1]
