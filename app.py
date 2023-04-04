@@ -85,6 +85,7 @@ def FS_process():
 							fill_type='solid')
 		grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
 		yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+		red=PatternFill(start_color='ff0000',end_color='ff0000',fill_type='solid')
 		blueFill = PatternFill(start_color='00AEAC',
 							end_color='00AEAC',
 							fill_type='solid')
@@ -296,8 +297,9 @@ def FS_process():
 			test.cell(row=6,column=2).value=mainActivity
 			test.cell(row=7,column=2).value=year
 
-
-			test2.cell(row=10,column=8).value='''=IF(SUMIF(D:D,641,J:J)>0,IF(OR('3. F30'!F44,'3. F30'!F45=""),"Trebuie introduse sume in F30 ",0),0)'''
+			test2.cell(row=10,column=7).value="Check Acc 641 with number of employees"
+			test2.cell(row=10,column=7).font=fontRed
+			test2.cell(row=10,column=8).value='''=IF(SUMIF(D:D,641,J:J)>0,IF(OR('3. F30'!F44,'3. F30'!F45=""),"Please, fill F30 ",0),"OK")'''
 
 			listaMapare=['161','1614','1615','1617','1618','1621','1622','1624','1625','1627','1623','1626','1661','1663','2671','2672','2673','2674','2675','2676','2677','2678','2679','308','348E','348','368','378','388','4428','445','4451','4452','4458','446','4482','4481','4511','4518','4531','4538','456','456','471','472','473','4751','4752','4753','4754','4758','481','482','581']
 			listaBalanta=list(set(Account))
@@ -540,7 +542,9 @@ def FS_process():
 			test.cell(row=6,column=2).value=mainActivity
 			test.cell(row=7,column=2).value=year
 
-			test2.cell(row=10,column=8).value='''=IF(SUMIF(D:D,641,J:J)>0,IF(OR('3. F30'!D47,'3. F30'!D48=""),"Trebuie introduse sume in F30 ",0),0)'''
+			test2.cell(row=10,column=7).value="Check Acc 641 with number of employees"
+			test2.cell(row=10,column=7).font=fontRed
+			test2.cell(row=10,column=8).value='''=IF(SUMIF(D:D,641,J:J)>0,IF(OR('3. F30'!D47,'3. F30'!D48=""),"Please, fill F30 ",0),"OK")'''
 
 			listaMapare=['161','1614','1615','1617','1618','1621','1622','1624','1625','1627','1623','1626','1661','1663','2671','2672','2673','2674','2675','2676','2677','2678','2679','308','348E','348','368','378','388','4428','445','4451','4452','4458','446','4482','4481','4511','4518','4531','4538','456','456','471','472','473','4751','4752','4753','4754','4758','481','482','581']
 			listaBalanta=list(set(Account))
