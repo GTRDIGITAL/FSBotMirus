@@ -2978,8 +2978,8 @@ def Ageing_process():
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	denis=datetime.datetime.now()
-	print(denis)
+	# denis=datetime.datetime.now()
+	# print(denis)
 
 	if request.method == 'POST':
 		file_Details = request.files["details"]
@@ -4787,10 +4787,10 @@ def Ageing_process():
 
 
 		folderpath = "/home/fsbot/storage" 
-		file_pathFS = os.path.join(folderpath, "Ageing Test"+" "+clientname1+" "+str(denis)+".xlsx")
+		file_pathFS = os.path.join(folderpath, "Ageing Test"+" "+clientname1+".xlsx")
 		wb.save(file_pathFS)
 		# print("ceva")
-	return send_from_directory(folderpath, "Ageing Test" + " " + clientname1 +" "+str(denis)+ ".xlsx", as_attachment=True)
+	return send_from_directory(folderpath, "Ageing Test" + " " + clientname1 +".xlsx", as_attachment=True)
 		
 if __name__ == '__main__':
    	app.run()
