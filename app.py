@@ -2970,13 +2970,13 @@ def Ageing():
 def Ageing_process():
 	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
 	clientname1 = request.form['client']
-	yearEnd1 = datetime.datetime.strptime(
-		request.form['yearEnd'],
-		'%Y-%m-%d')
+	# yearEnd1 = datetime.datetime.strptime(
+	# 	request.form['yearEnd'],
+	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	datePrepared1 = datetime.datetime.strptime(
-		request.form['preparedDate'],
-		'%Y-%m-%d')
+	# datePrepared1 = datetime.datetime.strptime(
+	# 	request.form['preparedDate'],
+	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
 	denis=datetime.datetime.now()
 	print(denis)
@@ -3035,13 +3035,13 @@ def Ageing_process():
 		Sheet1.cell(row = 1, column = 1).value = "Client name:"
 		Sheet1.cell(row = 1, column = 2).value = clientname1
 		Sheet1.cell(row = 2, column = 1).value = "Period end:"
-		Sheet1.cell(row = 2, column = 2).value = yearEnd1
+		# Sheet1.cell(row = 2, column = 2).value = yearEnd1
 		Sheet1.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
 
 		#test name
 		Sheet1.cell(row = 4, column = 1).value = "Receivables ageing recomputation"
 		Sheet1.cell(row = 12, column = 1).value = "YE Date"
-		Sheet1.cell(row = 13, column = 1).value = yearEnd1
+		# Sheet1.cell(row = 13, column = 1).value = yearEnd1
 		Sheet1.cell(row = 13, column = 1).number_format = 'mm/dd/yyyy'
 
 		#testing table
@@ -3100,7 +3100,7 @@ def Ageing_process():
 		Sheet1.cell(row = 1, column = 15).value = "Processed by"
 		Sheet1.cell(row = 1, column = 16).value = preparedBy1
 		Sheet1.cell(row = 2, column = 15).value = "Date"
-		Sheet1.cell(row = 2, column = 16).value = datePrepared1
+		# Sheet1.cell(row = 2, column = 16).value = datePrepared1
 		Sheet1.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
 		Sheet1.cell(row = 3, column = 15).value = "Refference"
 		Sheet1.cell(row = 3, column = 16).value = refference1
@@ -3431,7 +3431,7 @@ def Ageing_process():
 		Sheet11.cell(row = 1, column = 1).value = "Client name:"
 		Sheet11.cell(row = 1, column = 2).value = clientname1
 		Sheet11.cell(row = 2, column = 1).value = "Period end:"
-		Sheet11.cell(row = 2, column = 2).value = yearEnd1
+		# Sheet11.cell(row = 2, column = 2).value = yearEnd1
 		Sheet11.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
 
 		#test name
@@ -3511,7 +3511,7 @@ def Ageing_process():
 		Sheet11.cell(row = 1, column = 15).value = "Processed by"
 		Sheet11.cell(row = 1, column = 16).value = preparedBy1
 		Sheet11.cell(row = 2, column = 15).value = "Date"
-		Sheet11.cell(row = 2, column = 16).value = datePrepared1
+		# Sheet11.cell(row = 2, column = 16).value = datePrepared1
 		Sheet11.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
 		Sheet11.cell(row = 3, column = 15).value = "Refference"
 		Sheet11.cell(row = 3, column = 16).value = refference1
@@ -4234,7 +4234,7 @@ def Ageing_process():
 		Sheet2.cell(row = 1, column = 1).value = "Client name:"
 		Sheet2.cell(row = 1, column = 2).value = clientname1
 		Sheet2.cell(row = 2, column = 1).value = "Period end:"
-		Sheet2.cell(row = 2, column = 2).value = yearEnd1
+		# Sheet2.cell(row = 2, column = 2).value = yearEnd1
 		Sheet2.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'            
 
 		#test name
@@ -4260,7 +4260,7 @@ def Ageing_process():
 		Sheet2.cell(row = 1, column = 10).value = "Processed by"
 		Sheet2.cell(row = 1, column = 11).value = preparedBy1
 		Sheet2.cell(row = 2, column = 10).value = "Date"
-		Sheet2.cell(row = 2, column = 11).value = datePrepared1
+		# Sheet2.cell(row = 2, column = 11).value = datePrepared1
 		Sheet2.cell(row = 2, column = 11).number_format = 'mm/dd/yyyy'
 		Sheet2.cell(row = 3, column = 10).value = "Refference"
 		Sheet2.cell(row = 3, column = 11).value = refference1
@@ -4470,7 +4470,7 @@ def Ageing_process():
 		topClients.cell(row = 1, column = 2).value = clientname1
 		topClients.cell(row = 1, column = 2).font =ft1_1
 		topClients.cell(row = 2, column = 1).value = "Period end:"
-		topClients.cell(row = 2, column = 2).value = yearEnd1
+		# topClients.cell(row = 2, column = 2).value = yearEnd1
 		topClients.cell(row = 2, column = 2).font = ft1_1
 		topClients.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
 		topClients.cell(row = 3, column = 1).value = "Top Clients"
@@ -4480,7 +4480,7 @@ def Ageing_process():
 		topClients.cell(row = 1, column = 11).value = preparedBy1
 		topClients.cell(row = 1, column = 11).font = ft1_1
 		topClients.cell(row = 2, column = 10).value = "Date"
-		topClients.cell(row = 2, column = 11).value = datePrepared1
+		# topClients.cell(row = 2, column = 11).value = datePrepared1
 		topClients.cell(row = 2, column = 11).font =ft1_1
 		topClients.cell(row = 2, column = 11).number_format = 'mm/dd/yyyy'
 		topClients.cell(row = 3, column = 10).value = "Refference"
