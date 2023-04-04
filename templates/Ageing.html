@@ -2,14 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>VAT</title>
+    <title>Ageing App</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- <link ref="stylesheet" href="main.CSS"> -->
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -82,8 +80,8 @@ body {
 body {
     font-family: 'Raleway:300', sans-serif;
     min-height: 100%;
-    background: rgb(72,25,122);
-    background: linear-gradient(0deg, RGB(0,89,97) 0%, RGB(9,180,174) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
+    background: RGB(9,180,174);
+    background: linear-gradient(to right,RGB(0,89,97), RGB(9,180,174));
 }
 html {
   height: 100%;
@@ -141,7 +139,7 @@ body {
     align-items: center;
  
     justify-content: left;
-    background: rgb(72,25,122);
+    background: RGB(9,180,174);
     background: linear-gradient(0deg, RGB(0,89,97) 0%, RGB(9,180,174) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
 }
  h6 {
@@ -243,48 +241,14 @@ img {
     padding-right: 2px;
 }
     </style>
- <!-- <div id="logo">
-    <img src="/static/logo.png" Style="position:left"><a href="/"></a>
-    
-    
-</div> -->
 <a href="/"id="logo">
-    <img src="/static/mirus.png" Style="position:left;width:150px; height: 45px;"><a href="/"></a>
+    <img src="/static/logo3.png" Style="position:left;width:150px; height: 45px;"><a href="/"></a>
     
     
 </a>
-
  </head>
 <body>
-    
-    <div class="col-lg-3">
-        <div style="font-size:14px;font-family: serif; color: rgba(72,25,122,0.8578781854538691); width:400px; position: left">
-            <p>
-                
-            </p>
-            </div>
-                       
-                       <ul class="location">
-                         <li class="curve">
-                            <a href="/">Financial Statements</a>
-                         </li>
-                      </ul>                    
-                        <ul class="location">
-                         <li class="curve">
-                            <a href="/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY">Trial Balances</a>
-                         </li>
-                      </ul>
-                      <ul class="location">
-                        <li class="curve">
-                            <a href="/VAT/GTbJY47MKf1oajfEqntaRFSt8fw">VAT</a>
-                        </li>
-                      </ul>
-                      <ul class="location">
-                        <li class="curve">
-                            <a href="/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn">Ageing</a>
-                         </li>
-                      </ul>
-                       </div>
+   
  <!--    <nav class="sidebar">
         <ul class="nav flex-column">
             <li class="nav-item">
@@ -320,13 +284,41 @@ img {
                  </div>  --><!-- /#admin-main-control -->
        <!--  </div> --> <!-- /.row -->
     <!-- </div> --> <!-- /.container-fluid -->
-   
+    <div class="col-lg-3">
+        <div style="font-size:14px;font-family: serif; color: rgba(72,25,122,0.8578781854538691); width:400px; position: left">
+            <p>
+                
+            </p>
+            </div>
+                       
+                       <ul class="location">
+                         <li class="curve">
+                            <a href="/">Financial Statements</a>
+                         </li>
+                      </ul>                    
+                        <ul class="location">
+                         <li class="curve">
+                            <a href="/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY">Trial Balances</a>
+                         </li>
+                      </ul>
+                      <ul class="location">
+                        <li class="curve">
+                            <a href="/VAT/GTbJY47MKf1oajfEqntaRFSt8fw">VAT</a>
+                        </li>
+                      </ul>
+                      <ul class="location">
+                        <li class="curve">
+                            <a href="/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn">Ageing</a>
+                         </li>
+                      </ul>
+                       </div>
+                    <!-- </div> -->
 
-    <form method="POST" enctype = "multipart/form-data" style="padding-left:60px; padding-top:60px;">
+    <form method="POST" enctype = "multipart/form-data" style="padding-left:60px;">
         <div class="container" style="float:center">
             <div class="row">
                 <div class="col">
-                    <button type="button" onclick="location.href = '/VAT/Instructions';"  class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961;"> Instructions</button>
+                    <button type="button"  class="btn btn-primary btn-lg" onclick="location.href = '/Ageing/Instructions';" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961"> Instructions</button>
                     <!-- <label class="form-label" for="customFile">Default file input example</label> -->
                     <!-- <input type="file" class="btn btn-primary btn-lg" id="customFile" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;"> Instructions </input> -->
                     <!-- <input id="uploadFile" placeholder="File Name here" disabled="disabled" /> -->
@@ -347,19 +339,20 @@ img {
             <div class="row">
                 <div class="col">
                     <!-- <button type="button" class="btn btn-primary btn-lg" value="1" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;" input type="file"> Import monthly trial balances</button> -->
-                     <div class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961;">
-                        <span>Import D300</span>
-                        <input id="uploadBtn" name="vatXML" type="file" class="upload" multiple/>
+                     <div class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961">
+                        <span>Import outstanding invoices detail</span>
+                        <input id="uploadBtn" name="details" type="file" class="upload" />
                      </div>
                     
                                    
                 </div>
             </div>
+
             <div class="row">
                 <div class="col">
                     <!-- <button type="file" class="btn btn-primary btn-lg" value="3" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;"> Import TB</button> -->
-                    <div class="fileUpload btn btn-primary btn-lg" Style="width: 300px; margin-bottom:10px; background-color: #005961;">
-                        <span>Import Trial Balance</span>
+                    <div class="fileUpload btn btn-primary btn-lg" Style="width: 300px; margin-bottom:10px; background-color: #005961">
+                        <span>Import TB</span>
                         <input id="uploadBtn" type="file" class="upload" name="TB"  />
                     </div>
                     
@@ -387,7 +380,8 @@ img {
             </div>
             <div class="row">
                 <div class="col">
-                    <input class="textbox-n"  name="yearEnd" placeholder="Year End" aria-label="Year End" onfocus="(this.type='date')" Style="margin-bottom:10px; width:300px;">
+                    <!-- <input type="date"  name="yearEnd" placeholder="Year End" aria-label="Year End" Style="margin-bottom:10px; width:300px;"> -->
+                    <input placeholder="Year End" name="yearEnd" class="textbox-n" type="text" onfocus="(this.type='date')" id="date" style="margin-bottom:10px; width:300px;" >
                 </div>
                     
                     
@@ -403,7 +397,8 @@ img {
             </div>
             <div class="row">
                 <div class="col">
-                    <input class="textbox-n" name="preparedDate" placeholder="Prepared date" aria-label="Prepared date" onfocus="(this.type='date')" Style="margin-bottom:10px; width:300px;">
+                    <!-- <input type="date" name="preparedDate" placeholder="Prepared date" aria-label="Prepared date" Style="margin-bottom:10px; width:300px;"> -->
+                    <input placeholder="Prepared Date" name="preparedDate" class="textbox-n" type="text" onfocus="(this.type='date')" id="date" style="margin-bottom:10px; width:300px;" >
                 </div>
                     
                     
@@ -416,10 +411,65 @@ img {
                     
                     
                 
-            </div>       
+            </div> 
+            
             <div class="row">
                 <div class="col">
-                    <button type="submit" class="btn btn-primary btn-lg" value="4" Style="width: 300px;margin-bottom:10px; background-color: #005961;"> Run and save</button>
+                    <input type="text" name="notDue" placeholder="Not due" aria-label="Not due - The input figure will be in all cases 0." Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket1" placeholder="Bucket 1" aria-label="Bucket 1" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket2" placeholder="Bucket 2" aria-label="Bucket 2" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket3" placeholder="Bucket 3" aria-label="Bucket 3" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket4" placeholder="Bucket 4" aria-label="Bucket 4" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket5" placeholder="Bucket 5" aria-label="Bbucket 5" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+            
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-lg" value="4" Style="width: 300px;margin-bottom:10px; background-color: #005961"> Run and save</button>
                 </div>
                     
                     
@@ -427,7 +477,6 @@ img {
             </div>
         </div>
     </form>
-    
-    
+
 </body>
 </html>

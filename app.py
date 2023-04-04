@@ -2957,6 +2957,1840 @@ def my_form_post():
 		return send_from_directory(folderpath, "VAT Test" + " " + clientname1 + ".xlsx", as_attachment=True)
 
 	return render_template("VAT.html")
+
+@app.route('/Ageing/Instructions', methods=['GET'])
+def downloadAgeing():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - Ageing.docx", as_attachment=True)
+@app.route('/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn')
+def Ageing():
+	return render_template('Ageing.html')
+@app.route('/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn', methods=['POST', 'GET'])
+def Ageing_process():
+	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
+	clientname1 = request.form['client']
+	yearEnd1 = datetime.datetime.strptime(
+		request.form['yearEnd'],
+		'%Y-%m-%d')
+	preparedBy1 = request.form['preparedBy']
+	datePrepared1 = datetime.datetime.strptime(
+		request.form['preparedDate'],
+		'%Y-%m-%d')
+	refference1 = request.form['reff']
+	denis=datetime.datetime.now()
+	print(denis)
+
+	if request.method == 'POST':
+		file_Details = request.files["details"]
+		file_TB = request.files["TB"]
+		val0 = request.form['notDue']
+		val1 = request.form['bucket1']
+		val2 = request.form['bucket2']
+		val3 = request.form['bucket3']
+		val4 = request.form['bucket4']
+		val5 = request.form['bucket5']
+
+		# for i in file_Details:
+		# 	i.save(secure_filename(i.filename))
+		# print(isChecked)
+
+
+
+#colors
+		ft1 = Font(name = 'Tahoma', size = 8, bold = True)
+		ft1_1 = Font(name = 'Tahoma', size = 8)		
+		ft1_1b = Font(name = 'Tahoma', size = 8, bold=True)
+		f_testname = Font(name = 'Tahoma', size = 8, bold = True, underline = 'single', italic = True)
+		cap_tabel = Font(name = 'Tahoma', size = 8, color = "FFFFFF", bold = True)
+		cap_tabel_color_PBC = PatternFill(start_color = '808080', end_color ='808080', fill_type = 'solid') #grey
+		cap_tabel_color_GT = PatternFill(start_color = '00AEAC', end_color ='00AEAC', fill_type = 'solid') #indigo
+		fprocentaj = Font(name = 'Tahoma', size = 8, color = "FF0000", bold = True)
+		font_worksheet = Font(name = 'Tahoma', size = 8)
+		check_font = Font(name = 'Tahoma', size = 8, color = "FF0000", bold = True)
+		thin = Side(border_style='double', color='000000')
+		border_bottom = Border(bottom=thin)
+		cap_tabel_galben = PatternFill(start_color = 'FFFF00', end_color ='FFFF00', fill_type = 'solid')
+		doubleborder = Border(bottom=Side(style='double'))
+
+		# variable = StringVar(app)
+		# variable.set("(None)")
+		#
+		# app.mainloop()
+		# try:
+		wb = openpyxl.Workbook()
+		ws = wb.active
+		ws.title = "TR Aging Invoice level"
+		Sheet1 = wb["TR Aging Invoice level"]
+		Sheet1.sheet_view.showGridLines = False
+		# Sheet1.font = ft1
+		
+		# try:
+		details = openpyxl.load_workbook(file_Details, data_only = True)
+		# except:
+		# 	None
+		ws = details.active
+
+		#header
+		Sheet1.cell(row = 1, column = 1).value = "Client name:"
+		Sheet1.cell(row = 1, column = 2).value = clientname1
+		Sheet1.cell(row = 2, column = 1).value = "Period end:"
+		Sheet1.cell(row = 2, column = 2).value = yearEnd1
+		Sheet1.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
+
+		#test name
+		Sheet1.cell(row = 4, column = 1).value = "Receivables ageing recomputation"
+		Sheet1.cell(row = 12, column = 1).value = "YE Date"
+		Sheet1.cell(row = 13, column = 1).value = yearEnd1
+		Sheet1.cell(row = 13, column = 1).number_format = 'mm/dd/yyyy'
+
+		#testing table
+		Sheet1.cell(row = 16, column = 1).value = "As per Detail"
+		Sheet1.cell(row = 17, column = 1).value = "Client code"
+		Sheet1.cell(row = 17, column = 2).value = "Client"
+		Sheet1.cell(row = 17, column = 3).value = "Account"
+		Sheet1.cell(row = 17, column = 4).value = "Due date"
+		Sheet1.cell(row = 17, column = 5).value = "Invoice number"
+		Sheet1.cell(row = 17, column = 6).value = "Amount in LC"
+		Sheet1.cell(row = 16, column = 8).value = "As per Nexia"
+		Sheet1.cell(row = 17, column = 7).value = "Invoice value"
+		Sheet1.cell(row = 17, column = 8).value = "No of days"
+		Sheet1.cell(row = 17, column = 9).value = "Not due"
+		Sheet1.cell(row = 17, column = 10).value = "<="+str(val1)+" days"
+		Sheet1.cell(row = 17, column = 11).value = str(val1)+"-"+str(val2)+" days"
+		Sheet1.cell(row = 17, column = 12).value = str(val2)+"-"+str(val3)+" days"
+		Sheet1.cell(row = 17, column = 13).value = str(val3)+"-"+str(val4)+" days"
+		Sheet1.cell(row = 17, column = 14).value = str(val4)+"-"+str(val5)+" days"
+		Sheet1.cell(row = 17, column = 15).value = "Over "+str(val5)+" days"
+		Sheet1.cell(row = 17, column = 16).value = "Check"
+		# Sheet1.cell(row = 17, column = 17).value = "Random for IPE"
+
+
+
+
+		Sheet1.cell(row = 5, column = 5).value = "Account"
+		Sheet1.cell(row = 5, column = 6).value = "As per Detail"
+		Sheet1.cell(row = 5, column = 7).value = "As per TB"
+		Sheet1.cell(row = 5, column = 8).value = "Difference"
+
+		#bucket zone
+		Sheet1.cell(row = 12, column = 9).value = "Not due"
+		Sheet1.cell(row = 12, column = 10).value = "<="+str(val1)+" days"
+		Sheet1.cell(row = 12, column = 11).value = str(val1)+"-"+str(val2)+" days"
+		Sheet1.cell(row = 12, column = 12).value = str(val2)+"-"+str(val3)+" days"
+		Sheet1.cell(row = 12, column = 13).value = str(val3)+"-"+str(val4)+" days"
+		Sheet1.cell(row = 12, column = 14).value = str(val4)+"-"+str(val5)+" days"
+		Sheet1.cell(row = 12, column = 15).value = "Over "+str(val5)+" days"
+		Sheet1.cell(row = 12, column = 16).value = "Total"
+
+		#suma procentelor
+		Sheet1.cell(row = 13, column = 16).value = "=SUM(I13:O13)".format(18)
+		Sheet1.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+
+		#procent din total
+		Sheet1.cell(row = 14, column = 9).value = "=I13/P13".format(12)
+		Sheet1.cell(row = 14, column = 10).value = "=J13/P13".format(12)
+		Sheet1.cell(row = 14, column = 11).value = "=K13/P13".format(12)
+		Sheet1.cell(row = 14, column = 12).value = "=L13/P13".format(12)
+		Sheet1.cell(row = 14, column = 13).value = "=M13/P13".format(12)
+		Sheet1.cell(row = 14, column = 14).value = "=N13/P13".format(12)
+		Sheet1.cell(row = 14, column = 15).value = "=O13/P13".format(12)
+
+		#prepared and date
+		Sheet1.cell(row = 1, column = 15).value = "Processed by"
+		Sheet1.cell(row = 1, column = 16).value = preparedBy1
+		Sheet1.cell(row = 2, column = 15).value = "Date"
+		Sheet1.cell(row = 2, column = 16).value = datePrepared1
+		Sheet1.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
+		Sheet1.cell(row = 3, column = 15).value = "Refference"
+		Sheet1.cell(row = 3, column = 16).value = refference1
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Client code":
+					row_customer = cell.row
+					column_client = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientCode = [b.value for b in ws[column_client][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Client code in Aging file")
+			return render_template("index.html")
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Client":
+					row_customer = cell.row
+					column_customer = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientName = [b.value for b in ws[column_customer][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Client in Aging file")
+			return render_template("index.html")
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Account":
+					row_customer = cell.row
+					column_account = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientAccount = [b.value for b in ws[column_account][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Account in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Account" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Due date":
+					row_customer = cell.row
+					column_due = cell.column
+					lun = len(ws[cell.column])
+		try:
+			dueDate = [b.value for b in ws[column_due][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Due date in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Due date" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Invoice no":
+					row_customer = cell.row
+					column_invno = cell.column
+					lun = len(ws[cell.column])
+		try:
+			invoiceNo = [b.value for b in ws[column_invno][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Invoice no in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Invoice no" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Amount in LC":
+					row_customer = cell.row
+					column_amountinlc = cell.column
+					lun = len(ws[cell.column])
+		try:
+			amtLC = [b.value for b in ws[column_amountinlc][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Amount in LC in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Amount in LC" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Invoice value":
+					row_customer = cell.row
+					column_invoicev = cell.column
+					lun = len(ws[cell.column])
+		try:
+			invoiceVal = [b.value for b in ws[column_invoicev][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Invoice value in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Invoice value" header in details file was not created properly')
+
+
+		# starting_row=18
+		# for i in invoiceNo:
+		# 	Sheet1.cell(row= starting_row, column= 17).value="=CHAR(RANDBETWEEN(87,88))"
+		# 	starting_row=starting_row+1 
+
+
+		# if(len(invoiceNo)<250):
+		# 	starting_row=18
+		# 	for i in range(0,10):
+		# 		Sheet1.cell(row= i+starting_row, column= 17).value=choice(invoiceNo)
+				
+
+			
+
+		for i in range(0, len(clientName)):
+			Sheet1.cell(row = 18 + i, column = 2).value = clientName[i]
+
+		for i in range(0, len(clientCode)):
+			Sheet1.cell(row = 18 + i, column = 1).value = clientCode[i]
+
+		for i in range(0, len(clientAccount)):
+			Sheet1.cell(row = 18 + i, column = 3).value = clientAccount[i]
+
+		for i in range(0, len(dueDate)):
+			Sheet1.cell(row = 18 + i, column = 4).value = dueDate[i]
+
+		for i in range(0, len(invoiceNo)):
+			Sheet1.cell(row = 18 + i, column = 5).value = invoiceNo[i]
+
+		for i in range(0, len(amtLC)):
+			Sheet1.cell(row = 18 + i, column = 6).value = amtLC[i]
+
+		for i in range(0, len(invoiceVal)):
+			Sheet1.cell(row = 18 + i, column = 7).value = invoiceVal[i]
+
+		# print("=IF(AND(H{0}<=" + str(val1) + ",H{0}>" + str(val0) + "),F{0},0)")
+
+		for i in range(0, len(dueDate)):
+			Sheet1.cell(row = 18 + i, column = 8).value = "=$A$13-D"+str(18 + i)
+			Sheet1.cell(row = 18 + i, column = 9).value = "=IF(H"+str(18 + i)+"<="+str(val0)+",F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 10).value = "=IF(AND(H"+str(18 + i)+"<="+str(val1)+",H"+str(18 + i)+">"+str(val0)+"),F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 11).value = "=IF(AND(H"+str(18 + i)+"<="+str(val2)+",H"+str(18 + i)+">"+str(val1)+"),F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 12).value = "=IF(AND(H"+str(18 + i)+"<="+str(val3)+",H"+str(18 + i)+">"+str(val2)+"),F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 13).value = "=IF(AND(H"+str(18 + i)+"<="+str(val4)+",H"+str(18 + i)+">"+str(val3)+"),F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 14).value = "=IF(AND(H"+str(18 + i)+"<="+str(val5)+",H"+str(18 + i)+">"+str(val4)+"),F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 15).value = "=IF(H"+str(18 + i)+">"+str(val5)+",F"+str(18 + i)+",0)".format(18 + i)
+			Sheet1.cell(row = 18 + i, column = 16).value = "=F"+str(18 + i)+"-SUM(I"+str(18+i)+":O"+str(18+i)+")"
+
+			Sheet1.cell(row=18 + i, column=9).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=10).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=11).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=12).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=13).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=14).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=15).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=18 + i, column=16).number_format = '#,##0_);(#,##0)'
+
+			#bucket zone formulas
+			Sheet1.cell(row = 13, column = 9).value = "=SUM(I18:I{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 10).value = "=SUM(J18:J{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 11).value = "=SUM(K18:K{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 12).value = "=SUM(L18:L{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 13).value = "=SUM(M18:M{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 14).value = "=SUM(N18:N{0})".format(18 + i)
+			Sheet1.cell(row = 13, column = 15).value = "=SUM(O18:O{0})".format(18 + i)
+
+			#FORMAT
+			for row in Sheet1["I13:O13"]:
+				for cell in row:
+					cell.number_format = '#,##0_);(#,##0)'
+					cell.font = font_worksheet
+
+			#reconciliation zone
+			Sheet1.cell(row = 6, column = 5).value = "411"
+			Sheet1.cell(row = 6, column = 6).value = "=P13".format(18 + i)
+			Sheet1.cell(row = 6, column = 7).value ="=SUMIF('TB Robot'!A:A,""411"",'TB Robot'!H:H)".format(18 + i)
+			Sheet1.cell(row = 6, column = 8).value ="=F6-G6".format(18 + i)
+
+			Sheet1.cell(row=6, column=6).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=6, column=7).number_format = '#,##0_);(#,##0)'
+			Sheet1.cell(row=6, column=8).number_format = '#,##0_);(#,##0)'
+
+			Sheet1.cell(row=6, column=5).font = font_worksheet
+			Sheet1.cell(row=6, column=6).font = font_worksheet
+			Sheet1.cell(row=6, column=7).font = font_worksheet
+			Sheet1.cell(row=6, column=8).font = check_font
+
+		for i in range(0, len(clientName)):
+			Sheet1.cell(row = 18 + i, column = 2).font = font_worksheet
+
+		for i in range(0, len(clientCode)):
+			Sheet1.cell(row = 18 + i, column = 1).font = font_worksheet
+
+		for i in range(0, len(clientAccount)):
+			Sheet1.cell(row = 18 + i, column = 3).font = font_worksheet
+
+		for i in range(0, len(dueDate)):
+			Sheet1.cell(row = 18 + i, column = 4).font = font_worksheet
+
+		for i in range(0, len(invoiceNo)):
+			Sheet1.cell(row = 18 + i, column = 5).font = font_worksheet
+
+		for i in range(0, len(amtLC)):
+			Sheet1.cell(row = 18 + i, column = 6).number_format = '#,##0_);(#,##0)'
+
+		for i in range(0, len(amtLC)):
+			Sheet1.cell(row = 18 + i, column = 6).font = font_worksheet
+
+		for i in range(0, len(invoiceVal)):
+			Sheet1.cell(row = 18 + i, column = 7).number_format = '#,##0_);(#,##0)'
+
+		for i in range(0, len(invoiceVal)):
+			Sheet1.cell(row = 18 + i, column = 7).font = font_worksheet
+
+		for i in range(0, len(dueDate)):
+			Sheet1.cell(row = 18 + i, column = 8).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 9).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 10).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 11).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 12).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 13).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 14).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 15).font = font_worksheet
+			Sheet1.cell(row = 18 + i, column = 16).font = font_worksheet
+
+		Sheet1.freeze_panes = 'C18'
+
+		Sheet1.column_dimensions['A'].width = 10
+		Sheet1.column_dimensions['B'].width = 20
+		Sheet1.column_dimensions['C'].width = 11
+		Sheet1.column_dimensions['D'].width = 12
+		Sheet1.column_dimensions['E'].width = 14
+		Sheet1.column_dimensions['F'].width = 12
+		Sheet1.column_dimensions['G'].width = 10
+		Sheet1.column_dimensions['H'].width = 9
+		Sheet1.column_dimensions['I'].width = 9
+		Sheet1.column_dimensions['J'].width = 9
+		Sheet1.column_dimensions['K'].width = 9
+		Sheet1.column_dimensions['L'].width = 9
+		Sheet1.column_dimensions['M'].width = 9
+		Sheet1.column_dimensions['N'].width = 9
+		Sheet1.column_dimensions['O'].width = 12
+		Sheet1.column_dimensions['P'].width = 15
+
+		for cell in Sheet1["D"]:
+			cell.number_format = "mm/dd/yyyy"
+
+		Sheet1.auto_filter.ref = "A17:P17"
+
+		#FONT / FORMAT
+		#header
+		Sheet1.cell(row=1, column=1).font = ft1
+		Sheet1.cell(row=1, column=2).font = ft1
+		Sheet1.cell(row=2, column=1).font = ft1
+		Sheet1.cell(row=2, column=2).font = ft1
+
+		Sheet1.cell(row=1, column=15).font = ft1
+		Sheet1.cell(row=1, column=16).font = ft1
+		Sheet1.cell(row=2, column=15).font = ft1
+		Sheet1.cell(row=2, column=16).font = ft1
+		Sheet1.cell(row=3, column=15).font = ft1
+		Sheet1.cell(row=3, column=16).font = check_font
+
+		Sheet1.cell(row=5, column=5).font = cap_tabel
+		Sheet1.cell(row=5, column=6).font = cap_tabel
+		Sheet1.cell(row=5, column=7).font = cap_tabel
+		Sheet1.cell(row=5, column=8).font = check_font
+
+		# test name
+		Sheet1.cell(row=4, column=1).font = f_testname
+		Sheet1.cell(row=12, column=1).font = f_testname
+		Sheet1.cell(row=13, column=1).font = ft1
+
+		Sheet1.cell(row=13, column=16).font = ft1
+
+		Sheet1.cell(row=16, column=8).font = font_worksheet
+		Sheet1.cell(row=17, column=16).font = check_font
+
+		for row in Sheet1["A17:O17"]:
+			for cell in row:
+				cell.font = cap_tabel
+
+		for row in Sheet1["A17:G17"]:
+			for cell in row:
+				cell.fill = cap_tabel_color_PBC
+
+		for row in Sheet1["H17:P17"]:
+			for cell in row:
+				cell.fill = cap_tabel_color_GT
+
+		Sheet1.cell(row=5, column=5).fill = cap_tabel_color_GT
+		Sheet1.cell(row=5, column=6).fill = cap_tabel_color_GT
+		Sheet1.cell(row=5, column=7).fill = cap_tabel_color_GT
+		Sheet1.cell(row=5, column=8).fill = cap_tabel_color_GT
+
+		# bucket zone
+		for row in Sheet1["I12:P12"]:
+			for cell in row:
+				cell.font = cap_tabel
+
+		for row in Sheet1["I12:P12"]:
+			for cell in row:
+				cell.fill = cap_tabel_color_GT
+
+		# suma procentelor
+		Sheet1.cell(row=13, column=16).font = ft1
+		Sheet1.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+
+		# procent din total
+		for row in Sheet1['I14:O14']:
+			for cell in row:
+				cell.style='Percent'
+
+		for row in Sheet1['I14:O14']:
+			for cell in row:
+				cell.font = fprocentaj
+
+		# prepared and date
+		Sheet1.cell(row=1, column=15).font = ft1
+		Sheet1.cell(row=1, column=16).font = ft1
+		Sheet1.cell(row=2, column=15).font = ft1
+		Sheet1.cell(row=2, column=16).font = ft1
+		Sheet1.cell(row=3, column=15).font = ft1
+		Sheet1.cell(row=3, column=16).font = check_font
+
+		Sheet11 = wb.create_sheet("IPE")
+		Sheet11.sheet_view.showGridLines = False
+		
+		# try:
+		details = openpyxl.load_workbook(file_Details, data_only = True)
+		# except:
+		# 	None
+		ws = details.active
+
+		#header
+		Sheet11.cell(row = 1, column = 1).value = "Client name:"
+		Sheet11.cell(row = 1, column = 2).value = clientname1
+		Sheet11.cell(row = 2, column = 1).value = "Period end:"
+		Sheet11.cell(row = 2, column = 2).value = yearEnd1
+		Sheet11.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
+
+		#test name
+		# Sheet11.cell(row = 4, column = 1).value = "Receivables ageing recomputation"
+		# Sheet11.cell(row = 12, column = 1).value = "YE Date"
+		# Sheet11.cell(row = 13, column = 1).value = yearEnd1
+		# Sheet11.cell(row = 13, column = 1).number_format = 'mm/dd/yyyy'
+
+		#testing table
+		# Sheet11.cell(row = 16, column = 1).value = "As per Detail"
+		# Sheet11.cell(row = 17, column = 1).value = "Client code"
+		# Sheet11.cell(row = 17, column = 2).value = "Client"
+		# Sheet11.cell(row = 17, column = 3).value = "Account"
+		# Sheet11.cell(row = 17, column = 4).value = "Due date"
+		# Sheet11.cell(row = 17, column = 5).value = "Invoice number"
+		# Sheet11.cell(row = 17, column = 6).value = "Amount in LC"
+		# Sheet11.cell(row = 16, column = 8).value = "As per Nexia"
+		# Sheet11.cell(row = 17, column = 7).value = "Invoice value"
+		# Sheet11.cell(row = 17, column = 8).value = "No of days"
+		# Sheet11.cell(row = 17, column = 9).value = "Not due"
+		# Sheet11.cell(row = 17, column = 10).value = "<="+str(val1)+" days"
+		# Sheet11.cell(row = 17, column = 11).value = str(val1)+"-"+str(val2)+" days"
+		# Sheet11.cell(row = 17, column = 12).value = str(val2)+"-"+str(val3)+" days"
+		# Sheet11.cell(row = 17, column = 13).value = str(val3)+"-"+str(val4)+" days"
+		# Sheet11.cell(row = 17, column = 14).value = str(val4)+"-"+str(val5)+" days"
+		# Sheet11.cell(row = 17, column = 15).value = "Over "+str(val5)+" days"
+		# Sheet11.cell(row = 17, column = 16).value = "Check"
+		Sheet11.cell(row = 6, column = 1).value = "Random invoice number for IPE"
+		Sheet11.cell(row = 6, column = 2).value = "Client code"
+		Sheet11.cell(row = 6, column = 3).value = "Client"
+		Sheet11.cell(row = 6, column = 4).value = "Account"
+		Sheet11.cell(row = 6, column = 5).value = "Due date"
+		Sheet11.cell(row = 6, column = 6).value = "Amount in LC"
+		Sheet11.cell(row = 6, column = 7).value = "Invoice value"
+		# Sheet11.cell(row = 6, column = 8).value = "Amount in FC"
+
+		Sheet11.cell(row = 6, column = 1).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 2).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 3).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 4).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 5).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 6).fill=cap_tabel_color_GT
+		Sheet11.cell(row = 6, column = 7).fill=cap_tabel_color_GT
+		# Sheet11.cell(row = 6, column = 8).fill=cap_tabel_color_GT
+
+
+
+		# Sheet11.cell(row = 5, column = 5).value = "Account"
+		# Sheet11.cell(row = 5, column = 6).value = "As per Detail"
+		# Sheet11.cell(row = 5, column = 7).value = "As per TB"
+		# Sheet11.cell(row = 5, column = 8).value = "Difference"
+
+		#bucket zone
+		# Sheet11.cell(row = 12, column = 9).value = "Not due"
+		# Sheet11.cell(row = 12, column = 10).value = "<="+str(val1)+" days"
+		# Sheet11.cell(row = 12, column = 11).value = str(val1)+"-"+str(val2)+" days"
+		# Sheet11.cell(row = 12, column = 12).value = str(val2)+"-"+str(val3)+" days"
+		# Sheet11.cell(row = 12, column = 13).value = str(val3)+"-"+str(val4)+" days"
+		# Sheet11.cell(row = 12, column = 14).value = str(val4)+"-"+str(val5)+" days"
+		# Sheet11.cell(row = 12, column = 15).value = "Over "+str(val5)+" days"
+		# Sheet11.cell(row = 12, column = 16).value = "Total"
+
+		#suma procentelor
+		# Sheet11.cell(row = 13, column = 16).value = "=SUM(I13:O13)".format(18)
+		# Sheet11.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+
+		#procent din total
+		# Sheet11.cell(row = 14, column = 9).value = "=I13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 10).value = "=J13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 11).value = "=K13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 12).value = "=L13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 13).value = "=M13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 14).value = "=N13/P13".format(12)
+		# Sheet11.cell(row = 14, column = 15).value = "=O13/P13".format(12)
+
+		#prepared and date
+		Sheet11.cell(row = 1, column = 15).value = "Processed by"
+		Sheet11.cell(row = 1, column = 16).value = preparedBy1
+		Sheet11.cell(row = 2, column = 15).value = "Date"
+		Sheet11.cell(row = 2, column = 16).value = datePrepared1
+		Sheet11.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
+		Sheet11.cell(row = 3, column = 15).value = "Refference"
+		Sheet11.cell(row = 3, column = 16).value = refference1
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Client code":
+					row_customer = cell.row
+					column_client = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientCode = [b.value for b in ws[column_client][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Client code in Aging file")
+			return render_template("index.html")
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Client":
+					row_customer = cell.row
+					column_customer = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientName = [b.value for b in ws[column_customer][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Client in Aging file")
+			return render_template("index.html")
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Account":
+					row_customer = cell.row
+					column_account = cell.column
+					lun = len(ws[cell.column])
+		try:
+			clientAccount = [b.value for b in ws[column_account][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Account in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Account" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Due date":
+					row_customer = cell.row
+					column_due = cell.column
+					lun = len(ws[cell.column])
+		try:
+			dueDate = [b.value for b in ws[column_due][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Due date in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Due date" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Invoice no":
+					row_customer = cell.row
+					column_invno = cell.column
+					lun = len(ws[cell.column])
+		try:
+			invoiceNo = [b.value for b in ws[column_invno][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Invoice no in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Invoice no" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Amount in LC":
+					row_customer = cell.row
+					column_amountinlc = cell.column
+					lun = len(ws[cell.column])
+		try:
+			amtLC = [b.value for b in ws[column_amountinlc][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Amount in LC in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Amount in LC" header in details file was not created properly')
+
+		for row in ws.iter_rows():
+			for cell in row:
+				if cell.value == "Invoice value":
+					row_customer = cell.row
+					column_invoicev = cell.column
+					lun = len(ws[cell.column])
+		try:
+			invoiceVal = [b.value for b in ws[column_invoicev][row_customer:lun]]
+		except:
+			flash("Please insert correct header for Invoice value in Aging file")
+			return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Invoice value" header in details file was not created properly')
+
+
+		# for row in ws.iter_rows():
+		# 	for cell in row:
+		# 		if cell.value == "Amount in FC":
+		# 			row_customer = cell.row
+		# 			column_amountinfc = cell.column
+		# 			lun = len(ws[cell.column])
+		# try:
+		# 	amtFC = [b.value for b in ws[column_amountinfc][row_customer:lun]]
+		# except:
+		# 	flash("Please insert correct header for Amount in FC in Aging file")
+		# 	return render_template("index.html")
+			# messagebox.showerror('Error', 'The "Amount in LC" header in details file was not created properly')
+
+		# starting_row=18
+		# for i in invoiceNo:
+		# 	Sheet1.cell(row= starting_row, column= 17).value="=CHAR(RANDBETWEEN(87,88))"
+		# 	starting_ro	w=starting_row+1 
+
+
+		if(len(invoiceNo)<250):
+			starting_row=7
+			for i in range(0,10):
+				Sheet11.cell(row= i+starting_row, column= 1).value=choice(invoiceNo)
+				Sheet11.cell(row= 7, column= 2).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 8, column= 2).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 9, column= 2).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 10, column= 2).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 11, column= 2).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 12, column= 2).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 13, column= 2).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 14, column= 2).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 15, column= 2).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 16, column= 2).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 3).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 8, column= 3).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 9, column= 3).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 10, column= 3).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 11, column= 3).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 12, column= 3).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 13, column= 3).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 14, column= 3).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 15, column= 3).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 16, column= 3).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 4).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 8, column= 4).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 9, column= 4).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 10, column= 4).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 11, column= 4).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 12, column= 4).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 13, column= 4).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 14, column= 4).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 15, column= 4).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 16, column= 4).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 5).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!D:D,0,0,1)"
+				Sheet11.cell(row= 8, column= 5).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 9, column= 5).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 10, column= 5).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 11, column= 5).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 12, column= 5).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 13, column= 5).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 14, column= 5).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 15, column= 5).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 16, column= 5).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 6).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 8, column= 6).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 9, column= 6).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 10, column= 6).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 11, column= 6).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 12, column= 6).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 13, column= 6).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 14, column= 6).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 15, column= 6).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 16, column= 6).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 7).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 8, column= 7).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 9, column= 7).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 10, column= 7).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 11, column= 7).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 12, column= 7).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 13, column= 7).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 14, column= 7).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 15, column= 7).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 16, column= 7).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+
+				# Sheet11.cell(row= 7, column= 8).value="=_xlfn.XLOOKUP(A7,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 8, column= 8).value="=_xlfn.XLOOKUP(A8,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 9, column= 8).value="=_xlfn.XLOOKUP(A9,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 10, column= 8).value="=_xlfn.XLOOKUP(A10,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 11, column= 8).value="=_xlfn.XLOOKUP(A11,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 12, column= 8).value="=_xlfn.XLOOKUP(A12,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 13, column= 8).value="=_xlfn.XLOOKUP(A13,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 14, column= 8).value="=_xlfn.XLOOKUP(A14,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 15, column= 8).value="=_xlfn.XLOOKUP(A15,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 16, column= 8).value="=_xlfn.XLOOKUP(A16,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+
+
+				Sheet11.cell(row= 7, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 6).number_format = '#,##0_);(#,##0)'
+
+				Sheet11.cell(row= 7, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+
+				Sheet11.cell(row= 7, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 8).number_format = '#,##0_);(#,##0)'
+		else:
+			starting_row=7		
+			for i in range(0,25):
+				Sheet11.cell(row= i+starting_row, column= 1).value=choice(invoiceNo)
+				Sheet11.cell(row= 7, column= 2).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 8, column= 2).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 9, column= 2).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 10, column= 2).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 11, column= 2).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 12, column= 2).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 13, column= 2).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 14, column= 2).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 15, column= 2).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 16, column= 2).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 17, column= 2).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 18, column= 2).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 19, column= 2).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 20, column= 2).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 21, column= 2).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 22, column= 2).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 23, column= 2).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 24, column= 2).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 25, column= 2).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 26, column= 2).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 27, column= 2).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 28, column= 2).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 29, column= 2).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 30, column= 2).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+				Sheet11.cell(row= 31, column= 2).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!A:A,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 3).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 8, column= 3).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 9, column= 3).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 10, column= 3).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 11, column= 3).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 12, column= 3).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 13, column= 3).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 14, column= 3).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 15, column= 3).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 16, column= 3).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 17, column= 3).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 18, column= 3).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 19, column= 3).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 20, column= 3).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 21, column= 3).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 22, column= 3).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 23, column= 3).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 24, column= 3).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 25, column= 3).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 26, column= 3).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 27, column= 3).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 28, column= 3).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 29, column= 3).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 30, column= 3).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+				Sheet11.cell(row= 31, column= 3).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!b:b,0,0,1)"
+
+				Sheet11.cell(row= 7, column= 4).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 8, column= 4).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 9, column= 4).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 10, column= 4).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 11, column= 4).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 12, column= 4).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 13, column= 4).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 14, column= 4).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 15, column= 4).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 16, column= 4).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 17, column= 4).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 18, column= 4).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 19, column= 4).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 20, column= 4).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 21, column= 4).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 22, column= 4).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 23, column= 4).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 24, column= 4).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 25, column= 4).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 26, column= 4).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 27, column= 4).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 28, column= 4).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 29, column= 4).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 30, column= 4).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+				Sheet11.cell(row= 31, column= 4).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!c:c,0,0,1)"
+
+
+				Sheet11.cell(row= 7, column= 5).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!D:D,0,0,1)"
+				Sheet11.cell(row= 8, column= 5).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 9, column= 5).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 10, column= 5).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 11, column= 5).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 12, column= 5).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 13, column= 5).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 14, column= 5).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 15, column= 5).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 16, column= 5).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 17, column= 5).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!D:D,0,0,1)"
+				Sheet11.cell(row= 18, column= 5).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 19, column= 5).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 20, column= 5).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 21, column= 5).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 22, column= 5).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 23, column= 5).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 24, column= 5).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 25, column= 5).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 26, column= 5).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 27, column= 5).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 28, column= 5).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 29, column= 5).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 30, column= 5).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+				Sheet11.cell(row= 31, column= 5).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!d:d,0,0,1)"
+
+
+				Sheet11.cell(row= 7, column= 6).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 8, column= 6).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 9, column= 6).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 10, column= 6).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 11, column= 6).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 12, column= 6).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 13, column= 6).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 14, column= 6).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 15, column= 6).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 16, column= 6).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 17, column= 6).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 18, column= 6).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 19, column= 6).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 20, column= 6).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 21, column= 6).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 22, column= 6).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 23, column= 6).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 24, column= 6).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 25, column= 6).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 26, column= 6).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 27, column= 6).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 28, column= 6).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 29, column= 6).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 30, column= 6).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+				Sheet11.cell(row= 31, column= 6).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!f:f,0,0,1)"
+
+
+				Sheet11.cell(row= 7, column= 7).value="=_xlfn.XLOOKUP(A7,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 8, column= 7).value="=_xlfn.XLOOKUP(A8,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 9, column= 7).value="=_xlfn.XLOOKUP(A9,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 10, column= 7).value="=_xlfn.XLOOKUP(A10,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 11, column= 7).value="=_xlfn.XLOOKUP(A11,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 12, column= 7).value="=_xlfn.XLOOKUP(A12,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 13, column= 7).value="=_xlfn.XLOOKUP(A13,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 14, column= 7).value="=_xlfn.XLOOKUP(A14,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 15, column= 7).value="=_xlfn.XLOOKUP(A15,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 16, column= 7).value="=_xlfn.XLOOKUP(A16,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 17, column= 7).value="=_xlfn.XLOOKUP(A17,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 18, column= 7).value="=_xlfn.XLOOKUP(A18,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 19, column= 7).value="=_xlfn.XLOOKUP(A19,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 20, column= 7).value="=_xlfn.XLOOKUP(A20,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 21, column= 7).value="=_xlfn.XLOOKUP(A21,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 22, column= 7).value="=_xlfn.XLOOKUP(A22,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 23, column= 7).value="=_xlfn.XLOOKUP(A23,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 24, column= 7).value="=_xlfn.XLOOKUP(A24,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 25, column= 7).value="=_xlfn.XLOOKUP(A25,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 26, column= 7).value="=_xlfn.XLOOKUP(A26,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 27, column= 7).value="=_xlfn.XLOOKUP(A27,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 28, column= 7).value="=_xlfn.XLOOKUP(A28,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 29, column= 7).value="=_xlfn.XLOOKUP(A29,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 30, column= 7).value="=_xlfn.XLOOKUP(A30,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+				Sheet11.cell(row= 31, column= 7).value="=_xlfn.XLOOKUP(A31,'TR Aging Invoice level'!E:E,'TR Aging Invoice level'!g:g,0,0,1)"
+
+				# Sheet11.cell(row= 7, column= 8).value="=_xlfn.XLOOKUP(A7,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 8, column= 8).value="=_xlfn.XLOOKUP(A8,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 9, column= 8).value="=_xlfn.XLOOKUP(A9,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 10, column= 8).value="=_xlfn.XLOOKUP(A10,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 11, column= 8).value="=_xlfn.XLOOKUP(A11,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 12, column= 8).value="=_xlfn.XLOOKUP(A12,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 13, column= 8).value="=_xlfn.XLOOKUP(A13,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 14, column= 8).value="=_xlfn.XLOOKUP(A14,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 15, column= 8).value="=_xlfn.XLOOKUP(A15,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 16, column= 8).value="=_xlfn.XLOOKUP(A16,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 17, column= 8).value="=_xlfn.XLOOKUP(A17,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 18, column= 8).value="=_xlfn.XLOOKUP(A18,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 19, column= 8).value="=_xlfn.XLOOKUP(A19,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 20, column= 8).value="=_xlfn.XLOOKUP(A20,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 21, column= 8).value="=_xlfn.XLOOKUP(A21,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 22, column= 8).value="=_xlfn.XLOOKUP(A22,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 23, column= 8).value="=_xlfn.XLOOKUP(A23,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 24, column= 8).value="=_xlfn.XLOOKUP(A24,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 25, column= 8).value="=_xlfn.XLOOKUP(A25,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 26, column= 8).value="=_xlfn.XLOOKUP(A26,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 27, column= 8).value="=_xlfn.XLOOKUP(A27,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 28, column= 8).value="=_xlfn.XLOOKUP(A28,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 29, column= 8).value="=_xlfn.XLOOKUP(A29,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 30, column= 8).value="=_xlfn.XLOOKUP(A30,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+				# Sheet11.cell(row= 31, column= 8).value="=_xlfn.XLOOKUP(A31,'Details PBC'!E:E,'Details PBC'!H:H,0,0,1)"
+
+
+				Sheet11.cell(row= 7, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 17, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 18, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 19, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 20, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 21, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 22, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 23, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 24, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 25, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 26, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 27, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 28, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 29, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 30, column= 6).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 31, column= 6).number_format = '#,##0_);(#,##0)'
+
+
+				Sheet11.cell(row= 7, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 17, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 18, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 19, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 20, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 21, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 22, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 23, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 24, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 25, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 26, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 27, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 28, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 29, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 30, column= 7).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 31, column= 7).number_format = '#,##0_);(#,##0)'
+			
+
+			
+				Sheet11.cell(row= 7, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 8, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 9, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 10, column=87).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 11, column=8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 12, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 13, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 14, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 15, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 16, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 17, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 18, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 19, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 20, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 21, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 22, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 23, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 24, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 25, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 26, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 27, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 28, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 29, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 30, column= 8).number_format = '#,##0_);(#,##0)'
+				Sheet11.cell(row= 31, column= 8).number_format = '#,##0_);(#,##0)'
+			
+
+		# for i in range(0, len(clientName)):
+		# 	Sheet11.cell(row = 18 + i, column = 2).value = clientName[i]
+
+		# for i in range(0, len(clientCode)):
+		# 	Sheet11.cell(row = 18 + i, column = 1).value = clientCode[i]
+
+		# for i in range(0, len(clientAccount)):
+		# 	Sheet11.cell(row = 18 + i, column = 3).value = clientAccount[i]
+
+		# for i in range(0, len(dueDate)):
+		# 	Sheet11.cell(row = 18 + i, column = 4).value = dueDate[i]
+
+		# for i in range(0, len(invoiceNo)):
+		# 	Sheet11.cell(row = 18 + i, column = 5).value = invoiceNo[i]
+
+		# for i in range(0, len(amtFC)):
+		# 	Sheet11.cell(row = 7 + i, column = 8).value = amtFC[i]
+
+		# for i in range(0, len(invoiceVal)):
+		# 	Sheet11.cell(row = 18 + i, column = 7).value = invoiceVal[i]
+
+		# print("=IF(AND(H{0}<=" + str(val1) + ",H{0}>" + str(val0) + "),F{0},0)")
+
+		# for i in range(0, len(dueDate)):
+		# 	Sheet11.cell(row = 18 + i, column = 8).value = "=$A$13-D"+str(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 9).value = "=IF(H"+str(18 + i)+"<="+str(val0)+",F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 10).value = "=IF(AND(H"+str(18 + i)+"<="+str(val1)+",H"+str(18 + i)+">"+str(val0)+"),F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 11).value = "=IF(AND(H"+str(18 + i)+"<="+str(val2)+",H"+str(18 + i)+">"+str(val1)+"),F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 12).value = "=IF(AND(H"+str(18 + i)+"<="+str(val3)+",H"+str(18 + i)+">"+str(val2)+"),F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 13).value = "=IF(AND(H"+str(18 + i)+"<="+str(val4)+",H"+str(18 + i)+">"+str(val3)+"),F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 14).value = "=IF(AND(H"+str(18 + i)+"<="+str(val5)+",H"+str(18 + i)+">"+str(val4)+"),F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 15).value = "=IF(H"+str(18 + i)+">"+str(val5)+",F"+str(18 + i)+",0)".format(18 + i)
+		# 	Sheet11.cell(row = 18 + i, column = 16).value = "=F"+str(18 + i)+"-SUM(I"+str(18+i)+":O"+str(18+i)+")"
+
+		# 	Sheet11.cell(row=18 + i, column=9).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=10).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=11).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=12).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=13).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=14).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=15).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=18 + i, column=16).number_format = '#,##0_);(#,##0)'
+
+			#bucket zone formulas
+			# Sheet11.cell(row = 13, column = 9).value = "=SUM(I18:I{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 10).value = "=SUM(J18:J{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 11).value = "=SUM(K18:K{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 12).value = "=SUM(L18:L{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 13).value = "=SUM(M18:M{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 14).value = "=SUM(N18:N{0})".format(18 + i)
+			# Sheet11.cell(row = 13, column = 15).value = "=SUM(O18:O{0})".format(18 + i)
+
+			#FORMAT
+			# for row in Sheet11["I13:O13"]:
+			# 	for cell in row:
+			# 		cell.number_format = '#,##0_);(#,##0)'
+			# 		cell.font = font_worksheet
+
+			#reconciliation zone
+		# 	Sheet11.cell(row = 6, column = 5).value = "411"
+		# 	Sheet11.cell(row = 6, column = 6).value = "=P13".format(18 + i)
+		# 	Sheet11.cell(row = 6, column = 7).value ="=SUMIF('TB Robot'!A:A,""411"",'TB Robot'!H:H)".format(18 + i)
+		# 	Sheet11.cell(row = 6, column = 8).value ="=F6-G6".format(18 + i)
+
+		# 	Sheet11.cell(row=6, column=6).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=6, column=7).number_format = '#,##0_);(#,##0)'
+		# 	Sheet11.cell(row=6, column=8).number_format = '#,##0_);(#,##0)'
+
+		# 	Sheet11.cell(row=6, column=5).font = font_worksheet
+		# 	Sheet11.cell(row=6, column=6).font = font_worksheet
+		# 	Sheet11.cell(row=6, column=7).font = font_worksheet
+		# 	Sheet11.cell(row=6, column=8).font = check_font
+
+		# for i in range(0, len(clientName)):
+		# 	Sheet11.cell(row = 18 + i, column = 2).font = font_worksheet
+
+		# for i in range(0, len(clientCode)):
+		# 	Sheet11.cell(row = 18 + i, column = 1).font = font_worksheet
+
+		# for i in range(0, len(clientAccount)):
+		# 	Sheet11.cell(row = 18 + i, column = 3).font = font_worksheet
+
+		# for i in range(0, len(dueDate)):
+		# 	Sheet11.cell(row = 18 + i, column = 4).font = font_worksheet
+
+		# for i in range(0, len(invoiceNo)):
+		# 	Sheet11.cell(row = 18 + i, column = 5).font = font_worksheet
+
+		# for i in range(0, len(amtLC)):
+		# 	Sheet11.cell(row = 18 + i, column = 6).number_format = '#,##0_);(#,##0)'
+
+		# for i in range(0, len(amtLC)):
+		# 	Sheet11.cell(row = 18 + i, column = 6).font = font_worksheet
+
+		# for i in range(0, len(invoiceVal)):
+		# 	Sheet11.cell(row = 18 + i, column = 7).number_format = '#,##0_);(#,##0)'
+
+		# for i in range(0, len(invoiceVal)):
+		# 	Sheet11.cell(row = 18 + i, column = 7).font = font_worksheet
+
+		# for i in range(0, len(dueDate)):
+		# 	Sheet11.cell(row = 18 + i, column = 8).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 9).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 10).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 11).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 12).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 13).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 14).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 15).font = font_worksheet
+		# 	Sheet11.cell(row = 18 + i, column = 16).font = font_worksheet
+
+		# Sheet11.freeze_panes = 'C18'
+
+		Sheet11.column_dimensions['A'].width = 10
+		Sheet11.column_dimensions['B'].width = 20
+		Sheet11.column_dimensions['C'].width = 11
+		Sheet11.column_dimensions['D'].width = 12
+		Sheet11.column_dimensions['E'].width = 14
+		Sheet11.column_dimensions['F'].width = 12
+		Sheet11.column_dimensions['G'].width = 12
+		Sheet11.column_dimensions['H'].width = 12
+		Sheet11.column_dimensions['I'].width = 9
+		Sheet11.column_dimensions['J'].width = 9
+		Sheet11.column_dimensions['K'].width = 9
+		Sheet11.column_dimensions['L'].width = 9
+		Sheet11.column_dimensions['M'].width = 9
+		Sheet11.column_dimensions['N'].width = 9
+		Sheet11.column_dimensions['O'].width = 12
+		Sheet11.column_dimensions['P'].width = 15
+
+		for cell in Sheet11["E"]:
+			cell.number_format = "mm/dd/yyyy"
+
+		# Sheet11.auto_filter.ref = "A17:P17"
+
+		#FONT / FORMAT
+		#header
+		Sheet11.cell(row=1, column=1).font = ft1
+		Sheet11.cell(row=1, column=2).font = ft1
+		Sheet11.cell(row=2, column=1).font = ft1
+		Sheet11.cell(row=2, column=2).font = ft1
+
+		# Sheet11.cell(row=1, column=15).font = ft1
+		# Sheet11.cell(row=1, column=16).font = ft1
+		# Sheet11.cell(row=2, column=15).font = ft1
+		# Sheet11.cell(row=2, column=16).font = ft1
+		# Sheet11.cell(row=3, column=15).font = ft1
+		# Sheet11.cell(row=3, column=16).font = check_font
+
+		# Sheet11.cell(row=5, column=5).font = cap_tabel
+		# Sheet11.cell(row=5, column=6).font = cap_tabel
+		# Sheet11.cell(row=5, column=7).font = cap_tabel
+		# Sheet11.cell(row=5, column=8).font = check_font
+
+		# # test name
+		# Sheet11.cell(row=4, column=1).font = f_testname
+		# Sheet11.cell(row=12, column=1).font = f_testname
+		# Sheet11.cell(row=13, column=1).font = ft1
+
+		# Sheet11.cell(row=13, column=16).font = ft1
+
+		# Sheet11.cell(row=16, column=8).font = font_worksheet
+		# Sheet11.cell(row=17, column=16).font = check_font
+
+		# for row in Sheet11["A17:O17"]:
+		# 	for cell in row:
+		# 		cell.font = cap_tabel
+
+		# for row in Sheet11["A17:G17"]:
+		# 	for cell in row:
+		# 		cell.fill = cap_tabel_color_PBC
+
+		# for row in Sheet11["H17:P17"]:
+		# 	for cell in row:
+		# 		cell.fill = cap_tabel_color_GT
+
+		# Sheet11.cell(row=5, column=5).fill = cap_tabel_color_GT
+		# Sheet11.cell(row=5, column=6).fill = cap_tabel_color_GT
+		# Sheet11.cell(row=5, column=7).fill = cap_tabel_color_GT
+		# Sheet11.cell(row=5, column=8).fill = cap_tabel_color_GT
+
+		# bucket zone
+		# for row in Sheet11["I12:P12"]:
+		# 	for cell in row:
+		# 		cell.font = cap_tabel
+
+		# for row in Sheet11["I12:P12"]:
+		# 	for cell in row:
+		# 		cell.fill = cap_tabel_color_GT
+
+		# suma procentelor
+		Sheet11.cell(row=13, column=16).font = ft1
+		Sheet11.cell(row=13, column=16).number_format = '#,##0_);(#,##0)'
+
+		# procent din total
+		# for row in Sheet11['I14:O14']:
+		# 	for cell in row:
+		# 		cell.style='Percent'
+
+		# for row in Sheet11['I14:O14']:
+		# 	for cell in row:
+		# 		cell.font = fprocentaj
+
+		# prepared and date
+		Sheet11.cell(row=1, column=15).font = ft1
+		Sheet11.cell(row=1, column=16).font = ft1
+		Sheet11.cell(row=2, column=15).font = ft1
+		Sheet11.cell(row=2, column=16).font = ft1
+		Sheet11.cell(row=3, column=15).font = ft1
+		Sheet11.cell(row=3, column=16).font = check_font
+
+		ws1 = wb.active
+		Sheet2 = wb.create_sheet("TR Aging Client level")
+		Sheet2.sheet_view.showGridLines = False
+		Sheet2.freeze_panes = 'C12'
+		Sheet2.auto_filter.ref = "A11:L11"
+		# Sheet2.auto_filter.ref = "Amount in LC"
+
+		#header
+		Sheet2.cell(row = 1, column = 1).value = "Client name:"
+		Sheet2.cell(row = 1, column = 2).value = clientname1
+		Sheet2.cell(row = 2, column = 1).value = "Period end:"
+		Sheet2.cell(row = 2, column = 2).value = yearEnd1
+		Sheet2.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'            
+
+		#test name
+		Sheet2.cell(row = 4, column = 1).value = "Receivables ageing recomputation"
+
+		#table
+		Sheet2.cell(row = 7, column = 1).value = "Unusual items"
+		Sheet2.cell(row = 7, column = 2).value ='=SUMIF(L:L,"yes",C:C)'.format(0)
+		Sheet2.cell(row = 11, column = 1).value = "Client"
+		Sheet2.cell(row = 11, column = 2).value = "Client code"
+		Sheet2.cell(row = 11, column = 3).value = "Amount in LC"
+		Sheet2.cell(row = 11, column = 4).value = "Not due"
+		Sheet2.cell(row = 11, column = 5).value = "<="+str(val1)+" days"
+		Sheet2.cell(row = 11, column = 6).value = str(val1)+"-"+str(val2)+" days"
+		Sheet2.cell(row = 11, column = 7).value = str(val2)+"-"+str(val3)+" days"
+		Sheet2.cell(row = 11, column = 8).value = str(val3)+"-"+str(val4)+" days"
+		Sheet2.cell(row = 11, column = 9).value = str(val4)+"-"+str(val5)+" days"
+		Sheet2.cell(row = 11, column = 10).value = "Over "+str(val5)+" days"
+		Sheet2.cell(row = 11, column = 11).value = "Check"
+		Sheet2.cell(row = 11, column = 12).value = "Unusual items"
+
+		#prepared and date
+		Sheet2.cell(row = 1, column = 10).value = "Processed by"
+		Sheet2.cell(row = 1, column = 11).value = preparedBy1
+		Sheet2.cell(row = 2, column = 10).value = "Date"
+		Sheet2.cell(row = 2, column = 11).value = datePrepared1
+		Sheet2.cell(row = 2, column = 11).number_format = 'mm/dd/yyyy'
+		Sheet2.cell(row = 3, column = 10).value = "Refference"
+		Sheet2.cell(row = 3, column = 11).value = refference1
+
+		#bucket zone
+		Sheet2.cell(row = 6, column = 4).value = "Not due"
+		Sheet2.cell(row = 6, column = 5).value = "<="+str(val1)+" days"
+		Sheet2.cell(row = 6, column = 6).value = str(val1)+"-"+str(val2)+" days"
+		Sheet2.cell(row = 6, column = 7).value = str(val2)+"-"+str(val3)+" days"
+		Sheet2.cell(row = 6, column = 8).value = str(val3)+"-"+str(val4)+" days"
+		Sheet2.cell(row = 6, column = 9).value = str(val4)+"-"+str(val5)+" days"
+		Sheet2.cell(row = 6, column = 10).value = "Over "+str(val5)+" days"
+		Sheet2.cell(row = 6, column = 11).value = "Total"
+
+		for cell in Sheet2['C']:
+			cell.number_format = '#,##0_);(#,##0)'
+
+		#FORMAT & COLORS
+		# header
+		
+		Sheet2.cell(row=1, column=2).font = ft1
+		Sheet2.cell(row=1, column=1).font = ft1
+		Sheet2.cell(row=2, column=2).font = ft1
+		Sheet2.cell(row=2, column=1).font = ft1		
+		Sheet2.cell(row = 11, column = 12).font =check_font
+		Sheet2.cell(row = 11, column = 12).fill = cap_tabel_galben
+
+		# test name
+		Sheet2.cell(row=4, column=1).font = f_testname
+
+		# table
+		Sheet2.cell(row=11, column=11).font = check_font
+
+		for row in Sheet2["A11:J11"]:
+			for cell in row:
+				cell.font = cap_tabel
+
+		for row in Sheet2["A11:C11"]:
+			for cell in row:
+				cell.fill = cap_tabel_color_PBC
+
+		for row in Sheet2['D11:K11']:
+			for cell in row:
+				cell.fill = cap_tabel_color_GT
+
+		# prepared and date
+		Sheet2.cell(row=1, column=11).font = ft1
+		Sheet2.cell(row=1, column=10).font = ft1
+		Sheet2.cell(row=2, column=11).font = ft1
+		Sheet2.cell(row=2, column=10).font = ft1
+		Sheet2.cell(row=3, column=11).font = check_font
+		Sheet2.cell(row=3, column=10).font = ft1
+
+		# bucket zone
+		for row in Sheet2["D6:K6"]:
+			for cell in row:
+				cell.font=cap_tabel
+				cell.fill = cap_tabel_color_GT
+
+		Sheet2.cell(row=7, column=1).font =check_font
+		Sheet2.cell(row=7, column=1).fill =cap_tabel_galben
+
+		Sheet2.cell(row=7, column=2).font =check_font
+		Sheet2.cell(row=7, column=2).fill =cap_tabel_galben
+		Sheet2.cell(row=7, column=2).number_format ='#,##0_);(#,##0)'
+		Sheet2.column_dimensions['B'].width = 10
+
+		cod_clienti = list(set(clientCode))
+		# cod_clienti.remove("None")
+		cod_clienti1 = []
+		for val in cod_clienti:
+			if val != None:
+				cod_clienti1.append(val)
+		nume_clienti = list(set(clientName))
+
+		# print(nume_clienti)
+		print(cod_clienti1)
+
+		if len(cod_clienti1) == 0:
+			print("e goala")
+			for i in range(0, len(nume_clienti)):
+				Sheet2.cell(row=12 + i, column=2).value = nume_clienti[i]
+				Sheet2.cell(row=12 + i, column=3).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!F:F)".format(12 + i)
+				Sheet2.cell(row=12 + i,	column=4).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!I:I)".format(12 + i)
+				Sheet2.cell(row=12 + i, column=5).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!J:J)".format(12 + i)
+				Sheet2.cell(row=12 + i,column=6).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!K:K)".format(12 + i)
+				Sheet2.cell(row=12 + i,column=7).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!L:L)".format(12 + i)
+				Sheet2.cell(row=12 + i,column=8).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!M:M)".format(12 + i)
+				Sheet2.cell(row=12 + i,column=9).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!N:N)".format(12 + i)
+				Sheet2.cell(row=12 + i,column=10).value = "=SUMIF('TR Aging Invoice level'!B:B,'TR Aging Client level'!B{0},'TR Aging Invoice level'!O:O)".format(12 + i)
+				Sheet2.cell(row=12 + i, column=11).value = "=C{0}-SUM(D{0}:J{0})".format(12 + i)
+				Sheet2.cell(row=12 + i, column=12).value = """=IF('TR Aging Invoice level'!$E$6="411",IF('TR Aging Client level'!C{0}<0,"Yes","No"),IF('TR Aging Client level'!C{0}>0,"Yes","No"))""".format(12+i)
+
+				Sheet2.cell(row=12 + i, column=2).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=3).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=4).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=5).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=6).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=7).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=8).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=9).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=10).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=11).font = font_worksheet
+
+				Sheet2.cell(row=12 + i, column=3).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=4).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=5).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=6).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=7).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=8).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=9).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=10).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=11).number_format = '#,##0_);(#,##0)'
+
+		else:
+			print("nu e goala")
+			for i in range(0, len(cod_clienti1)):
+				Sheet2.cell(row = 12 + i, column = 1).value = cod_clienti1[i]
+				Sheet2.cell(row = 12 + i, column = 2).value = "=VLOOKUP(A{0},'TR Aging Invoice level'!A:B,2,0)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 3).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!F:F)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 4).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!I:I)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 5).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!J:J)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 6).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!K:K)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 7).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!L:L)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 8).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!M:M)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 9).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!N:N)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 10).value = "=SUMIF('TR Aging Invoice level'!A:A,'TR Aging Client level'!A{0},'TR Aging Invoice level'!O:O)".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 11).value = "=C{0}-SUM(D{0}:J{0})".format(12 + i)
+				Sheet2.cell(row = 12 + i, column = 12).value = """=IF('TR Aging Invoice level'!$E$6="411",IF('TR Aging Client level'!C{0}<0,"Yes","No"),IF('TR Aging Client level'!C{0}>0,"Yes","No"))""".format(12+i)
+
+				Sheet2.cell(row=12 + i, column=1).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=2).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=3).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=4).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=5).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=6).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=7).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=8).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=9).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=10).font = font_worksheet
+				Sheet2.cell(row=12 + i, column=11).font = font_worksheet
+
+				Sheet2.cell(row=12 + i, column=3).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=4).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=5).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=6).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=7).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=8).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=9).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=10).number_format = '#,##0_);(#,##0)'
+				Sheet2.cell(row=12 + i, column=11).number_format = '#,##0_);(#,##0)'
+
+
+		Sheet2.cell(row = 7, column = 4).value = "=SUM(D11:D103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 5).value = "=SUM(E11:E103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 6).value = "=SUM(F11:F103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 7).value = "=SUM(G11:G103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 8).value = "=SUM(H11:H103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 9).value = "=SUM(I11:I103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 10).value = "=SUM(J11:J103)".format(18 + i)
+		Sheet2.cell(row = 7, column = 11).value = "=SUM(D7:J7)".format(18 + i)
+
+		Sheet2.cell(row=7, column=11).font = ft1
+		Sheet2.cell(row=7, column=11).number_format = '#,##0_);(#,##0)'
+
+		for row in Sheet2["D7:J7"]:
+			for cell in row:
+				cell.font = font_worksheet
+				cell.number_format = '#,##0_);(#,##0)'
+
+
+		#procente buckets
+		Sheet2.cell(row=8, column=4).value = "=D7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=5).value = "=E7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=6).value = "=F7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=7).value = "=G7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=8).value = "=H7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=9).value = "=I7/$K$7".format(18 + i)
+		Sheet2.cell(row=8, column=10).value = "=J7/$K$7".format(18 + i)
+
+		for row in Sheet2["D8:K8"]:
+			for cell in row:
+				cell.style = 'Percent'
+				cell.font = fprocentaj
+
+		Sheet2.column_dimensions['A'].width = 10
+		Sheet2.column_dimensions['B'].width = 10
+		Sheet2.column_dimensions['C'].width = 15
+		Sheet2.column_dimensions['D'].width = 10
+		Sheet2.column_dimensions['E'].width = 10
+		Sheet2.column_dimensions['F'].width = 10
+		Sheet2.column_dimensions['G'].width = 10
+		Sheet2.column_dimensions['H'].width = 10
+		Sheet2.column_dimensions['I'].width = 10
+		Sheet2.column_dimensions['J'].width = 10
+		Sheet2.column_dimensions['K'].width = 15
+		print("a ajuns aici")
+
+		topClients=wb.create_sheet("Top 10 clients")
+		# sheetAscuns=wb.create_sheet("top 10 ")
+		# sheetAscuns.sheet_state = 'hidden'
+		topClients.sheet_view.showGridLines = False
+		# sheetAscuns.cell(row = 1, column = 2).value = "suma"
+		# sheetAscuns.cell(row = 1, column = 1).value = "partener"
+
+		topClients.cell(row = 1, column = 1).value = "Client name:"
+		topClients.cell(row = 1, column = 2).value = clientname1
+		topClients.cell(row = 1, column = 2).font =ft1_1
+		topClients.cell(row = 2, column = 1).value = "Period end:"
+		topClients.cell(row = 2, column = 2).value = yearEnd1
+		topClients.cell(row = 2, column = 2).font = ft1_1
+		topClients.cell(row = 2, column = 2).number_format = 'mm/dd/yyyy'
+		topClients.cell(row = 3, column = 1).value = "Top Clients"
+		topClients.cell(row = 3, column = 1).font =ft1_1
+
+		topClients.cell(row = 1, column = 10).value = "Processed by"
+		topClients.cell(row = 1, column = 11).value = preparedBy1
+		topClients.cell(row = 1, column = 11).font = ft1_1
+		topClients.cell(row = 2, column = 10).value = "Date"
+		topClients.cell(row = 2, column = 11).value = datePrepared1
+		topClients.cell(row = 2, column = 11).font =ft1_1
+		topClients.cell(row = 2, column = 11).number_format = 'mm/dd/yyyy'
+		topClients.cell(row = 3, column = 10).value = "Refference"
+		topClients.cell(row = 3, column = 10).font = check_font
+		topClients.cell(row = 3, column = 11).value = refference1
+		topClients.cell(row = 3, column = 11).font =check_font
+
+		topClients.cell(row = 7, column = 1).value = "No crt"
+		topClients.cell(row = 7, column = 2).value = "Client"
+		topClients.cell(row = 7, column = 3).value = "Client code"
+		topClients.cell(row = 7, column = 4).value = "Amount in LC CY"
+		topClients.cell(row = 7, column = 5).value = "Amount in PY (manual)"
+		topClients.cell(row = 7, column = 6).value = "Variation"
+		topClients.cell(row = 7, column = 7).value = "Variation %"
+		topClients.cell(row = 7, column = 8).value = "Weight"
+		# a=0
+		# for i in range(0, 10):
+		# 	a=a+1
+		# 	topClients.cell(row=8+i, column=1).value=a
+		# 	# print(a,'numar')
+		
+		# topClients.cell(row = 19, column = 3).value = "Others"
+
+		clientNameUni=list(set(clientName))
+		clientCodeUni=list(set(clientCode))
+		
+		amountTip=[]
+		amountTips=[]
+		for i in range(0, len(clientNameUni)):
+			s=0
+			for z in range(0, len(clientName)):
+				if clientNameUni[i] == clientName[z]:
+					s=s+amtLC[z]
+			amountTip.append(s)
+			amountTips.append(s)
+
+		# # print(len(amountTip))
+		amountTips.sort(reverse=True)
+		# # print(amountTip, 'amountTip')			# print(len(amountTipSort))
+		x=min(len(amountTips),10)
+		
+		top10am=[]
+		top10c=[]
+		for jj in range(0, x):
+			top10am.append(amountTips[jj])
+		for m in range(0,len(top10am)):
+			topClients.cell(row = 8+m, column = 4).value = top10am[m]
+		
+		
+		for k in range(0,len(top10am)):
+			for p in range(0,len(amountTip)):
+				if(top10am[k]==amountTip[p]):
+					top10c.append(clientNameUni[p])
+					# topClients.cell(row = 7+i, column = 4).value = top10c[k]
+		for n in range(0, len(top10c)):
+			topClients.cell(row=8+n, column=2).value=top10c[n]
+
+		for j in range(1, len(top10am)+1):
+			topClients.cell(row=7+j, column=1).value=j
+
+
+
+		for i in range(0, len(top10am)):
+			topClients.cell(row = 8+i, column = 3).value = "=_xlfn.XLOOKUP(B"+str(8+i)+",'TR Aging Invoice level'!B:B,'TR Aging Invoice level'!A:A,0,0,1)".format(8+i)
+			topClients.cell(row = 8+i, column = 6).value ="=D{0}-E{0}".format(8+i)
+			topClients.cell(row = 8+i, column = 7).value ="=F{0}/E{0}".format(8+i)
+			topClients.cell(row = 8+i, column = 8).value ="=D{0}/'TR Aging Client level'!$K$7".format(8+i)
+
+		topClients.cell(row = 8+len(top10am), column = 4).value ="=SUM(D8:D"+str(len(top10am)+7)+")"
+		topClients.cell(row = 8+len(top10am), column = 5).value ="=SUM(E8:E"+str(len(top10am)+7)+")"
+		topClients.cell(row = 8+len(top10am), column = 6).value ="=SUM(F8:F"+str(len(top10am)+7)+")"
+		topClients.cell(row = 8+len(top10am), column = 7).value ="=F"+str(len(top10am)+8)+"/E"+str(len(top10am)+8)
+		# topClients.cell(row = 8+len(top10am), column = 8).value ="=D18/'TR Aging Client level'!$K$7"
+
+		topClients.cell(row = 7+len(top10am), column = 1).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 2).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 3).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 4).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 5).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 6).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 7).border = doubleborder
+		topClients.cell(row = 7+len(top10am), column = 8).border = doubleborder
+
+		topClients.cell(row = 7+len(top10am), column = 1).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 2).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 3).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 4).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 5).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 6).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 7).font = ft1_1
+		topClients.cell(row = 7+len(top10am), column = 8).font = ft1_1
+		# topClients.cell(row = 19, column = 4).value ="='TR Aging Client level'!$K$7-'Top 10 Clients'!D18"
+		# topClients.cell(row = 19, column = 5).value ="Manual"
+		# topClients.cell(row = 19, column = 6).value ="=SUM(F9:F18)"
+		# topClients.cell(row = 19, column = 7).value ="=F19/E19"
+		# topClients.cell(row = 19, column = 8).value ="=D19/'TR Aging Client level'!$K$7"
+		topClients.cell(row =  8+len(top10am), column = 3).value = "Total"
+		for row in topClients["A7:H7"]:
+			for cell in row:
+				cell.font = cap_tabel
+				cell.fill = cap_tabel_color_GT
+		for row in topClients['D8:D19']:
+			for cell in row:
+				cell.number_format = '#,##0_);(#,##0)'
+
+		for row in topClients['E8:E19']:
+			for cell in row:
+				cell.number_format = '#,##0_);(#,##0)'
+		for row in topClients['F8:F19']:
+			for cell in row:
+				cell.number_format = '#,##0_);(#,##0)'
+		for row in topClients['H8:H19']:
+			for cell in row:
+				cell.number_format = '0.00%'
+		for row in topClients['G8:G19']:
+			for cell in row:
+				cell.number_format = '0.00%'
+
+		for row in topClients['A8:H19']:
+			for cell in row:
+				cell.font = ft1_1
+		
+		for row in topClients['C18:H19']:
+			for cell in row:
+				cell.font = ft1_1b
+
+		# for row in topClients['A17:H17']:
+		# 	for cell in row:
+		# 		cell.border = doubleborder
+
+		
+		
+		topClients.cell(row=1, column=1).font=ft1
+		topClients.cell(row=2, column=1).font=ft1
+
+		topClients.cell(row=1, column=10).font=ft1
+		topClients.cell(row=2, column=10).font=ft1
+		
+		topClients.cell(row=1, column=1).font=ft1
+		topClients.cell(row=2, column=1).font=ft1
+
+		
+		
+		topClients.column_dimensions['B'].width = 16
+		topClients.column_dimensions['C'].width = 10
+		topClients.column_dimensions['D'].width = 15
+		topClients.column_dimensions['E'].width = 15
+		topClients.column_dimensions['F'].width = 15
+
+
+
+
+	# except:
+	# messagebox.showerror("Error!", "Details file not found.")
+		# app.destroy()
+
+	# try:
+		#tb
+		tb = openpyxl.load_workbook(file_TB, data_only = True) #deschidem TB-ul
+		tb1 = tb.active
+		Sheet3 = wb.create_sheet("TB Robot")
+
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "Account":
+					row_tb = cell.row
+					column_tb = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			account = [b.value for b in tb1[column_tb][row_tb:lun]]
+		except:
+			flash("Please insert the correct header for Account in Trial Balance file")
+			return render_template("index.html")                     
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "Description":
+					row_tb = cell.row
+					column_description = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			descr = [b.value for b in tb1[column_description][row_tb:lun]]
+		except:
+			flash("Please insert the correct header for Description in Trial Balance file")
+			return render_template("index.html")
+			# messagebox.showerror("Error!", "The 'Description' value is  not correctly written")
+
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "OB":
+					row_tb = cell.row
+					coloana_opTB_tb = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			opTB = [b.value for b in tb1[coloana_opTB_tb][row_tb:lun]]
+		except:
+			flash("Please insert the correct header for OB in Trial Balance file")
+			return render_template("index.html")
+			# messagebox.showerror("Error!", "OB' value is  not correctly written")
+
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "CM":
+					row_tb = cell.row
+					coloana_cr_tb = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			cr_mv = [b.value for b in tb1[coloana_cr_tb][row_tb:lun]]
+		except:
+			flash("Please insert the correct header for CM in Trial Balance file")
+			return render_template("index.html")
+			# messagebox.showerror("Error!", "CM' value is  not correctly written")
+
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "DM":
+					row_tb = cell.row
+					coloana_db_tb = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			dr_mv = [b.value for b in tb1[coloana_db_tb][row_tb:lun]]
+		except:
+			flash("Please insert the correct header for DM in Trial Balance file")
+			return render_template("index.html")
+			# messagebox.showerror("Error!", "DM' value is  not correctly written")
+
+		for row in tb1.iter_rows():
+			for cell in row:
+				if cell.value == "CB":
+					row_tb = cell.row
+					coloana_clTB_tb = cell.column
+					lun = len(tb1[cell.column])
+		try:
+			clTB = [b.value for b in tb1[coloana_clTB_tb][row_tb:lun]]
+		
+		except:
+			flash("Please insert the correct header for CB in Trial Balance file")
+			return render_template("index.html")
+			# messagebox.showerror("Error!", "CB' value is  not correctly written")
+
+		Sheet3.cell(row = 1, column = 1).value = "Synt(3)"
+		Sheet3.cell(row = 1, column = 2).value = "Synt(4)"
+		Sheet3.cell(row = 1, column = 3).value = "Account"
+		Sheet3.cell(row = 1, column = 4).value = "Description"
+		Sheet3.cell(row = 1, column = 5).value = "Opening Balance"
+		Sheet3.cell(row = 1, column = 6).value = "Debit Movement"
+		Sheet3.cell(row = 1, column = 7).value = "Credit Movement"
+		Sheet3.cell(row = 1, column = 8).value = "Closing Balance"
+		Sheet3.cell(row = 1, column = 9).value = "Synt(2)"
+
+		#FORMAT
+		for row in Sheet3['A1:I1']:
+			for cell in row:
+				cell.font = cap_tabel
+				cell.fill = cap_tabel_color_GT
+
+		for i in range(0,len(account)):
+			Sheet3.cell(row = 2 + i, column = 3).value = account[i]
+			Sheet3.cell(row = 2 + i, column = 2).value = str(account[i])[:4]   #in Excel =left("celula", 4)
+
+		for i in range(0, len(account)):
+			Sheet3.cell(row = 2 + i, column = 1).value = str(account[i])[:3] #in Excel =left("celula", 3)
+
+		for i in range(0, len(descr)):
+			Sheet3.cell(row = 2 + i, column = 4).value = descr[i]
+
+		for i in range(0, len(opTB)):
+			Sheet3.cell(row = 2 + i, column = 5).value = opTB[i]
+
+		for i in range(0, len(cr_mv)):
+			Sheet3.cell(row = 2 + i, column = 6).value = cr_mv[i]
+
+		for i in range(0, len(dr_mv)):
+			Sheet3.cell(row = 2 + i, column = 7).value = dr_mv[i]
+
+		for i in range(0, len(clTB)):
+			Sheet3.cell(row = 2 + i, column = 8).value = clTB[i]
+
+		for i in range(0, len(account)):
+			Sheet3.cell(row = 2 + i, column = 9).value =  str(account[i])[:2]
+
+		Sheet4 = wb.create_sheet("Supporting docs --->")
+		Sheet5 = wb.create_sheet("TB PBC")
+
+		mr = tb1.max_row
+		mc = tb1.max_column
+		# copying the cell values from source
+		# excel file to destination excel file
+		for i in range (1, mr + 1):
+			for j in range (1, mc + 1):
+				# reading cell value from source excel file
+				c = tb1.cell(row = i, column = j)
+				# writing the read value to destination excel file
+				Sheet5.cell(row = i, column = j).value = c.value
+
+		Sheet6 = wb.create_sheet("Details PBC")
+
+		am = ws.max_row
+		an = ws.max_column
+
+		for i in range (1, am +1):
+			for j in range (1, an + 1):
+				a = ws.cell(row = i, column = j)
+				Sheet6.cell(row = i, column = j).value = a.value
+
+
+		folderpath = "/home/fsbot/storage" 
+		file_pathFS = os.path.join(folderpath, "Ageing Test"+" "+clientname1+" "+str(denis)+".xlsx")
+		wb.save(file_pathFS)
+		# print("ceva")
+	return send_from_directory(folderpath, "Ageing Test" + " " + clientname1 +" "+str(denis)+ ".xlsx", as_attachment=True)
 		
 if __name__ == '__main__':
    	app.run()
