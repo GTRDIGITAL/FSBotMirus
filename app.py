@@ -109,27 +109,27 @@ def fct31():
 # 	return render_template('Equitybuton3.html')
 
 
-		# for i in file_TemplateXML:
-		# 	i.save(secure_filename(i.filename))
+# for i in file_TemplateXML:
+# 	i.save(secure_filename(i.filename))
 
-		# fonts and colors
-		ft1 = Font(name='Arial', size=10, bold=True)
-		f_testname = Font(name='Arial', size=15, color='614C77', bold=True)
-		f_info = Font(name='Arial', size=10, color='614C77', bold=True)
-		cap_tabel = Font(name='Arial', size=10, color="FFFFFF", bold=True)
-		cap_tabel_color_PBC = PatternFill(start_color='808080', end_color='808080', fill_type='solid')  # grey
-		cap_tabel_color_GT = PatternFill(start_color='00AEAC', end_color='00AEAC', fill_type='solid')  # indigo #B1A0C7
-		fprocentaj = Font(name='Arial', size=10, color="FF0000", bold=True)
-		font_worksheet = Font(name='Arial', size=10)
-		check_font = Font(name='Arial', size=10, color="FF0000", bold=True)
-		check_font_1 = Font(name='Arial', size=10, color="FF0000", bold=False)
-		cap_tabel_color_GT_movdeschis = PatternFill(start_color='00AEAC', end_color='00AEAC', fill_type='solid')
-		cap_tabel_color_GT_movinchis = PatternFill(start_color='3BBCCA', end_color='3BBCCA', fill_type='solid')
-		blue_bold_font = Font(name='Arial', size=10, color="0070C0", bold=True)
+# fonts and colors
+ft1 = Font(name='Arial', size=10, bold=True)
+f_testname = Font(name='Arial', size=15, color='614C77', bold=True)
+f_info = Font(name='Arial', size=10, color='614C77', bold=True)
+cap_tabel = Font(name='Arial', size=10, color="FFFFFF", bold=True)
+cap_tabel_color_PBC = PatternFill(start_color='808080', end_color='808080', fill_type='solid')  # grey
+cap_tabel_color_GT = PatternFill(start_color='00AEAC', end_color='00AEAC', fill_type='solid')  # indigo #B1A0C7
+fprocentaj = Font(name='Arial', size=10, color="FF0000", bold=True)
+font_worksheet = Font(name='Arial', size=10)
+check_font = Font(name='Arial', size=10, color="FF0000", bold=True)
+check_font_1 = Font(name='Arial', size=10, color="FF0000", bold=False)
+cap_tabel_color_GT_movdeschis = PatternFill(start_color='00AEAC', end_color='00AEAC', fill_type='solid')
+cap_tabel_color_GT_movinchis = PatternFill(start_color='3BBCCA', end_color='3BBCCA', fill_type='solid')
+blue_bold_font = Font(name='Arial', size=10, color="0070C0", bold=True)
 
 
 @app.route('/Instructions', methods=['GET'])
-def downloadPMG():
+def downloadPMG2():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
 @app.route('/', methods=['POST', 'GET'])
@@ -698,12 +698,12 @@ def FS_process():
 
 
 @app.route('/TrialBalances/Instructions', methods=['GET'])
-def downloadTB():
+def downloadTB1():
 		filepath = "/home/fsbot/storage"
  
 		return send_from_directory(filepath,"Instructions - Trial Balance.docx", as_attachment=True)
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY')
-def TB():
+def TB1():
 	return render_template('TB.html')
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY', methods=['POST', 'GET'])
 def TB_process():
@@ -1468,15 +1468,15 @@ def TB_process():
 		# print(text)
 
 @app.route('/VAT/Instructions', methods=['GET'])
-def downloadVAT():
+def downloadVAT1():
 		filepath = "/home/fsbot/storage/vat"
  
 		return send_from_directory(filepath,"Instructions - VAT.docx", as_attachment=True)
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
-def my_formVAT():
+def my_formVAT1():
 	return render_template('VAT.html')
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw', methods=['POST', 'GET'])
-def my_form_post():
+def my_form_post2():
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
@@ -3034,15 +3034,15 @@ def my_form_post():
 	return render_template("VAT.html")
 
 @app.route('/Ageing/Instructions', methods=['GET'])
-def downloadAgeing():
+def downloadAgeing1():
 		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - Ageing.docx", as_attachment=True)
 @app.route('/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn')
-def Ageing():
+def Ageing1():
 	return render_template('Ageing.html')
 @app.route('/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn', methods=['POST', 'GET'])
-def Ageing_process():
+def Ageing_process1():
 	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
 	clientname1 = request.form['client']
 	# yearEnd1 = datetime.datetime.strptime(
@@ -4870,7 +4870,7 @@ def Ageing_process():
 
 
 @app.route('/Instructions', methods=['GET'])
-def downloadPMG():
+def downloadPMG3():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
 @app.route('/fakfhkjashfkag/FS', methods=['POST', 'GET'])
@@ -5439,12 +5439,12 @@ def FS1_process():
 
 
 @app.route('/TrialBalances/Instructions', methods=['GET'])
-def downloadTB():
+def downloadTB3():
 		filepath = "/home/fsbot/storage"
  
 		return send_from_directory(filepath,"Instructions - Trial Balance.docx", as_attachment=True)
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY')
-def TB():
+def TB3():
 	return render_template('TB.html')
 @app.route('/fakfhkjashfkag/TB', methods=['POST', 'GET'])
 def TB1_process():
@@ -6209,12 +6209,12 @@ def TB1_process():
 		# print(text)
 
 @app.route('/VAT/Instructions', methods=['GET'])
-def downloadVAT():
+def downloadVAT3():
 		filepath = "/home/fsbot/storage/vat"
  
 		return send_from_directory(filepath,"Instructions - VAT.docx", as_attachment=True)
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
-def my_formVAT():
+def my_formVAT3():
 	return render_template('VAT.html')
 @app.route('/xznvndsklklsdj/VAT', methods=['POST', 'GET'])
 def my_form_post1():
@@ -10958,13 +10958,13 @@ def downloadVAT():
 def my_formVAT():
 	return render_template('VAT.html')
 @app.route('/fakfhkjashfkag/VAT', methods=['POST', 'GET'])
-def my_form_post2():
+def my_form_post4():
 	path = '/home/fsbot/storage/vat'
 	if not os.path.exists(path):
-    	os.makedirs(path)
+		os.makedirs(path)
 	else:
-    	shutil.rmtree(path)           # Removes all the subdirectories!
-    	os.makedirs(path)
+		shutil.rmtree(path)           # Removes all the subdirectories!
+		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
@@ -12522,12 +12522,12 @@ def my_form_post2():
 	return render_template("VAT.html")
 
 @app.route('/Ageing/Instructions', methods=['GET'])
-def downloadAgeing():
+def downloadAgeing4():
 		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - Ageing.docx", as_attachment=True)
 @app.route('/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn')
-def Ageing():
+def Ageing4():
 	return render_template('Ageing.html')
 @app.route('/xznvndsklklsdj/Ageing', methods=['POST', 'GET'])
 def Ageing2_process():
