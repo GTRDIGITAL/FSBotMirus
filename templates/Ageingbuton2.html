@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ageing App</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   <!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <style>
+        .fileUpload {
+    position: relative;
+    overflow: hidden;
+    
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+@import 'https://fonts.googleapis.com/css?family=Raleway:300,400';
+
+
+body {
+    font-family: 'Raleway:300', sans-serif
+}
+    
+.admin-sidenav {
+    width: auto;
+    height: auto;
+    margin-left: 0px; 
+}
+.admin-sidenav a {
+    text-decoration: none; 
+}
+.admin-sidenav li {
+    text-align: justify;
+    padding: .5rem;
+    padding-left: 1rem;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+    background-color: #000;
+    border: 1px solid #333; 
+}
+.admin-sidenav li a {
+    color: #fff; 
+}
+
+.admin-sidenav li a:active {
+    border-color: #02d3f5; 
+}
+
+.admin-sidenav li:hover {
+    border-radius: 0 .5rem .5rem 0;
+    border-color: #02d3f5;
+    -webkit-transform: translate(30px, 0px);
+    transform: translate(30px, 0px);
+    background: -webkit-linear-gradient(left, #006a7b, #002340);
+    background: linear-gradient(to right, #006a7b, #002340); 
+}
+
+.admin-sidenav li:active {
+    border-color: #02d3f5; 
+}
+body {
+    font-family: 'Raleway:300', sans-serif;
+    min-height: 100%;
+    background: RGB(9,180,174);
+    background: linear-gradient(to right,RGB(0,89,97), RGB(9,180,174));
+}
+html {
+  height: 100%;
+}
+
+
+
+    
+.admin-sidenav {
+    width: auto;
+    height: auto;
+    margin-left: 0px; 
+}
+.admin-sidenav a {
+    text-decoration: none; 
+}
+.admin-sidenav li {
+    text-align: justify;
+    padding: .5rem;
+    padding-left: 1rem;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+    background-color: #000;
+    border: 1px solid #333; 
+}
+.admin-sidenav li a {
+    color: #fff; 
+}
+
+.admin-sidenav li a:active {
+    border-color: #02d3f5; 
+}
+
+.admin-sidenav li:hover {
+    border-radius: 0 .5rem .5rem 0;
+    border-color: #02d3f5;
+    -webkit-transform: translate(30px, 0px);
+    transform: translate(30px, 0px);
+    background: -webkit-linear-gradient(left, #006a7b, #002340);
+    background: linear-gradient(to right, #006a7b, #002340); 
+}
+
+.admin-sidenav li:active {
+    border-color: #02d3f5; 
+}
+img{
+    position:relative;
+    top:0;
+    left:220px;
+}
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+ 
+    justify-content: left;
+    background: RGB(9,180,174);
+    background: linear-gradient(0deg, RGB(0,89,97) 0%, RGB(9,180,174) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
+}
+ h6 {
+      color: #fff;
+      }
+
+      .pd-top{            
+      padding-top: 60px!important;
+      }
+
+      .location {
+      margin-left: 0px;
+      padding-left: 0px;
+      }
+      .location li {
+      padding: 10px 1px 6px 9px!important;
+      margin-bottom: 2px;
+      list-style: none;
+      background: linear-gradient(to right,RGB(0,89,97), RGB(9,180,174));
+      }
+      .location li img {
+      width: 20px;
+      }
+      /*normal*/
+      .location li a {
+      color: #ffffff;
+      font-size: 15px;
+      padding-left: 5px;
+      }     
+       /*radius-4*/
+      .radius-4px {   
+      border-radius: 5px;
+      }
+      /*radius-40*/
+      .radius-40px{
+      border-radius: 40px;
+      }
+      /*curve*/
+      .curve {
+      border-bottom-right-radius: 15px;
+      border-top-left-radius: 15px;
+      }
+      /*curveLeft*/
+      .curveLeft {
+      border-bottom-left-radius: 20px;
+      border-top-left-radius: 20px;
+      }
+      /*curveRight*/
+      .curveRight {
+      border-bottom-right-radius: 20px;
+      border-top-right-radius: 20px;
+      }
+       /*rotate*/
+      .rotate{
+      transform: skew(-21deg);
+      }
+       .location li:hover a {
+      text-decoration: none;
+      color: #dcd9d9
+      }
+      .gradient-shadow {
+  background: rgba(0, 0, 0, 0.2);
+  background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.2) 0%, #fff 100%);
+  background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2) 0%,#fff 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%,#fff 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(0, 0, 0, 0.2)', endColorstr='#fff',GradientType=1 );
+  filter: blur(2px);
+  width: 755px;
+  height: 500px;
+  /*position: relative;*/
+  /*left: 0px;*/
+  /*top: 10px;*/
+  margin: 0 auto;
+}
+.shadow-box {
+  width: 750px;
+  background: #fff;
+  padding: 20px;
+  /*position: relative;*/
+  /*margin-top: -485px;*/
+  /*height: 500px;*/
+}
+#logo{ 
+    position:fixed; 
+    top:0; 
+    left:80px; 
+    /* left:10px;  */
+    /*left:12;*/
+} 
+.container{
+left:10px;
+}
+img {
+    top:0;
+    left:10px;
+}
+.col-lg-3{
+    padding-left: 10px;
+    padding-right: 2px;
+}
+    </style>
+<a href="/"id="logo">
+    <img src="/static/mirus.png" Style="position:left;width:150px; height: 45px;"><a href="/"></a>
+    
+    
+</a>
+ </head>
+<body>
+   
+ <!--    <nav class="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#"> Link name </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> About page </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> Category name </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> Another page </a>
+            </li>
+        </ul>
+    </nav> -->
+   <!--  <div class="container-fluid">
+        <div class="row">    
+            <div id="admin-sidebar" class="col-md-2 p-x-0 p-y-3">
+                <ul class="sidenav admin-sidenav list-unstyled">
+                    <li><a href="#">NavLink 1</a></li>
+                    <li><a href="#">NavLink 2</a></li>
+                    <li><a href="#">NavLink 3</a></li>
+                    <li><a href="#">NavLink 4</a></li>
+                    <li><a href="#">NavLink 5</a></li>
+                    <li><a href="#">NavLink 6</a></li>                  
+                </ul>
+ -->          <!--   </div> --> <!-- /#admin-sidebar -->
+            <!-- <div id="admin-main-control" class="col-md-10 p-x-3 p-y-1">
+                <div class="content-title m-x-auto">
+                    <i class="fa fa-dashboard"></i> GT Dashboard
+                </div>
+                 </div>  --><!-- /#admin-main-control -->
+       <!--  </div> --> <!-- /.row -->
+    <!-- </div> --> <!-- /.container-fluid -->
+    <div class="col-lg-3">
+        <div style="font-size:14px;font-family: serif; color: rgba(72,25,122,0.8578781854538691); width:400px; position: left">
+            <p>
+                
+            </p>
+            </div>
+                       
+                       <ul class="location">
+                         <li class="curve">
+                            <a href="/fakfhkjashfkag/FS">Financial Statements</a>
+                         </li>
+                      </ul>                    
+                        <ul class="location">
+                         <li class="curve">
+                            <a href="/fakfhkjashfkag/TB">Trial Balances</a>
+                         </li>
+                      </ul>
+                      <ul class="location">
+                        <li class="curve">
+                            <a href="/fakfhkjashfkag/VAT">VAT</a>
+                        </li>
+                      </ul>
+                      <ul class="location">
+                        <li class="curve">
+                            <a href="/fakfhkjashfkag/Ageing">Ageing</a>
+                         </li>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/fakfhkjashfkag/FAR">FAR</a>
+                         </li>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/fakfhkjashfkag/Equity">Equity</a>
+                         </li>
+                      </ul>
+                       </div>
+                    <!-- </div> -->
+
+    <form method="POST" enctype = "multipart/form-data" style="padding-left:60px;">
+        <div class="container" style="float:center">
+            <div class="row">
+                <div class="col">
+                    <button type="button"  class="btn btn-primary btn-lg" onclick="location.href = '/Ageing/Instructions';" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961"> Instructions</button>
+                    <!-- <label class="form-label" for="customFile">Default file input example</label> -->
+                    <!-- <input type="file" class="btn btn-primary btn-lg" id="customFile" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;"> Instructions </input> -->
+                    <!-- <input id="uploadFile" placeholder="File Name here" disabled="disabled" /> -->
+                    <!-- ----------------------------------Upload buttton i---------------------------------
+                    <div class="fileUpload btn btn-primary btn-lg" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;">
+                        <span>Instructions</span>
+                        <input id="uploadBtn" type="file" class="upload" />
+                     </div>-->
+                   
+                </div>
+            </div>
+                
+    
+               
+    
+            
+    
+            <div class="row">
+                <div class="col">
+                    <!-- <button type="button" class="btn btn-primary btn-lg" value="1" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;" input type="file"> Import monthly trial balances</button> -->
+                     <div class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961">
+                        <span>Import outstanding invoices detail</span>
+                        <input id="uploadBtn" name="details" type="file" class="upload" />
+                     </div>
+                    
+                                   
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <!-- <button type="file" class="btn btn-primary btn-lg" value="3" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;"> Import TB</button> -->
+                    <div class="fileUpload btn btn-primary btn-lg" Style="width: 300px; margin-bottom:10px; background-color: #005961">
+                        <span>Import TB</span>
+                        <input id="uploadBtn" type="file" class="upload" name="TB"  />
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col">
+                    <input  type="checkbox" name="tbSubtotals" value="" id="tbSubtotals">
+                    <label for="tbSubtotals" >
+                        Trial balances have subtotals
+                    </label>
+                </div>
+                    
+                    
+                    
+                    
+                
+            </div> -->
+            <div class="row" >
+                <div class="col">
+                    <input type="text" name="client" placeholder="Client name" aria-label="Client name" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!-- <input type="date"  name="yearEnd" placeholder="Year End" aria-label="Year End" Style="margin-bottom:10px; width:300px;"> -->
+                    <input placeholder="Year End" name="yearEnd" class="textbox-n" type="text" onfocus="(this.type='date')" id="date" style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="preparedBy" placeholder="Preparer name" aria-label="Preparer name" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!-- <input type="date" name="preparedDate" placeholder="Prepared date" aria-label="Prepared date" Style="margin-bottom:10px; width:300px;"> -->
+                    <input placeholder="Prepared Date" name="preparedDate" class="textbox-n" type="text" onfocus="(this.type='date')" id="date" style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div>  
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="reff" placeholder="Reference" aria-label="Refference" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+            
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="notDue" placeholder="Not due" aria-label="Not due - The input figure will be in all cases 0." Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket1" placeholder="Bucket 1" aria-label="Bucket 1" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket2" placeholder="Bucket 2" aria-label="Bucket 2" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket3" placeholder="Bucket 3" aria-label="Bucket 3" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket4" placeholder="Bucket 4" aria-label="Bucket 4" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="bucket5" placeholder="Bucket 5" aria-label="Bbucket 5" Style="margin-bottom:10px; width:300px;" >
+                </div>
+                    
+                    
+                
+            </div> 
+            
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-lg" value="4" Style="width: 300px;margin-bottom:10px; background-color: #005961"> Run and save</button>
+                </div>
+                    
+                    
+                
+            </div>
+        </div>
+    </form>
+
+</body>
+</html>
