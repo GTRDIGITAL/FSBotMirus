@@ -5456,14 +5456,9 @@ def TB3():
 	return render_template('TB.html')
 @app.route('/buton2/TB', methods=['POST', 'GET'])
 def TB1_process():
-	path = '/home/fsbot/storage'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
+
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -6219,7 +6214,6 @@ def TB1_process():
 		output.save(folderpath+"/Trial Balance.xlsx")
 		return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
 
-		# print(text)
 
 @app.route('/buton3/VAT/Instructions', methods=['GET'])
 def downloadVAT3():
@@ -6231,20 +6225,14 @@ def my_formVAT3():
 	return render_template('VAT.html')
 @app.route('/buton3/VAT', methods=['POST', 'GET'])
 def my_form_post1():
-	path = '/home/fsbot/storage/vat'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
 	# datePrepared1 = datetime.datetime.strptime(
-		# request.form['preparedDate'],
-		# '%Y-%m-%d')
+	# 	request.form['preparedDate'],
+	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
 	# denis=datetime.now()
 #
@@ -6557,7 +6545,7 @@ def my_form_post1():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -10220,14 +10208,9 @@ def TB():
 	return render_template('TB.html')
 @app.route('/buton3/TB', methods=['POST', 'GET'])
 def TB2_process():
-	path = '/home/fsbot/storage'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
+
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -10995,20 +10978,14 @@ def my_formVAT():
 	return render_template('VAT.html')
 @app.route('/buton2/VAT', methods=['POST', 'GET'])
 def my_form_post4():
-	path = '/home/fsbot/storage/vat'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
 	# datePrepared1 = datetime.datetime.strptime(
-		# request.form['preparedDate'],
-		# '%Y-%m-%d')
+	# 	request.form['preparedDate'],
+	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
 	# denis=datetime.now()
 #
@@ -11321,7 +11298,7 @@ def my_form_post4():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -11329,8 +11306,8 @@ def my_form_post4():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat/"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat/"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
