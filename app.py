@@ -6220,15 +6220,15 @@ def TB1_process():
 
 		# print(text)
 
-@app.route('/VAT/Instructions', methods=['GET'])
+@app.route('/buton3/VAT/Instructions', methods=['GET'])
 def downloadVAT3():
-		filepath = "/home/fsbot/storage/vat"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - VAT.docx", as_attachment=True)
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
 def my_formVAT3():
 	return render_template('VAT.html')
-@app.route('/buton3/VAT/Instructions', methods=['POST', 'GET'])
+@app.route('/buton3/VAT', methods=['POST', 'GET'])
 def my_form_post1():
 	path = '/home/fsbot/storage/vat'
 	if not os.path.exists(path):
@@ -10984,7 +10984,7 @@ def TB2_process():
 
 		# print(text)
 
-@app.route('/VAT/Instructions', methods=['GET'])
+@app.route('/buton2/VAT/Instructions', methods=['GET'])
 def downloadVAT():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -10992,7 +10992,7 @@ def downloadVAT():
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
 def my_formVAT():
 	return render_template('VAT.html')
-@app.route('/buton2/VAT/Instructions', methods=['POST', 'GET'])
+@app.route('/buton2/VAT', methods=['POST', 'GET'])
 def my_form_post4():
 	path = '/home/fsbot/storage/vat'
 	if not os.path.exists(path):
