@@ -132,7 +132,7 @@ blue_bold_font = Font(name='Arial', size=10, color="0070C0", bold=True)
 @app.route('/Instructions', methods=['GET'])
 def downloadPMG2():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
-	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
+	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
 @app.route('/', methods=['POST', 'GET'])
 def FS_process():
 	company = request.form['company']
@@ -4870,7 +4870,7 @@ def Ageing_process1():
 		
 
 
-@app.route('/buton2/FS', methods=['GET'])
+@app.route('/buton2/FS/Instructions', methods=['GET'])
 def downloadPMG3():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
@@ -5445,7 +5445,7 @@ def FS1_process():
 	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
 
 
-@app.route('/buton2/TB', methods=['GET'])
+@app.route('/buton2/TB/Instructions', methods=['GET'])
 def downloadTB3():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -6228,7 +6228,7 @@ def downloadVAT3():
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
 def my_formVAT3():
 	return render_template('VAT.html')
-@app.route('/buton3/VAT', methods=['POST', 'GET'])
+@app.route('/buton3/VAT/Instructions', methods=['POST', 'GET'])
 def my_form_post1():
 	path = '/home/fsbot/storage/vat'
 	if not os.path.exists(path):
@@ -9634,7 +9634,7 @@ def Ageing1_process():
 		
 
 
-@app.route('/buton3/FS', methods=['GET'])
+@app.route('/buton3/FS/Instructions', methods=['GET'])
 def downloadPMG():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
@@ -10209,7 +10209,7 @@ def FS2_process():
 	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
 
 
-@app.route('/buton3/TB', methods=['GET'])
+@app.route('/buton3/TB/Instructions', methods=['GET'])
 def downloadTB():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -10992,7 +10992,7 @@ def downloadVAT():
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
 def my_formVAT():
 	return render_template('VAT.html')
-@app.route('/buton2/VAT', methods=['POST', 'GET'])
+@app.route('/buton2/VAT/Instructions', methods=['POST', 'GET'])
 def my_form_post4():
 	path = '/home/fsbot/storage/vat'
 	if not os.path.exists(path):
@@ -14397,7 +14397,7 @@ def Ageing2_process():
 	return send_from_directory(folderpath, "Ageing Test" + " " + clientname1 +".xlsx", as_attachment=True)
 
 
-@app.route('/buton3/Payroll', methods=['GET'])
+@app.route('/buton3/Payroll/Instructions', methods=['GET'])
 def downloadAgeing10():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -18463,7 +18463,7 @@ def payroll_process():
 		return send_from_directory(folderpath, "V10 Payroll Analysis " + clientname1 + " "+str(denis)+".xlsx")
 	return render_template("Payroll.html")
 
-@app.route('/buton3/Monthly', methods=['GET'])
+@app.route('/buton3/Monthly/Instructions', methods=['GET'])
 def downloadAgeing11():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -20064,7 +20064,7 @@ def equity_process():
 
 	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
 
-@app.route('/buton2/Equity', methods=['GET'])
+@app.route('/buton2/Equity/Instructions', methods=['GET'])
 def downloadAgeing15():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -20781,7 +20781,7 @@ def equity_process2():
 
 	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
 
-@app.route('/buton3/FAR', methods=['GET'])
+@app.route('/buton3/FAR/Instructions', methods=['GET'])
 def downloadAgeing20():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -24242,7 +24242,7 @@ def FAR_process():
 		return send_from_directory(folderpath,"FAR "+namec+".zip", as_attachment=True)
 	return "0"      
 
-@app.route('/buton2/FAR', methods=['GET'])
+@app.route('/buton2/FAR/Instructions', methods=['GET'])
 def downloadAgeing30():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -27704,7 +27704,7 @@ def FAR1_process():
 	return "0"      
 
 
-@app.route('/buton3/JE', methods=['GET'])
+@app.route('/buton3/JE/Instructions', methods=['GET'])
 def downloadJE():
 		filepath = "/home/fsbot/exceltemp"
  
