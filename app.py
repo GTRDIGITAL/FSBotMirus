@@ -27,7 +27,7 @@ from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
 # import datetime
-from datetime import datetime
+import datetime
 # import datetime
 import os
 import shutil
@@ -1800,7 +1800,7 @@ def my_form_post2():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.datetime.now()
+		now=datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -6546,7 +6546,7 @@ def my_form_post1():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.datetime.now()
+		now=datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -11299,7 +11299,7 @@ def my_form_post4():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.datetime.now()
+		now=datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
