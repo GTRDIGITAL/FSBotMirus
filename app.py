@@ -4873,7 +4873,7 @@ def Ageing_process1():
 @app.route('/buton2/FS', methods=['GET'])
 def downloadPMG3():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
-	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
+	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
 @app.route('/buton2/FS', methods=['POST', 'GET'])
 def FS1_process():
 	path = '/home/fsbot/storage'
@@ -5447,7 +5447,7 @@ def FS1_process():
 
 @app.route('/buton2/TB', methods=['GET'])
 def downloadTB3():
-		filepath = "/home/fsbot/storage"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - Trial Balance.docx", as_attachment=True)
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY')
@@ -9637,7 +9637,7 @@ def Ageing1_process():
 @app.route('/buton3/FS', methods=['GET'])
 def downloadPMG():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
-	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
+	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
 @app.route('/buton3/FS', methods=['POST', 'GET'])
 def FS2_process():
 	path = '/home/fsbot/storage'
@@ -10211,7 +10211,7 @@ def FS2_process():
 
 @app.route('/buton3/TB', methods=['GET'])
 def downloadTB():
-		filepath = "/home/fsbot/storage"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - Trial Balance.docx", as_attachment=True)
 @app.route('/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY')
@@ -10986,7 +10986,7 @@ def TB2_process():
 
 @app.route('/VAT/Instructions', methods=['GET'])
 def downloadVAT():
-		filepath = "/home/fsbot/storage/vat"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - VAT.docx", as_attachment=True)
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
@@ -27706,7 +27706,7 @@ def FAR1_process():
 
 @app.route('/buton3/JE', methods=['GET'])
 def downloadJE():
-		filepath = "/home/fsbot/storage/je"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - Journal Entries.docx", as_attachment=True)  
 @app.route('/JournalEntries/GTv5Wjk1PboB5kRZ8elnBUECePO')
