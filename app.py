@@ -710,7 +710,7 @@ def TB1():
 def TB_process():
 
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
