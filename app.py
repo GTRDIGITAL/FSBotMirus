@@ -27,7 +27,7 @@ from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
 # import datetime
-from datetime import datetime
+import datetime
 import os
 import shutil
 from string import ascii_uppercase
@@ -24222,7 +24222,7 @@ def FAR1_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec=request.form['client']
-	ant=datetime.strptime(
+	ant=datetime.datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
 	postdate = datetime.datetime.strptime(
