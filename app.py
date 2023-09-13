@@ -21,14 +21,13 @@ from openpyxl.descriptors import (
 from openpyxl.descriptors.serialisable import Serialisable
 import xml.etree.ElementTree as ET
 import PyPDF2
-# xxx
 from openpyxl.styles import Color, PatternFill, Font, Border
 from openpyxl.styles import colors
 from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
 # import datetime
-from datetime import datetime
+import datetime
 # import datetime
 import os
 import shutil
@@ -713,7 +712,7 @@ def TB1():
 def TB_process():
 
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -1486,7 +1485,7 @@ def my_form_post2():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -1801,7 +1800,7 @@ def my_form_post2():
 			return word
 		nr=0
 		abc=[]
-		now2=datetime.now()
+		denis=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -1809,8 +1808,8 @@ def my_form_post2():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now2.year)+str(now2.month)+str(now2.day)+str(now2.hour)+str(now2.minute)+str(now2.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now2.year)+str(now2.month)+str(now2.day)+str(now2.hour)+str(now2.minute)+str(now2.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
@@ -3049,15 +3048,15 @@ def Ageing1():
 def Ageing_process1():
 	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
 	clientname1 = request.form['client']
-	# yearEnd1 = datetime.strptime(
+	# yearEnd1 = datetime.datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	# denis=datetime.now()
+	# denis=datetime.datetime.now()
 	# print(denis)
 
 	if request.method == 'POST':
@@ -5460,7 +5459,7 @@ def TB3():
 def TB1_process():
 
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -6232,7 +6231,7 @@ def my_form_post1():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -6547,7 +6546,7 @@ def my_form_post1():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		denis=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -6555,8 +6554,8 @@ def my_form_post1():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
@@ -7801,15 +7800,15 @@ def Ageing1_process():
 		os.makedirs(path)
 	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
 	clientname1 = request.form['client']
-	# yearEnd1 = datetime.strptime(
+	# yearEnd1 = datetime.datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	# denis=datetime.now()
+	# denis=datetime.datetime.now()
 	# print(denis)
 
 	if request.method == 'POST':
@@ -10212,7 +10211,7 @@ def TB():
 def TB2_process():
 
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -10985,7 +10984,7 @@ def my_form_post4():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -11300,7 +11299,7 @@ def my_form_post4():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		denis=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -11308,8 +11307,8 @@ def my_form_post4():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+str(denis.year)+str(denis.month)+str(denis.day)+str(denis.hour)+str(denis.minute)+str(denis.second)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
@@ -12554,15 +12553,15 @@ def Ageing2_process():
 		os.makedirs(path)
 	# global column_description, coloana_opTB_tb, coloana_cr_tb, coloana_db_tb, coloana_clTB_tb, column_tb, row_tb, clientName
 	clientname1 = request.form['client']
-	# yearEnd1 = datetime.strptime(
+	# yearEnd1 = datetime.datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	# denis=datetime.now()
+	# denis=datetime.datetime.now()
 	# print(denis)
 
 	if request.method == 'POST':
@@ -14392,17 +14391,17 @@ def payroll_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	clientname1 = request.form['client']
-	periodEnd1= datetime.strptime(
+	periodEnd1= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1=request.form['preparedBy']
-	datePrepared1= datetime.strptime(
+	datePrepared1= datetime.datetime.strptime(
 					 request.form['preparedDate'],
 					 '%Y-%m-%d')
 	refference1 = request.form['reff']
 	currYear1 = request.form['CY']
 	prevYear1 = request.form['PY']
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 
 	if request.method == 'POST':
 		# file_Details = request.file('monthlyTB')
@@ -18457,17 +18456,17 @@ def Monthly_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)   
 	clientname1 = request.form['client']
-	yearEnd1= datetime.strptime(
+	yearEnd1= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1=request.form['preparedBy']
-	# datePrepared1= datetime.strptime(
+	# datePrepared1= datetime.datetime.strptime(
 	#                  request.form['preparedDate'],
 	#                  '%Y-%m-%d')
-	datePrepared1= datetime.now().date()
+	datePrepared1= datetime.datetime.now().date()
 	refference1 = request.form['reff']
 	isChecked1=request.form.get("tbSubtotals")
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 	print(isChecked1)
 	if isChecked1=="": #daca e bifat
 		isChecked=0
@@ -19343,16 +19342,16 @@ def equity_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	clientname1 = request.form['client']
-	yearEnd = datetime.strptime(request.form['yearEnd'],'%Y-%m-%d')
-	yearEnd1 = datetime.strptime(
+	yearEnd = datetime.datetime.strptime(request.form['yearEnd'],'%Y-%m-%d')
+	yearEnd1 = datetime.datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 
 	if request.method == 'POST':
 		file_location_TB = request.files["TB"]
@@ -20060,16 +20059,16 @@ def equity_process2():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	clientname1 = request.form['client']
-	yearEnd = datetime.strptime(request.form['yearEnd'],'%Y-%m-%d')
-	yearEnd1 = datetime.strptime(
+	yearEnd = datetime.datetime.strptime(request.form['yearEnd'],'%Y-%m-%d')
+	yearEnd1 = datetime.datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
-	# datePrepared1 = datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 	# 	request.form['preparedDate'],
 	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 
 	if request.method == 'POST':
 		file_location_TB = request.files["TB"]
@@ -20778,16 +20777,16 @@ def FAR_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec=request.form['client']
-	ant=datetime.strptime(
+	ant=datetime.datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
-	postdate = datetime.strptime(
+	postdate = datetime.datetime.strptime(
 		request.form['endDep'],
 		'%Y-%m-%d')
-	yearentry = datetime.strptime(
+	yearentry = datetime.datetime.strptime(
 		request.form['startDep'],
 		'%Y-%m-%d')
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 	def make_archive(source, destination):
 		base = os.path.basename(destination)
 		name = base.split('.')[0]
@@ -21618,7 +21617,7 @@ def FAR_process():
 
 			G100FAR.cell(row=2, column=6).value="Date:"
 			G100FAR.cell(row=2, column=6).font=font2
-			G100FAR.cell(row=2, column=7).value=datetime.now().date()
+			G100FAR.cell(row=2, column=7).value=datetime.datetime.now().date()
 			G100FAR.cell(row=2, column=7).number_format="mm/dd/yyyy"
 			G100FAR.cell(row=2, column=7).alignment = Alignment (horizontal='left')
 
@@ -22180,7 +22179,7 @@ def FAR_process():
 			  #print(type(yearentry))
 			  #yearentry=str(yearentry)
 			  ##yearentry = yearentry.strftime('%m/%d/%Y')
-			  ##yearentry = datetime.strptime(yearentry,'%m/%d/%Y')
+			  ##yearentry = datetime.datetime.strptime(yearentry,'%m/%d/%Y')
 			  #yearentry = yearentry.date('%m/%d/%Y')
 			  #print(type(yearentry))
 			  #print("qwjdnqwibdqw", yearentry)
@@ -22190,7 +22189,7 @@ def FAR_process():
 
 			  G20.cell(row=2, column=8).value="Date:"
 			  G20.cell(row=2, column=8).font=font2
-			  G20.cell(row=2, column=9).value=datetime.now().date()
+			  G20.cell(row=2, column=9).value=datetime.datetime.now().date()
 			  G20.cell(row=2, column=9).number_format="mm/dd/yyyy"
 			  G20.cell(row=2, column=9).alignment = Alignment (horizontal='left')
 			  G20.cell(row=2, column=9).font=font1
@@ -23210,7 +23209,7 @@ def FAR_process():
 
 			G30.cell(row=2, column=11).value="Date:"
 			G30.cell(row=2, column=11).font=font2
-			G30.cell(row=2, column=12).value=datetime.now().date()
+			G30.cell(row=2, column=12).value=datetime.datetime.now().date()
 			G30.cell(row=2, column=12).number_format="mm/dd/yyyy"
 			G30.cell(row=2, column=12).font=font1
 			G30.cell(row=2, column=12).alignment = Alignment (horizontal='left')
@@ -24239,16 +24238,16 @@ def FAR1_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec=request.form['client']
-	ant=datetime.strptime(
+	ant=datetime.datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
-	postdate = datetime.strptime(
+	postdate = datetime.datetime.strptime(
 		request.form['endDep'],
 		'%Y-%m-%d')
-	yearentry = datetime.strptime(
+	yearentry = datetime.datetime.strptime(
 		request.form['startDep'],
 		'%Y-%m-%d')
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 	def make_archive(source, destination):
 		base = os.path.basename(destination)
 		name = base.split('.')[0]
@@ -25079,7 +25078,7 @@ def FAR1_process():
 
 			G100FAR.cell(row=2, column=6).value="Date:"
 			G100FAR.cell(row=2, column=6).font=font2
-			G100FAR.cell(row=2, column=7).value=datetime.now().date()
+			G100FAR.cell(row=2, column=7).value=datetime.datetime.now().date()
 			G100FAR.cell(row=2, column=7).number_format="mm/dd/yyyy"
 			G100FAR.cell(row=2, column=7).alignment = Alignment (horizontal='left')
 
@@ -25641,7 +25640,7 @@ def FAR1_process():
 			  #print(type(yearentry))
 			  #yearentry=str(yearentry)
 			  ##yearentry = yearentry.strftime('%m/%d/%Y')
-			  ##yearentry = datetime.strptime(yearentry,'%m/%d/%Y')
+			  ##yearentry = datetime.datetime.strptime(yearentry,'%m/%d/%Y')
 			  #yearentry = yearentry.date('%m/%d/%Y')
 			  #print(type(yearentry))
 			  #print("qwjdnqwibdqw", yearentry)
@@ -25651,7 +25650,7 @@ def FAR1_process():
 
 			  G20.cell(row=2, column=8).value="Date:"
 			  G20.cell(row=2, column=8).font=font2
-			  G20.cell(row=2, column=9).value=datetime.now().date()
+			  G20.cell(row=2, column=9).value=datetime.datetime.now().date()
 			  G20.cell(row=2, column=9).number_format="mm/dd/yyyy"
 			  G20.cell(row=2, column=9).alignment = Alignment (horizontal='left')
 			  G20.cell(row=2, column=9).font=font1
@@ -26671,7 +26670,7 @@ def FAR1_process():
 
 			G30.cell(row=2, column=11).value="Date:"
 			G30.cell(row=2, column=11).font=font2
-			G30.cell(row=2, column=12).value=datetime.now().date()
+			G30.cell(row=2, column=12).value=datetime.datetime.now().date()
 			G30.cell(row=2, column=12).number_format="mm/dd/yyyy"
 			G30.cell(row=2, column=12).font=font1
 			G30.cell(row=2, column=12).alignment = Alignment (horizontal='left')
@@ -27705,7 +27704,7 @@ def JE_process():
 	# 				 request.form['yearEnd'],
 	# 				 '%Y-%m-%d')
 	preparedBy1=request.form['preparedBy']
-	datePrepared1= datetime.strptime(
+	datePrepared1= datetime.datetime.strptime(
 					 request.form['preparedDate'],
 					 '%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -27715,7 +27714,7 @@ def JE_process():
 	isChecked3=request.form.get("AccountDetail")
 	isChecked4=request.form.get("nonsd")
 	# print(isChecked3,isChecked2,isChecked1,namec,ant,threshol)
-	denis=datetime.now()
+	denis=datetime.datetime.now()
 	# if isChecked1=="": #daca e bifat
 	#     isChecked=1
 	# else:
@@ -28562,7 +28561,7 @@ def JE_process():
 						ws3.cell(row=2,column=1).font=font2
 						ws3.cell(row=5,column=2).font=font2
 						ws3.cell(row=2,column=1).value="Period End"
-						denis=datetime.now()
+						denis=datetime.datetime.now()
 						ws3.cell(row=1,column=2).value=namec
 						# ws3.cell(row=2,column=2).value=ant
 						ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
@@ -29913,7 +29912,7 @@ def JE_process():
 							ws3.cell(row=2,column=1).font=font2
 							ws3.cell(row=5,column=2).font=font2
 							ws3.cell(row=2,column=1).value="Period End"
-							denis=datetime.now()
+							denis=datetime.datetime.now()
 							ws3.cell(row=1,column=2).value=namec
 							# ws3.cell(row=2,column=2).value=ant
 							ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
