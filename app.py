@@ -45,6 +45,7 @@ var_rute=[]
 #     return render_template("index.html")
 
 
+# sss
 @app.route('/')
 def FS():
 	return render_template('FS.html')
