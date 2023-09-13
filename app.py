@@ -1800,7 +1800,7 @@ def my_form_post2():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		# now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -1808,8 +1808,8 @@ def my_form_post2():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
@@ -6546,7 +6546,7 @@ def my_form_post1():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		# now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -6554,8 +6554,8 @@ def my_form_post1():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
@@ -11299,7 +11299,7 @@ def my_form_post4():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		# now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
@@ -11307,8 +11307,8 @@ def my_form_post4():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)+".xml")
+			f=open("/home/fsbot/storage/vat"+str(nr)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat"+str(nr)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
