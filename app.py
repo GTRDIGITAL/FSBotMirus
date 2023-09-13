@@ -18458,7 +18458,7 @@ def payroll_process():
 	return render_template("Payroll.html")
 
 
-@app.route('/buton3/MonthlyPL', methods=['POST', 'GET'])
+@app.route('/buton3/Monthly', methods=['POST', 'GET'])
 def Monthly_process():
 	path = '/home/fsbot/storage/MonthlyPL'
 	if not os.path.exists(path):
