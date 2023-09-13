@@ -4870,7 +4870,7 @@ def Ageing_process1():
 		
 
 
-@app.route('/Instructions', methods=['GET'])
+@app.route('/buton2/FS', methods=['GET'])
 def downloadPMG3():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
@@ -5445,7 +5445,7 @@ def FS1_process():
 	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
 
 
-@app.route('/TrialBalances/Instructions', methods=['GET'])
+@app.route('/buton2/TB', methods=['GET'])
 def downloadTB3():
 		filepath = "/home/fsbot/storage"
  
@@ -5462,7 +5462,7 @@ def TB1_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -7792,7 +7792,7 @@ def my_form_post1():
 
 	return render_template("VAT.html")
 
-@app.route('/Ageing/Instructions', methods=['GET'])
+@app.route('/buton2/Ageing', methods=['GET'])
 def downloadAgeing():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -9634,7 +9634,7 @@ def Ageing1_process():
 		
 
 
-@app.route('/Instructions', methods=['GET'])
+@app.route('/buton3/FS', methods=['GET'])
 def downloadPMG():
 	# filepath = "D:\Projects\8. Python web apps\Test web flask\Instructions"
 	return send_from_directory("/home/fsbot/storage","Instructions - FS.docx", as_attachment=True)
@@ -10209,7 +10209,7 @@ def FS2_process():
 	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
 
 
-@app.route('/TrialBalances/Instructions', methods=['GET'])
+@app.route('/buton3/TB', methods=['GET'])
 def downloadTB():
 		filepath = "/home/fsbot/storage"
  
@@ -10226,7 +10226,7 @@ def TB2_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec = request.form['client']
-	ant= datetime.strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -12556,7 +12556,7 @@ def my_form_post4():
 
 	return render_template("VAT.html")
 
-@app.route('/Ageing/Instructions', methods=['GET'])
+@app.route('/buton3/Ageing', methods=['GET'])
 def downloadAgeing4():
 		filepath = "/home/fsbot/exceltemp"
  
@@ -14395,7 +14395,13 @@ def Ageing2_process():
 		wb.save(file_pathFS)
 		# print("ceva")
 	return send_from_directory(folderpath, "Ageing Test" + " " + clientname1 +".xlsx", as_attachment=True)
-		
+
+
+@app.route('/buton3/Payroll', methods=['GET'])
+def downloadAgeing10():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - Payroll.docx", as_attachment=True)	
 
 @app.route('/buton3/Payroll', methods=['POST', 'GET'])
 def payroll_process():
@@ -18457,7 +18463,11 @@ def payroll_process():
 		return send_from_directory(folderpath, "V10 Payroll Analysis " + clientname1 + " "+str(denis)+".xlsx")
 	return render_template("Payroll.html")
 
-
+@app.route('/buton3/Monthly', methods=['GET'])
+def downloadAgeing11():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - Monthly P&L.docx", as_attachment=True)	
 @app.route('/buton3/Monthly', methods=['POST', 'GET'])
 def Monthly_process():
 	path = '/home/fsbot/storage/MonthlyPL'
@@ -19338,7 +19348,11 @@ def Monthly_process():
 	# print(f)
 	
 	return render_template('MonthlyPL.html')
-
+@app.route('/buton3/Equity', methods=['GET'])
+def downloadAgeing12():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - Equity.docx", as_attachment=True)	
 
 @app.route('/buton3/Equity', methods=['POST', 'GET'])
 def equity_process():
@@ -20050,6 +20064,13 @@ def equity_process():
 
 	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
 
+@app.route('/buton2/Equity', methods=['GET'])
+def downloadAgeing15():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - Equity.docx", as_attachment=True)	
+
+
 @app.route('/buton2/Equity', methods=['POST', 'GET'])
 def equity_process2():
 	path = '/home/fsbot/storage/Equity'
@@ -20759,6 +20780,14 @@ def equity_process2():
 		output.save("/home/fsbot/storage/Equity/Tom Equity.xlsx")
 
 	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
+
+@app.route('/buton3/FAR', methods=['GET'])
+def downloadAgeing20():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - FAR-Reconciliation.docx", as_attachment=True)	
+
+
 
 @app.route('/buton3/FAR', methods=['POST', 'GET'])
 def FAR_process():
@@ -24212,6 +24241,12 @@ def FAR_process():
 		make_archive(folder_path,"/home/fsbot/storage/far/FAR "+namec+".zip")
 		return send_from_directory(folderpath,"FAR "+namec+".zip", as_attachment=True)
 	return "0"      
+
+@app.route('/buton2/FAR', methods=['GET'])
+def downloadAgeing20():
+		filepath = "/home/fsbot/exceltemp"
+ 
+		return send_from_directory(filepath,"Instructions - FAR-Reconciliation.docx", as_attachment=True)	
 
 
 
@@ -27669,7 +27704,7 @@ def FAR1_process():
 	return "0"      
 
 
-@app.route('/JournalEntries/Instructions', methods=['GET'])
+@app.route('/buton3/JE', methods=['GET'])
 def downloadJE():
 		filepath = "/home/fsbot/storage/je"
  
