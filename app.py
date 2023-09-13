@@ -24222,7 +24222,7 @@ def FAR1_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec=request.form['client']
-	ant=datetime.datetime.strptime(
+	ant=datetime.strptime(
 		request.form['yearEnd'],
 		'%Y-%m-%d')
 	postdate = datetime.datetime.strptime(
