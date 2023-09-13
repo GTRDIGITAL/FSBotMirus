@@ -1483,9 +1483,9 @@ def my_form_post2():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	datePrepared1 = datetime.datetime.strptime(
-		request.form['preparedDate'],
-		'%Y-%m-%d')
+	# datePrepared1 = datetime.datetime.strptime(
+	# 	request.form['preparedDate'],
+	# 	'%Y-%m-%d')
 	refference1 = request.form['reff']
 	# denis=datetime.now()
 #
@@ -1645,7 +1645,7 @@ def my_form_post2():
 		# Sheet1.cell(row = 2, column = 3).value =yearEnd1
 		Sheet1.cell(row = 2, column = 3).number_format = 'mm/dd/yyyy'
 		Sheet1.cell(row = 1, column = 16).value =preparedBy1
-		Sheet1.cell(row = 2, column = 16).value =datePrepared1
+		# Sheet1.cell(row = 2, column = 16).value =datePrepared1
 		Sheet1.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
 
 		#design
@@ -1786,7 +1786,7 @@ def my_form_post2():
 		# Sheet2.cell(row = 2, column = 3).value =yearEnd1
 		Sheet2.cell(row = 2, column = 3).number_format='mm/dd/yyyy'
 		Sheet2.cell(row = 1, column = 11).value =preparedBy1
-		Sheet2.cell(row = 2, column = 11).value =datePrepared1
+		# Sheet2.cell(row = 2, column = 11).value =datePrepared1
 		Sheet2.cell(row = 2, column = 11).number_format='mm/dd/yyyy'
 
 		#retinem variabilele din XML
@@ -2573,7 +2573,7 @@ def my_form_post2():
 		# Sheet3.cell(row = 2, column = 2).value =yearEnd1
 		Sheet3.cell(row = 2, column = 2).number_format='mm/dd/yyyy'
 		Sheet3.cell(row = 1, column = 15).value =preparedBy1
-		Sheet3.cell(row = 2, column = 15).value =datePrepared1
+		# Sheet3.cell(row = 2, column = 15).value =datePrepared1
 		Sheet3.cell(row = 2, column = 15).number_format='mm/dd/yyyy'
 		
 		Sheet3.cell(row = 19, column = 3).value ="='VAT Test'!V17"
@@ -6241,7 +6241,7 @@ def my_form_post1():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	datePrepared1 = datetime.datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 		request.form['preparedDate'],
 		'%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -6403,7 +6403,7 @@ def my_form_post1():
 		# Sheet1.cell(row = 2, column = 3).value =yearEnd1
 		Sheet1.cell(row = 2, column = 3).number_format = 'mm/dd/yyyy'
 		Sheet1.cell(row = 1, column = 16).value =preparedBy1
-		Sheet1.cell(row = 2, column = 16).value =datePrepared1
+		# Sheet1.cell(row = 2, column = 16).value =datePrepared1
 		Sheet1.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
 
 		#design
@@ -6544,7 +6544,7 @@ def my_form_post1():
 		# Sheet2.cell(row = 2, column = 3).value =yearEnd1
 		Sheet2.cell(row = 2, column = 3).number_format='mm/dd/yyyy'
 		Sheet2.cell(row = 1, column = 11).value =preparedBy1
-		Sheet2.cell(row = 2, column = 11).value =datePrepared1
+		# Sheet2.cell(row = 2, column = 11).value =datePrepared1
 		Sheet2.cell(row = 2, column = 11).number_format='mm/dd/yyyy'
 
 		#retinem variabilele din XML
@@ -7331,7 +7331,7 @@ def my_form_post1():
 		# Sheet3.cell(row = 2, column = 2).value =yearEnd1
 		Sheet3.cell(row = 2, column = 2).number_format='mm/dd/yyyy'
 		Sheet3.cell(row = 1, column = 15).value =preparedBy1
-		Sheet3.cell(row = 2, column = 15).value =datePrepared1
+		# Sheet3.cell(row = 2, column = 15).value =datePrepared1
 		Sheet3.cell(row = 2, column = 15).number_format='mm/dd/yyyy'
 		
 		Sheet3.cell(row = 19, column = 3).value ="='VAT Test'!V17"
@@ -11005,7 +11005,7 @@ def my_form_post4():
 	# 	'%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
-	datePrepared1 = datetime.datetime.strptime(
+	# datePrepared1 = datetime.datetime.strptime(
 		request.form['preparedDate'],
 		'%Y-%m-%d')
 	refference1 = request.form['reff']
@@ -11167,7 +11167,7 @@ def my_form_post4():
 		# Sheet1.cell(row = 2, column = 3).value =yearEnd1
 		Sheet1.cell(row = 2, column = 3).number_format = 'mm/dd/yyyy'
 		Sheet1.cell(row = 1, column = 16).value =preparedBy1
-		Sheet1.cell(row = 2, column = 16).value =datePrepared1
+		# Sheet1.cell(row = 2, column = 16).value =datePrepared1
 		Sheet1.cell(row = 2, column = 16).number_format = 'mm/dd/yyyy'
 
 		#design
@@ -11308,7 +11308,7 @@ def my_form_post4():
 		# Sheet2.cell(row = 2, column = 3).value =yearEnd1
 		Sheet2.cell(row = 2, column = 3).number_format='mm/dd/yyyy'
 		Sheet2.cell(row = 1, column = 11).value =preparedBy1
-		Sheet2.cell(row = 2, column = 11).value =datePrepared1
+		# Sheet2.cell(row = 2, column = 11).value =datePrepared1
 		Sheet2.cell(row = 2, column = 11).number_format='mm/dd/yyyy'
 
 		#retinem variabilele din XML
@@ -12095,7 +12095,7 @@ def my_form_post4():
 		# Sheet3.cell(row = 2, column = 2).value =yearEnd1
 		Sheet3.cell(row = 2, column = 2).number_format='mm/dd/yyyy'
 		Sheet3.cell(row = 1, column = 15).value =preparedBy1
-		Sheet3.cell(row = 2, column = 15).value =datePrepared1
+		# Sheet3.cell(row = 2, column = 15).value =datePrepared1
 		Sheet3.cell(row = 2, column = 15).number_format='mm/dd/yyyy'
 		
 		Sheet3.cell(row = 19, column = 3).value ="='VAT Test'!V17"
