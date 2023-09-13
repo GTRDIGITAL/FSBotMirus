@@ -27699,9 +27699,9 @@ def JE_process():
 		shutil.rmtree(path)           # Removes all the subdirectories!
 		os.makedirs(path)
 	namec = request.form['client']
-	ant= datetime.strptime(
-					 request.form['yearEnd'],
-					 '%Y-%m-%d')
+	# ant= datetime.strptime(
+	# 				 request.form['yearEnd'],
+	# 				 '%Y-%m-%d')
 	preparedBy1=request.form['preparedBy']
 	datePrepared1= datetime.datetime.strptime(
 					 request.form['preparedDate'],
@@ -27712,7 +27712,7 @@ def JE_process():
 	isChecked2=request.form.get("MPL")
 	isChecked3=request.form.get("AccountDetail")
 	isChecked4=request.form.get("nonsd")
-	print(isChecked3,isChecked2,isChecked1,namec,ant,threshol)
+	# print(isChecked3,isChecked2,isChecked1,namec,ant,threshol)
 	denis=datetime.datetime.now()
 	# if isChecked1=="": #daca e bifat
 	#     isChecked=1
@@ -28059,7 +28059,7 @@ def JE_process():
 				out.cell(row=2,column=1).value="Period End:"
 
 				out.cell(row=1,column=2).value=namec
-				out.cell(row=2,column=2).value=ant
+				# out.cell(row=2,column=2).value=ant
 				out.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 				out.cell(row=1,column=1).font=font2
@@ -28239,7 +28239,7 @@ def JE_process():
 				mpl.cell(row=4,column=1).font=font2
 
 				mpl.cell(row=1,column=2).value=namec
-				mpl.cell(row=2,column=2).value=ant
+				# mpl.cell(row=2,column=2).value=ant
 				mpl.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 				mpl.cell(row=6,column=4).value="Expenses"
@@ -28481,7 +28481,7 @@ def JE_process():
 				mpl.cell(row=2,column=1).value="Period End:"
 
 				mpl.cell(row=1,column=2).value=namec
-				mpl.cell(row=2,column=2).value=ant
+				# mpl.cell(row=2,column=2).value=ant
 				mpl.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 				mpl.cell(row=1,column=1).font=font2
@@ -28562,7 +28562,7 @@ def JE_process():
 						ws3.cell(row=2,column=1).value="Period End"
 						denis=datetime.datetime.now()
 						ws3.cell(row=1,column=2).value=namec
-						ws3.cell(row=2,column=2).value=ant
+						# ws3.cell(row=2,column=2).value=ant
 						ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
 						ws3.cell(row=5,column=2).value="Detail of account  " + str(listaunica[i])
 						ws3.cell(row=8,column=1).value="Account"
@@ -28848,7 +28848,7 @@ def JE_process():
 						ws3.cell(row=5,column=2).font=font2	
 						ws3.cell(row=2,column=1).value="Period End"
 						ws3.cell(row=1,column=2).value=namec
-						ws3.cell(row=2,column=2).value=ant
+						# ws3.cell(row=2,column=2).value=ant
 						ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
 						ws3.cell(row=5,column=2).value="Detail of account " + str(listaunica[i])
 						ws3.cell(row=8,column=1).value="Account"
@@ -29410,7 +29410,7 @@ def JE_process():
 					out.cell(row=2,column=1).value="Period End:"
 
 					out.cell(row=1,column=2).value=namec
-					out.cell(row=2,column=2).value=ant
+					# out.cell(row=2,column=2).value=ant
 					out.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 					out.cell(row=1,column=1).font=font2
@@ -29590,7 +29590,7 @@ def JE_process():
 					mpl.cell(row=4,column=1).font=font2
 
 					mpl.cell(row=1,column=2).value=namec
-					mpl.cell(row=2,column=2).value=ant
+					# mpl.cell(row=2,column=2).value=ant
 					mpl.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 					mpl.cell(row=6,column=4).value="Expenses"
@@ -29832,7 +29832,7 @@ def JE_process():
 					mpl.cell(row=2,column=1).value="Period End:"
 
 					mpl.cell(row=1,column=2).value=namec
-					mpl.cell(row=2,column=2).value=ant
+					# mpl.cell(row=2,column=2).value=ant
 					mpl.cell(row=2,column=2).number_format='mm/dd/yyyy'
 
 					mpl.cell(row=1,column=1).font=font2
@@ -29913,7 +29913,7 @@ def JE_process():
 							ws3.cell(row=2,column=1).value="Period End"
 							denis=datetime.datetime.now()
 							ws3.cell(row=1,column=2).value=namec
-							ws3.cell(row=2,column=2).value=ant
+							# ws3.cell(row=2,column=2).value=ant
 							ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
 							ws3.cell(row=5,column=2).value="Detail of account  " + str(listaunica[i])
 							ws3.cell(row=8,column=1).value="Account"
@@ -30199,7 +30199,7 @@ def JE_process():
 							ws3.cell(row=5,column=2).font=font2	
 							ws3.cell(row=2,column=1).value="Period End"
 							ws3.cell(row=1,column=2).value=namec
-							ws3.cell(row=2,column=2).value=ant
+							# ws3.cell(row=2,column=2).value=ant
 							ws3.cell(row=2,column=2).number_format='mm/dd/yyyy'
 							ws3.cell(row=5,column=2).value="Detail of account " + str(listaunica[i])
 							ws3.cell(row=8,column=1).value="Account"
