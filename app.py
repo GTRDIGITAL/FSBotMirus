@@ -24214,7 +24214,7 @@ def FAR_process():
 
 
 @app.route('/buton2/FAR', methods=['POST', 'GET'])
-def FAR_process():
+def FAR1_process():
 	path = '/home/fsbot/storage/far'
 	if not os.path.exists(path):
 		os.makedirs(path)
