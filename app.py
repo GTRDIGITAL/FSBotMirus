@@ -20048,7 +20048,7 @@ def equity_process():
 		file_pathFS = os.path.join(folderpath, 'TOM Equity.xlsx')
 		output.save("/home/fsbot/storage/Equity/Tom Equity.xlsx")
 
-
+	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
 
 @app.route('/buton2/Equity', methods=['POST', 'GET'])
 def equity_process2():
@@ -20757,6 +20757,8 @@ def equity_process2():
 		folderpath="/home/fsbot/storage/Equity"
 		file_pathFS = os.path.join(folderpath, 'TOM Equity.xlsx')
 		output.save("/home/fsbot/storage/Equity/Tom Equity.xlsx")
+
+	return send_from_directory(folderpath, "TOM Equity.xlsx", as_attachment=True)
 
 @app.route('/buton3/FAR', methods=['POST', 'GET'])
 def FAR_process():
