@@ -27,8 +27,8 @@ from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
 # import datetime
-from datetime import datetime
 import datetime
+# import datetime
 import os
 import shutil
 from string import ascii_uppercase
@@ -711,7 +711,7 @@ def TB1():
 def TB_process():
 
 	namec = request.form['client']
-	ant= strptime(
+	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
 					 '%Y-%m-%d')
 	preparedBy1 = request.form['preparedBy']
@@ -1799,7 +1799,7 @@ def my_form_post2():
 			return word
 		nr=0
 		abc=[]
-		now=datetime.now()
+		now=datetime.datetime.now()
 		for i in files:
 			nr=nr+1
 			reader = PyPDF2.PdfFileReader(i)
