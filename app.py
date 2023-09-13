@@ -1470,7 +1470,7 @@ def TB_process():
 
 @app.route('/VAT/Instructions', methods=['GET'])
 def downloadVAT1():
-		filepath = "/home/fsbot/storage/vat"
+		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - VAT.docx", as_attachment=True)
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw')
