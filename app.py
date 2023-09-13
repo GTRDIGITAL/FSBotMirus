@@ -19348,7 +19348,7 @@ def Monthly_process():
 	# print(f)
 	
 	return render_template('MonthlyPL.html')
-@app.route('/buton3/Equity', methods=['GET'])
+@app.route('/buton3/Equity/Instructions', methods=['GET'])
 def downloadAgeing12():
 		filepath = "/home/fsbot/exceltemp"
  
