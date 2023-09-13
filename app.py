@@ -6242,8 +6242,8 @@ def my_form_post1():
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
 	# datePrepared1 = datetime.datetime.strptime(
-		request.form['preparedDate'],
-		'%Y-%m-%d')
+		# request.form['preparedDate'],
+		# '%Y-%m-%d')
 	refference1 = request.form['reff']
 	# denis=datetime.now()
 #
@@ -11006,8 +11006,8 @@ def my_form_post4():
 	preparedBy1 = request.form['preparedBy']
 	clientname1 = request.form['client']   
 	# datePrepared1 = datetime.datetime.strptime(
-		request.form['preparedDate'],
-		'%Y-%m-%d')
+		# request.form['preparedDate'],
+		# '%Y-%m-%d')
 	refference1 = request.form['reff']
 	# denis=datetime.now()
 #
