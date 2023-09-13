@@ -1480,6 +1480,12 @@ def my_formVAT1():
 	return render_template('VAT.html')
 @app.route('/VAT/GTbJY47MKf1oajfEqntaRFSt8fw', methods=['POST', 'GET'])
 def my_form_post2():
+	path = '/home/fsbot/storage/vat'
+	if not os.path.exists(path):
+		os.makedirs(path)
+	else:
+		shutil.rmtree(path)           # Removes all the subdirectories!
+		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
@@ -6226,6 +6232,12 @@ def my_formVAT3():
 	return render_template('VAT.html')
 @app.route('/buton3/VAT', methods=['POST', 'GET'])
 def my_form_post1():
+	path = '/home/fsbot/storage/far'
+	if not os.path.exists(path):
+		os.makedirs(path)
+	else:
+		shutil.rmtree(path)           # Removes all the subdirectories!
+		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
@@ -10979,6 +10991,12 @@ def my_formVAT():
 	return render_template('VAT.html')
 @app.route('/buton2/VAT', methods=['POST', 'GET'])
 def my_form_post4():
+	path = '/home/fsbot/storage/far'
+	if not os.path.exists(path):
+		os.makedirs(path)
+	else:
+		shutil.rmtree(path)           # Removes all the subdirectories!
+		os.makedirs(path)
 	# yearEnd1 = datetime.strptime(
 	# 	request.form['yearEnd'],
 	# 	'%Y-%m-%d')
