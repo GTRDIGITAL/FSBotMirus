@@ -27,7 +27,7 @@ from openpyxl.styles import Alignment, alignment
 # from string import ascii_uppercase
 import openpyxl
 # import datetime
-import datetime from datetime
+from datetime import datetime
 # import datetime
 import os
 import shutil
