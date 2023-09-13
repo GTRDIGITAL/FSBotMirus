@@ -24243,7 +24243,7 @@ def FAR_process():
 	return "0"      
 
 @app.route('/buton2/FAR', methods=['GET'])
-def downloadAgeing20():
+def downloadAgeing30():
 		filepath = "/home/fsbot/exceltemp"
  
 		return send_from_directory(filepath,"Instructions - FAR-Reconciliation.docx", as_attachment=True)	
