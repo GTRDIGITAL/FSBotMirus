@@ -1316,11 +1316,11 @@ def TB_process():
 					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
 
 			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!E:E)'.format(i+14)
+				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
 				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
 
 			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
+				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
 				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
 
 			for i in range(1, len(mylist)+1):
