@@ -805,38 +805,38 @@ def TB_process():
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="Description":
+					if cell.value=="Account title":
 						tbCyDescription=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SID":
+					if cell.value=="Initial balance Debit":
 						tbCySID=cell.column
 
 			for row in TBCY1.iter_rows():
 
 				for cell in row:
-					if cell.value=="SIC":
+					if cell.value=="Initial balance Credit":
 						tbCySIC=cell.column
 					
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCD":
+					if cell.value=="Total Debit":
 						tbCyRCD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCC":
+					if cell.value=="Total Credit":
 						tbCyRCC=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFD":
+					if cell.value=="Final balance Debit":
 						tbCySFD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFC":
+					if cell.value=="Final balance Credit":
 						tbCySFC=cell.column
 
 
