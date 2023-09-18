@@ -728,7 +728,7 @@ def TB_process():
 	
 	# folderpath="/home/auditappnexia/output/tb"
 	folderpath="/home/fsbot/storage"
-	if isChecked4=="":
+	if isChecked5=="":
 		def make_archive(source, destination):
 			base = os.path.basename(destination)
 			name = base.split('.')[0]
