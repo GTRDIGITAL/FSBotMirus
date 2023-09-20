@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>App_Accounting</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   <!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <style>
+body {
+    margin: 0;
+    height: 120vh;
+    display: flex;
+    align-items: center;
+ 
+    justify-content: left;
+    background: rgb(72,25,122);
+   background: linear-gradient(0deg, RGB(0,89,97) 0%, RGB(9,180,174) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
+}
+ h6 {
+      color: #fff;
+      }
+
+      .pd-top{            
+      padding-top: 60px!important;
+      }
+
+      .location {
+      margin-left: 0px;
+      padding-left: 0px;
+      }
+      .location li {
+      padding: 10px 1px 6px 9px!important;
+      margin-bottom: 2px;
+      list-style: none;
+      background: linear-gradient(to right,RGB(0,89,97), RGB(9,180,174));
+      }
+      .location li img {
+      width: 20px;
+      }
+      /*normal*/
+      .location li a {
+      color: #ffffff;
+      font-size: 15px;
+      padding-left: 5px;
+      }     
+       /*radius-4*/
+      .radius-4px {   
+      border-radius: 5px;
+      }
+      /*radius-40*/
+      .radius-40px{
+      border-radius: 40px;
+      }
+      /*curve*/
+      .curve {
+      border-bottom-right-radius: 15px;
+      border-top-left-radius: 15px;
+      }
+      /*curveLeft*/
+      .curveLeft {
+      border-bottom-left-radius: 20px;
+      border-top-left-radius: 20px;
+      }
+      /*curveRight*/
+      .curveRight {
+      border-bottom-right-radius: 20px;
+      border-top-right-radius: 20px;
+      }
+       /*rotate*/
+      .rotate{
+      transform: skew(-21deg);
+      }
+       .location li:hover a {
+      text-decoration: none;
+      color: #dcd9d9
+      }
+      .gradient-shadow {
+  background: rgba(0, 0, 0, 0.2);
+  background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.2) 0%, #fff 100%);
+  background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.2) 0%,#fff 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%,#fff 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(0, 0, 0, 0.2)', endColorstr='#fff',GradientType=1 );
+  filter: blur(2px);
+  width: 755px;
+  height: 500px;
+  /*position: relative;*/
+  /*left: 0px;*/
+  /*top: 10px;*/
+  margin: 0 auto;
+}
+.shadow-box {
+  width: 750px;
+  background: #fff;
+  padding: 20px;
+  /*position: relative;*/
+  /*margin-top: -485px;*/
+  /*height: 500px;*/
+}
+#logo{ 
+    position:fixed; 
+    top:0; 
+    left:35px; 
+    /*left:12;*/
+} 
+
+.col-lg-3{
+    padding-left: 10px;
+    padding-right: 2px;
+}
+
+</style>
+ <div id="logo">
+        <img src="/static/mirus.png" Style="position:left" width="300" height="80">
+    </div>
+
+    </head>
+<body>
+
+
+
+
+ <div class="col-lg-3">
+<div style="font-size:14px;font-family: serif; color: rgba(72,25,122,0.8578781854538691); width:400px; position: left">
+    <!-- <p>Please choose below what application you would like to use</p> -->
+    </div> 
+               
+               <ul class="location">
+                  <!-- <li class="curve">
+                     <a href="/D3APPS/PMG">VAT Apps - PMG</a>
+                  </li>
+                   <li class="curve">
+                     <a href="/D3APPS/CIEL-THALES">VAT Apps - Ciel-Thales</a>
+                  </li>
+                   <li class="curve">
+                     <a href="/D3APPS/STRAUMANN">VAT Apps - Straumann</a>
+                  </li>
+                  <li class="curve">
+                     <a href="/D3APPS/PARTNERHERO">VAT Apps - PARTNERHERO</a>
+                  </li>
+ -->
+                    <li class="curve">
+                        <a href="/">Financial Statements</a>
+                    </li>
+                    <li class="curve">
+                        <a href="/buton2/">Accounting Outsourcing</a>
+                    </li>
+                    <li class="curve">
+                        <a href="/buton3">Accounting Review</a>
+                    </li>
+
+                  <!-- <li class="curve">
+                    <a href="/VAT_Tax">VAT Tax</a>
+                  </li>
+                  <li class="curve">
+                    <a href="/CUI_Extractor">Registre ANAF</a>
+                  </li> -->
+       </ul>
+</div>
+
+  <img class="card-img-top" src="/static/logo2.jpg" alt="Card image cap" style="width:1150px; height: 745px; margin-top:0px;"> 
+
+</body>
+</html>

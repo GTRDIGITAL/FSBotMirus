@@ -44,7 +44,9 @@ var_rute=[]
 #     # print(text)
 #     return render_template("index.html")
 
-
+@app.route('/home')
+def home():
+	return render_template('Home.html')
 # sss
 @app.route('/')
 def FS():
