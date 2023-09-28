@@ -843,7 +843,7 @@ def TB_process():
 
 
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				luntb=len(TBCY1['A'])
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
