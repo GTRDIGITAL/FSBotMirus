@@ -850,7 +850,7 @@ def TB_process():
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 				# sys.exit()
 			try:
-				Account=[b.value for b in TBCY1['A'][2:luntb]]
+				Account=[b.value for b in TBCY1['A'][3:luntb]]
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -859,7 +859,7 @@ def TB_process():
 			for k in range(0,len(Account)):
 				Account[k]=str(Account[k])
 			try:
-				Description=[b.value for b in TBCY1['B'][2:luntb]]
+				Description=[b.value for b in TBCY1['B'][3:luntb]]
 			except:
 				flash("Please insert the correct header for Description in Trial Balance file")
 				return render_template("index.html")
