@@ -850,7 +850,7 @@ def TB_process():
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 				# sys.exit()
 			try:
-				Account=[b.value for b in TBCY1['A'][3:luntb]]
+				Account=[b.value for b in TBCY1['A'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -859,49 +859,49 @@ def TB_process():
 			for k in range(0,len(Account)):
 				Account[k]=str(Account[k])
 			try:
-				Description=[b.value for b in TBCY1['B'][3:luntb]]
+				Description=[b.value for b in TBCY1['B'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Description in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
 				# sys.exit()
 			try:
-				SID=[b.value for b in TBCY1['C'][3:luntb]]
+				SID=[b.value for b in TBCY1['C'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
 				# sys.exit()
 			try:
-				SIC=[b.value for b in TBCY1['D'][3:luntb]]
+				SIC=[b.value for b in TBCY1['D'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
 				# sys.exit()
 			try:
-				RCD=[b.value for b in TBCY1['G'][3:luntb]]
+				RCD=[b.value for b in TBCY1['G'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
 				# sys.exit()
 			try:
-				RCC=[b.value for b in TBCY1['H'][3:luntb]]
+				RCC=[b.value for b in TBCY1['H'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
 				# sys.exit()
 			try:
-				SFD=[b.value for b in TBCY1['I'][3:luntb]]
+				SFD=[b.value for b in TBCY1['I'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
 				# sys.exit()
 			try: 
-				SFC=[b.value for b in TBCY1['J'][3:luntb]]
+				SFC=[b.value for b in TBCY1['J'][3:luntb+1]]
 			except:
 				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
 				return render_template("index.html")
@@ -911,7 +911,7 @@ def TB_process():
 			valoare=len(Account)
 			k=0
 			while(k<valoare):
-				if("TOTAL" in Account[k] ):
+				if("TOTAL" in Account[k]):
 					Account.remove(Account[k])
 					Description.remove(Description[k])
 					SID.remove(SID[k])
