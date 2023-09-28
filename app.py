@@ -866,7 +866,7 @@ def TB_process():
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
 				# sys.exit()
 			try:
-				SID=[b.value for b in TBCY1['C'][1:luntb]]
+				SID=[b.value for b in TBCY1['C'][3:luntb]]
 			except:
 				flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
 				return render_template("index.html")
