@@ -842,87 +842,113 @@ def TB_process():
 			# 			tbCySFC=cell.column
 
 
-			try:
-				luntb=len(TBCY1['A'])
-			except:
-				flash("Please insert the correct header for Account in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-				# sys.exit()
-			try:
-				Account=[b.value for b in TBCY1['A'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Account in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-				# sys.exit()
-			for k in range(0,len(Account)):
-				Account[k]=str(Account[k])
-			try:
-				Description=[b.value for b in TBCY1['B'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Description in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-				# sys.exit()
-			try:
-				SID=[b.value for b in TBCY1['C'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
-				# sys.exit()
-			try:
-				SIC=[b.value for b in TBCY1['D'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
-				# sys.exit()
-			try:
-				RCD=[b.value for b in TBCY1['G'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
-				# sys.exit()
-			try:
-				RCC=[b.value for b in TBCY1['H'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
-				# sys.exit()
-			try:
-				SFD=[b.value for b in TBCY1['I'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-				# sys.exit()
-			try: 
-				SFC=[b.value for b in TBCY1['J'][3:luntb+1]]
-			except:
-				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
-				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
-				# sys.exit()
-			"Create CY PBC"
-			valoare=len(Account)
-			k=0
-			while(k<valoare):
-				if("TOTAL" in Account[k]):
-					Account.remove(Account[k])
-					Description.remove(Description[k])
-					SID.remove(SID[k])
-					SIC.remove(SIC[k])
-					RCD.remove(RCD[k])
-					RCC.remove(RCC[k])
-					SFD.remove(SFD[k])
-					SFC.remove(SFC[k])
-					valoare=valoare-1
-				else:
-					k=k+1
+			# try:
+			# 	luntb=len(TBCY1['A'])
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+			# 	# sys.exit()
+			# try:
+			# 	Account=[b.value for b in TBCY1['A'][2:luntb-1]]
+			# 	print(Account)
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+			# 	# sys.exit()
+			# for k in range(0,len(Account)):
+			# 	Account[k]=str(Account[k])
+			# try:
+			# 	Description=[b.value for b in TBCY1['B'][2:luntb-1]]
+			# 	print(Description)
+			# except:
+			# 	flash("Please insert the correct header for Description in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+			# 	# sys.exit()
+			# try:
+			# 	SID=[b.value for b in TBCY1['C'][2:luntb-1]]
+			# 	print(SID)
+			# except:
+			# 	flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+			# 	# sys.exit()
+			# try:
+			# 	SIC=[b.value for b in TBCY1['D'][2:luntb-1]]
+			# 	print(SIC)
+			# except:
+			# 	flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
+			# 	# sys.exit()
+			# try:
+			# 	RCD=[b.value for b in TBCY1['G'][2:luntb-1]]
+			# 	print(RCD)
+			# except:
+			# 	flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
+			# 	# sys.exit()
+			# try:
+			# 	RCC=[b.value for b in TBCY1['H'][2:luntb-1]]
+			# 	print(RCC)
+			# except:
+			# 	flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
+			# 	# sys.exit()
+			# try:
+			# 	SFD=[b.value for b in TBCY1['I'][2:luntb-1]]
+			# 	print(SFD)
+			# except:
+			# 	flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+			# 	# sys.exit()
+			# try: 
+			# 	SFC=[b.value for b in TBCY1['J'][2:luntb-1]]
+			# 	print(SFC)
+			# except:
+			# 	flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+			# 	# sys.exit()
+			# "Create CY PBC"
+			Account=[]
+			Description=[]
+			SID=[]
+			SIC=[]
+			RCD=[]
+			RCC=[]
+			SFD=[]
+			SFC=[]
+			for i in range(3,TBCY1.max_row):
+				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
+					Account.append(TBCY1.cell(row=i,column=1).value)
+					Description.append(TBCY1.cell(row=i,column=2).value)
+					SID.append(TBCY1.cell(row=i,column=3).value)
+					SIC.append(TBCY1.cell(row=i,column=4).value)
+					RCD.append(TBCY1.cell(row=i,column=7).value)
+					RCC.append(TBCY1.cell(row=i,column=8).value)
+					SFD.append(TBCY1.cell(row=i,column=9).value)
+					SFC.append(TBCY1.cell(row=i,column=10).value)
+			# valoare=len(Account)
+			# k=0
+			# while(k<valoare):
+			# 	if("TOTAL" in Account[k]):
+			# 		Account.remove(Account[k])
+			# 		Description.remove(Description[k])
+			# 		SID.remove(SID[k])
+			# 		SIC.remove(SIC[k])
+			# 		RCD.remove(RCD[k])
+			# 		RCC.remove(RCC[k])
+			# 		SFD.remove(SFD[k])
+			# 		SFC.remove(SFC[k])
+			# 		valoare=valoare-1
+			# 	else:
+			# 		k=k+1
 			if isChecked4=="":
 				TBPY = openpyxl.load_workbook(trialp,data_only=True)
 				TBPY1 = TBPY.active
