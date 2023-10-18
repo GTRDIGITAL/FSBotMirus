@@ -23167,6 +23167,8 @@ def FAR_process():
 		val1 = request.form.get('Reco')
 		val2 = request.form.get('DepReco')
 		val3 = request.form.get('tom')
+		val4 = request.form.get('capitalization')
+		val5 = request.form.get('revaluation')		
 		if val1=="":
 			print("Da")  # daca e bifat
 			val1 = 1
@@ -23186,7 +23188,16 @@ def FAR_process():
 		else:
 			print(val3)            
 			val3 = 0
-
+		if val4=="":  # daca e bifat
+			val4 = 1
+		else:
+			print(val4)            
+			val4 = 0
+		if val5=="":  # daca e bifat
+			val5 = 1
+		else:
+			print(val5)            
+			val5 = 0
 
 		# appfar.mainloop()
 		workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
@@ -23230,6 +23241,20 @@ def FAR_process():
 		FAR = openpyxl.load_workbook(file_location_FAR,data_only=True)
 		FAR1 = FAR.active
 		FAR1.title='FAR'
+		# template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Template FA cap&reev.xlsx",data_only=True)
+		# if( val4==1 and val5==0):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Cap.xlsx",data_only=True)
+		# elif(val4==0 and val5==1):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Rev.xlsx",data_only=True)
+		# elif(val4==1 and val5==1):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Template FA cap&reev.xlsx",data_only=True)
+		# else:
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Gol.xlsx",data_only=True)
+
+		# FARRR = template["FAR Capitalization"]
+
+
+
 		TB = openpyxl.load_workbook(file_location_TB,data_only=True)
 		TB1 = TB.active
 
@@ -23483,6 +23508,26 @@ def FAR_process():
 				  for cell in row:
 					  if cell.value=="Description":
 						  FARDesc=cell.column
+		for row in FAR1.iter_rows():
+		  for cell in row:
+			  if cell.value=="Date of capitalization":
+				  Datecap=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Value of capitalization":
+						  Valuecap=cell.column
+		for row in FAR1.iter_rows():
+		  for cell in row:
+			  if cell.value=="Date of revaluation":
+				  Daterev=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="method - gross/net":
+						  met=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Value after revaluation":
+						  Valuerev=cell.column
 
 		try:
 			lunfar=len(FAR1[FARAcount])
@@ -23515,6 +23560,39 @@ def FAR_process():
 			flash("Please insert the correct header for Accumulated Depreciation in FAR file")
 			return render_template("index.html")
 
+# ===================================			
+		DateCapitalization=[]
+		try:
+		  DateCapitalization=[b.value for b in FAR1[Datecap][FARrow:lunfar+1]]
+		except:
+			DateCapitalization=[]
+			# return render_template("index.html")
+		
+		ValueCapitalization=[]
+		try:
+		  ValueCapitalization=[b.value for b in FAR1[Valuecap][FARrow:lunfar+1]]
+		except:
+			ValueCapitalization=[]
+			# return render_template("index.html")
+		DateRevaluation=[]
+		try:
+		  DateRevaluation=[b.value for b in FAR1[Daterev][FARrow:lunfar+1]]
+		except:
+			DateRevaluation=[]
+			# return render_template("index.html")
+		
+		Method=[]
+		try:
+		  Method=[b.value for b in FAR1[met][FARrow:lunfar+1]]
+		except:
+			Method=[]
+			# return render_template("index.html")
+		ValueRevaluation=[]
+		try:
+		  ValueRevaluation=[b.value for b in FAR1[Valuerev][FARrow:lunfar+1]]
+		except:
+			ValueRevaluation=[]
+			# return render_template("index.html")
 		
 		try:
 			DescriptionFAR=[b.value for b in FAR1[FARDesc][FARrow:lunfar+1]]
@@ -23531,7 +23609,231 @@ def FAR_process():
 		except:
 			flash("Please insert the correct header for UL in FAR file")
 			return render_template("index.html")
+		template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+		if( val4==1 and val5==0):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap.xlsx",data_only=True)
+			FARRR = template["FAR Capitalization"]
+			# FARRR.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+			for i in range(1, len(ValueCapitalization)+1):
+				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+		elif(val4==0 and val5==1):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Rev.xlsx",data_only=True)
 
+			REEV = template["FAR Reevaluation"]
+			# REEV.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=12).value=Method[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'			
+		elif(val4==1 and val5==1):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+			FARRR = template["FAR Capitalization"]
+			# FARRR.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+			for i in range(1, len(ValueCapitalization)+1):
+				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+
+
+			REEV = template["FAR Reevaluation"]
+			# REEV.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=12).value=Method[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
+		else:
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Gol.xlsx",data_only=True)
+
+		# FARRR = template["FAR Capitalization"]
+		# # FARRR.cell (row=10,column=10).value="aa"
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+		# for i in range(1, len(ItemFAR)+1):
+		# 	FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+		# for i in range(1, len(DescriptionFAR)+1):
+		# 	FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+		# for i in range(1, len(UL)+1):
+		# 	FARRR.cell(row=i+13, column=4).value=UL[i-1]
+		# for i in range(1, len(PIFDate)+1):
+		# 	FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+		# for i in range(1, len(GBVFAR)+1):
+		# 	FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+		# for i in range(1, len(AccDeprFAR)+1):
+		# 	FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+		# for i in range(1, len(ChargeFAR)+1):
+		# 	FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+		# for i in range(1, len(DateCapitalization)+1):
+		# 	FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+		# for i in range(1, len(ValueCapitalization)+1):
+		# 	FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+
+
+		# REEV = template["FAR Reevaluation"]
+		# # REEV.cell (row=10,column=10).value="aa"
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+		# for i in range(1, len(ItemFAR)+1):
+		# 	REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+		# for i in range(1, len(DescriptionFAR)+1):
+		# 	REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+		# for i in range(1, len(UL)+1):
+		# 	REEV.cell(row=i+13, column=4).value=UL[i-1]
+		# for i in range(1, len(PIFDate)+1):
+		# 	REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+		# for i in range(1, len(GBVFAR)+1):
+		# 	REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+		# for i in range(1, len(AccDeprFAR)+1):
+		# 	REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+		# for i in range(1, len(ChargeFAR)+1):
+		# 	REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=12).value=Method[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
 		try:
 			lunAdd=len(Add1[AddAcount])
 			ItemAdd=[b.value for b in Add1[AddItem][Addrow:lunAdd+1]]
@@ -23687,9 +23989,9 @@ def FAR_process():
 			pass
 		#   messagebox.showerror("Error", "File: TB. Please rename the headers following instructions. One or more headers could not be found. Be careful at spaces or key-sensitivity!")
 
-		PBC_FAR =FAR.create_sheet("PBC_FAR")
+		PBC_FAR =template.create_sheet("PBC_FAR")
 
-		F10_TB =FAR.create_sheet("F10_TB")
+		F10_TB =template.create_sheet("F10_TB")
 		PBC_FAR.cell(row=1, column=1).value="Item"
 		PBC_FAR.cell(row=1, column=2).value="Account"
 		PBC_FAR.cell(row=1, column=3).value="GBV"
@@ -23864,7 +24166,7 @@ def FAR_process():
 
 
 
-		PBC_Disposals=FAR.create_sheet("PBC_Disposals")
+		PBC_Disposals=template.create_sheet("PBC_Disposals")
 		PBC_Disposals.cell(row=1, column=1).value="Synt 3"
 		PBC_Disposals.cell(row=1, column=2).value="Account"
 		PBC_Disposals.cell(row=1, column=3).value="Item"
@@ -23951,7 +24253,7 @@ def FAR_process():
 			  PBC_Disposals.cell(row=j,column=i).font=font1
 
 		if(val1==1):
-			G100FAR=FAR.create_sheet("G10 FAR Recon")
+			G100FAR=template.create_sheet("G10 FAR Recon")
 			
 
 			G100FAR.title="FAR Recon"
@@ -24485,7 +24787,7 @@ def FAR_process():
 			G100FAR.sheet_view.showGridLines = False
 
 		if(val2==1):
-			  G20=FAR.create_sheet("Depr Recomp")
+			  G20=template.create_sheet("Depr Recomp")
 
 
 			  G20.column_dimensions['A'].width=15
@@ -25368,14 +25670,14 @@ def FAR_process():
 			  G20.sheet_view.showGridLines = False
 
 		if(val3==1):
-			G30=FAR.create_sheet("FA TOM")
+			G30=template.create_sheet("FA TOM")
 
 			# G30.title="G30 FA TOM"
 
 
-			PBC_Addition =FAR.create_sheet("PBC_Add")
+			PBC_Addition =template.create_sheet("PBC_Add")
 
-			# PBC_CIP =FAR.create_sheet("PBC_CIP")
+			# PBC_CIP =template.create_sheet("PBC_CIP")
 
 
 
@@ -26529,7 +26831,7 @@ def FAR_process():
 			G30.sheet_view.showGridLines = False
 
 
-		balanta=FAR.create_sheet('Trial Balance')
+		balanta=template.create_sheet('Trial Balance')
 		mr = TB1.max_row
 		mc = TB1.max_column
 		# copying the cell values from source
@@ -26543,6 +26845,7 @@ def FAR_process():
 				balanta.cell(row = i, column = j).value = c.value
 
 		folderpath = "/home/fsbot/storage/far/"
+		# folderpath = "C:\\Users\\Denis.David\\000\\000\\auditAppsMirus"
 		folder_path=""
 		os.mkdir(folderpath+namec)
 		print(val1,val2,val3)
@@ -26578,10 +26881,11 @@ def FAR_process():
 
 
 
-		FAR.save(folder_path)
+		template.save(folder_path)
 		make_archive(folder_path,"/home/fsbot/storage/far/FAR "+namec+".zip")
+		# make_archive(folder_path,"C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\FAR "+namec+".zip")
 		return send_from_directory(folderpath,"FAR "+namec+".zip", as_attachment=True)
-	return "0"      
+	return "0"          
 
 @app.route('/buton2/FAR/Instructions', methods=['GET'])
 def downloadAgeing30():
@@ -26628,6 +26932,8 @@ def FAR1_process():
 		val1 = request.form.get('Reco')
 		val2 = request.form.get('DepReco')
 		val3 = request.form.get('tom')
+		val4 = request.form.get('capitalization')
+		val5 = request.form.get('revaluation')		
 		if val1=="":
 			print("Da")  # daca e bifat
 			val1 = 1
@@ -26647,7 +26953,16 @@ def FAR1_process():
 		else:
 			print(val3)            
 			val3 = 0
-
+		if val4=="":  # daca e bifat
+			val4 = 1
+		else:
+			print(val4)            
+			val4 = 0
+		if val5=="":  # daca e bifat
+			val5 = 1
+		else:
+			print(val5)            
+			val5 = 0
 
 		# appfar.mainloop()
 		workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
@@ -26691,6 +27006,20 @@ def FAR1_process():
 		FAR = openpyxl.load_workbook(file_location_FAR,data_only=True)
 		FAR1 = FAR.active
 		FAR1.title='FAR'
+		# template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Template FA cap&reev.xlsx",data_only=True)
+		# if( val4==1 and val5==0):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Cap.xlsx",data_only=True)
+		# elif(val4==0 and val5==1):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Rev.xlsx",data_only=True)
+		# elif(val4==1 and val5==1):
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Template FA cap&reev.xlsx",data_only=True)
+		# else:
+		# 	template=openpyxl.load_workbook("C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\Gol.xlsx",data_only=True)
+
+		# FARRR = template["FAR Capitalization"]
+
+
+
 		TB = openpyxl.load_workbook(file_location_TB,data_only=True)
 		TB1 = TB.active
 
@@ -26944,6 +27273,26 @@ def FAR1_process():
 				  for cell in row:
 					  if cell.value=="Description":
 						  FARDesc=cell.column
+		for row in FAR1.iter_rows():
+		  for cell in row:
+			  if cell.value=="Date of capitalization":
+				  Datecap=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Value of capitalization":
+						  Valuecap=cell.column
+		for row in FAR1.iter_rows():
+		  for cell in row:
+			  if cell.value=="Date of revaluation":
+				  Daterev=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="method - gross/net":
+						  met=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Value after revaluation":
+						  Valuerev=cell.column
 
 		try:
 			lunfar=len(FAR1[FARAcount])
@@ -26976,6 +27325,39 @@ def FAR1_process():
 			flash("Please insert the correct header for Accumulated Depreciation in FAR file")
 			return render_template("index.html")
 
+# ===================================			
+		DateCapitalization=[]
+		try:
+		  DateCapitalization=[b.value for b in FAR1[Datecap][FARrow:lunfar+1]]
+		except:
+			DateCapitalization=[]
+			# return render_template("index.html")
+		
+		ValueCapitalization=[]
+		try:
+		  ValueCapitalization=[b.value for b in FAR1[Valuecap][FARrow:lunfar+1]]
+		except:
+			ValueCapitalization=[]
+			# return render_template("index.html")
+		DateRevaluation=[]
+		try:
+		  DateRevaluation=[b.value for b in FAR1[Daterev][FARrow:lunfar+1]]
+		except:
+			DateRevaluation=[]
+			# return render_template("index.html")
+		
+		Method=[]
+		try:
+		  Method=[b.value for b in FAR1[met][FARrow:lunfar+1]]
+		except:
+			Method=[]
+			# return render_template("index.html")
+		ValueRevaluation=[]
+		try:
+		  ValueRevaluation=[b.value for b in FAR1[Valuerev][FARrow:lunfar+1]]
+		except:
+			ValueRevaluation=[]
+			# return render_template("index.html")
 		
 		try:
 			DescriptionFAR=[b.value for b in FAR1[FARDesc][FARrow:lunfar+1]]
@@ -26992,7 +27374,231 @@ def FAR1_process():
 		except:
 			flash("Please insert the correct header for UL in FAR file")
 			return render_template("index.html")
+		template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+		if( val4==1 and val5==0):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap.xlsx",data_only=True)
+			FARRR = template["FAR Capitalization"]
+			# FARRR.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+			for i in range(1, len(ValueCapitalization)+1):
+				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+		elif(val4==0 and val5==1):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Rev.xlsx",data_only=True)
 
+			REEV = template["FAR Reevaluation"]
+			# REEV.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=12).value=Method[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'			
+		elif(val4==1 and val5==1):
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+			FARRR = template["FAR Capitalization"]
+			# FARRR.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+			for i in range(1, len(ValueCapitalization)+1):
+				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+
+
+			REEV = template["FAR Reevaluation"]
+			# REEV.cell (row=10,column=10).value="aa"
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+			for i in range(1, len(ItemFAR)+1):
+				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+			for i in range(1, len(DescriptionFAR)+1):
+				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+13, column=4).value=UL[i-1]
+			for i in range(1, len(PIFDate)+1):
+				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+			for i in range(1, len(GBVFAR)+1):
+				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+			for i in range(1, len(ChargeFAR)+1):
+				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=12).value=Method[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
+		else:
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Gol.xlsx",data_only=True)
+
+		# FARRR = template["FAR Capitalization"]
+		# # FARRR.cell (row=10,column=10).value="aa"
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+		# for i in range(1, len(ItemFAR)+1):
+		# 	FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+		# for i in range(1, len(DescriptionFAR)+1):
+		# 	FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+		# for i in range(1, len(UL)+1):
+		# 	FARRR.cell(row=i+13, column=4).value=UL[i-1]
+		# for i in range(1, len(PIFDate)+1):
+		# 	FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+		# for i in range(1, len(GBVFAR)+1):
+		# 	FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
+		# for i in range(1, len(AccDeprFAR)+1):
+		# 	FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+		# for i in range(1, len(ChargeFAR)+1):
+		# 	FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+		# for i in range(1, len(DateCapitalization)+1):
+		# 	FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+		# for i in range(1, len(ValueCapitalization)+1):
+		# 	FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+
+
+		# REEV = template["FAR Reevaluation"]
+		# # REEV.cell (row=10,column=10).value="aa"
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+		# for i in range(1, len(ItemFAR)+1):
+		# 	REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+		# for i in range(1, len(DescriptionFAR)+1):
+		# 	REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
+		# for i in range(1, len(UL)+1):
+		# 	REEV.cell(row=i+13, column=4).value=UL[i-1]
+		# for i in range(1, len(PIFDate)+1):
+		# 	REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+		# for i in range(1, len(GBVFAR)+1):
+		# 	REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+		# for i in range(1, len(AccDeprFAR)+1):
+		# 	REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+		# for i in range(1, len(ChargeFAR)+1):
+		# 	REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=12).value=Method[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+		# for i in range(1, len(AccountFAR)+1):
+		# 	REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
 		try:
 			lunAdd=len(Add1[AddAcount])
 			ItemAdd=[b.value for b in Add1[AddItem][Addrow:lunAdd+1]]
@@ -27148,9 +27754,9 @@ def FAR1_process():
 			pass
 		#   messagebox.showerror("Error", "File: TB. Please rename the headers following instructions. One or more headers could not be found. Be careful at spaces or key-sensitivity!")
 
-		PBC_FAR =FAR.create_sheet("PBC_FAR")
+		PBC_FAR =template.create_sheet("PBC_FAR")
 
-		F10_TB =FAR.create_sheet("F10_TB")
+		F10_TB =template.create_sheet("F10_TB")
 		PBC_FAR.cell(row=1, column=1).value="Item"
 		PBC_FAR.cell(row=1, column=2).value="Account"
 		PBC_FAR.cell(row=1, column=3).value="GBV"
@@ -27325,7 +27931,7 @@ def FAR1_process():
 
 
 
-		PBC_Disposals=FAR.create_sheet("PBC_Disposals")
+		PBC_Disposals=template.create_sheet("PBC_Disposals")
 		PBC_Disposals.cell(row=1, column=1).value="Synt 3"
 		PBC_Disposals.cell(row=1, column=2).value="Account"
 		PBC_Disposals.cell(row=1, column=3).value="Item"
@@ -27412,7 +28018,7 @@ def FAR1_process():
 			  PBC_Disposals.cell(row=j,column=i).font=font1
 
 		if(val1==1):
-			G100FAR=FAR.create_sheet("G10 FAR Recon")
+			G100FAR=template.create_sheet("G10 FAR Recon")
 			
 
 			G100FAR.title="FAR Recon"
@@ -27946,7 +28552,7 @@ def FAR1_process():
 			G100FAR.sheet_view.showGridLines = False
 
 		if(val2==1):
-			  G20=FAR.create_sheet("Depr Recomp")
+			  G20=template.create_sheet("Depr Recomp")
 
 
 			  G20.column_dimensions['A'].width=15
@@ -28829,14 +29435,14 @@ def FAR1_process():
 			  G20.sheet_view.showGridLines = False
 
 		if(val3==1):
-			G30=FAR.create_sheet("FA TOM")
+			G30=template.create_sheet("FA TOM")
 
 			# G30.title="G30 FA TOM"
 
 
-			PBC_Addition =FAR.create_sheet("PBC_Add")
+			PBC_Addition =template.create_sheet("PBC_Add")
 
-			# PBC_CIP =FAR.create_sheet("PBC_CIP")
+			# PBC_CIP =template.create_sheet("PBC_CIP")
 
 
 
@@ -29990,7 +30596,7 @@ def FAR1_process():
 			G30.sheet_view.showGridLines = False
 
 
-		balanta=FAR.create_sheet('Trial Balance')
+		balanta=template.create_sheet('Trial Balance')
 		mr = TB1.max_row
 		mc = TB1.max_column
 		# copying the cell values from source
@@ -30004,6 +30610,7 @@ def FAR1_process():
 				balanta.cell(row = i, column = j).value = c.value
 
 		folderpath = "/home/fsbot/storage/far/"
+		# folderpath = "C:\\Users\\Denis.David\\000\\000\\auditAppsMirus"
 		folder_path=""
 		os.mkdir(folderpath+namec)
 		print(val1,val2,val3)
@@ -30039,10 +30646,11 @@ def FAR1_process():
 
 
 
-		FAR.save(folder_path)
+		template.save(folder_path)
 		make_archive(folder_path,"/home/fsbot/storage/far/FAR "+namec+".zip")
+		# make_archive(folder_path,"C:\\Users\\Denis.David\\000\\000\\auditAppsMirus\\FAR "+namec+".zip")
 		return send_from_directory(folderpath,"FAR "+namec+".zip", as_attachment=True)
-	return "0"      
+	return "0"          
 
 
 @app.route('/buton3/JE/Instructions', methods=['GET'])
