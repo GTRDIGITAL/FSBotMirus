@@ -204,7 +204,6 @@ img {
     padding-left: 10px;
     padding-right: 2px;
 }
-
 .revaluation {
     position: absolute;
     top: 325px; /* Specificați distanța de sus */
@@ -215,10 +214,9 @@ img {
     top: 350px; /* Specificați distanța de sus */
     right: 488px; /* Specificați distanța de la dreapta */
 }
-
     </style>
  <div id="logo">
-    <img src="/static/logo3.png" Style="position:left;width:150px; height: 45px;"><a href="/"></a>
+    <img src="/static/mirus.png" Style="position:left;width:150px; height: 45px;"><a href="/"></a>
 </div>
  </head>
 <body>
@@ -267,48 +265,49 @@ img {
             </div>
                        
                        <ul class="location">
+                         <li class="curve">
+                            <a href="/buton3/FS">Financial Statements</a>
+                         </li>
+                      </ul>                    
+                        <ul class="location">
+                         <li class="curve">
+                            <a href="/buton3/TB">Trial Balances</a>
+                         </li>
+                      </ul>
+                      <ul class="location">
                         <li class="curve">
-                            <a href="/MonthlyPL/GTbSJ64rDiFqoNeQyowqNh9pzcE">Monthly P&L</a>
-                         </li>
-                         <li class="curve">
-                            <a href="/Payroll/GTaNuOQQZKTcQDsHcaAcqBLKmv3">Payroll</a>
-                         </li>
-                         <li class="curve">
-                            <a href="/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn">Ageing</a>
-                         </li>
-                         <li class="curve">
-                            <a href="/GTv51bfdGKkuaKo9ggrm7plxaaa">Financial Statements</a>
-                         </li>
-                         <li class="curve">
-                           <a href="/FAR/GTlM4R8dQS5LxdPkpfkPphvCgjq">Fixed Assets Register</a> 
+                            <a href="/buton3/VAT">VAT</a>
                         </li>
-                         <li class="curve">
-                            <a href="/JournalEntries/GTv5Wjk1PboB5kRZ8elnBUECePO">Journal Entries</a>
+                      </ul>
+                      <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/Ageing">Ageing</a>
                          </li>
-                         <li class="curve">
-                            <a href="/JournalEntriesRoutines/GTRk1PboB5knZ8elePOv5WjBUEC">Journal Entries Routines</a>
-                        </li>
-                         <li class="curve">
-                            <a href="/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY">Trial Balances</a>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/FAR">FAR</a>
                          </li>
-                         <li class="curve">
-                            <a href="/Equity/GTRWhSrzitah41yuSieMuQ6KVpn">Equity</a>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/Equity">Equity</a>
                          </li>
-                         <li class="curve">
-                            <a href="/LSFS/GTdjA2adxpt6S8HHJtDhJ2dvPWS">Leadsheets</a>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/Monthly">Monthly P&L</a>
                          </li>
-                         <li class="curve">
-                            <a href="/Reco/GT2ls9r79v3pr7L844am9wHNPCp">Reconciliation details with TB</a>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/Payroll">Payroll</a>
                          </li>
-                         <li class="curve">
-                            <a href="/MergeFiles/GT2hAORxnRTx8HrE2mSyYRiqgOp">Merge Files</a>
+                      </ul>
+                        <ul class="location">
+                        <li class="curve">
+                            <a href="/buton3/JE">Journal Entries</a>
                          </li>
-                         <li class="curve">
-                            <a href="/SplitFiles/GTuKs87BZEXuVAXP57qjmBZkwj2">Split Files</a>
-                         </li>
-                         <li class="curve">
-                            <a href="/VAT/GTbJY47MKf1oajfEqntaRFSt8fw">VAT</a>
-                        </li>
                       </ul>
                        </div>
                     <!-- </div> -->
@@ -318,7 +317,7 @@ img {
         <div class="container" style="float:center">
             <div class="row">
                 <div class="col">
-                    <button type="button" onclick="location.href = '/FAR/Instructions';" class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961;"> Instructions</button>
+                    <button type="button" onclick="location.href = '/buton3/FAR/Instructions';" class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961;"> Instructions</button>
                     <!-- <label class="form-label" for="customFile">Default file input example</label> -->
                     <!-- <input type="file" class="btn btn-primary btn-lg" id="customFile" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;"> Instructions </input> -->
                     <!-- <input id="uploadFile" placeholder="File Name here" disabled="disabled" /> -->
@@ -487,14 +486,6 @@ img {
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <input  type="checkbox" name="tom" value="" id="tom">
-                    <label for="tom" >
-                        Table of movement
-                    </label>
-                </div>
-            </div>
-            <div class="row">
                 <div class="capitalization">
                     <input  type="checkbox" name="capitalization" value="" id="capitalization">
                     <label for="capitalization" >
@@ -510,6 +501,14 @@ img {
                     </label>
                 </div>
             </div>
+<!--             <div class="row">
+                <div class="col">
+                    <input  type="checkbox" name="tom" value="" id="tom">
+                    <label for="tom" >
+                        Table of movement
+                    </label>
+                </div>
+            </div> -->
             <div class="row" >
                 <div class="col">
                     <input type="text" name="client" placeholder="Client name" aria-label="Client name" Style="margin-bottom:10px; width:300px;" >
