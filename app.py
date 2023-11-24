@@ -360,6 +360,10 @@ def FS_process():
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=23).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:D,4,0))"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=24).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:M,13,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:M,13,0)),0)"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=25).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:N,14,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:N,14,0)),0)"
 
 			# for i in range(len(Account)+1,800):
 			# 	test.cell(row=i+14,column=14).value=""
@@ -5898,6 +5902,10 @@ def FS1_process():
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=23).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:D,4,0))"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=24).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:M,13,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:M,13,0)),0)"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=25).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:N,14,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:N,14,0)),0)"
 
 			# for i in range(len(Account)+1,800):
 			# 	test.cell(row=i+14,column=14).value=""
@@ -6144,6 +6152,10 @@ def FS1_process():
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$E,5,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$E,5,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$E,5,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$E,5,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=23).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:D,4,0))"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=24).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:M,13,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:M,13,0)),0)"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=25).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:N,14,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:N,14,0)),0)"
 
 			# for i in range(len(Account)+1,800):
 			# 	test.cell(row=i+14,column=14).value=""
@@ -11437,6 +11449,10 @@ def FS2_process():
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$J,10,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$J,10,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$F,6,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$F,6,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=23).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:D,4,0))"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=24).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:M,13,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:M,13,0)),0)"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=25).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:N,14,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:N,14,0)),0)"
 
 			# for i in range(len(Account)+1,800):
 			# 	test.cell(row=i+14,column=14).value=""
@@ -11683,6 +11699,10 @@ def FS2_process():
 				test.cell(row=i+14,column=22).value='''=IF(IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$E,5,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$E,5,0)))=0,"",IF(A{0}="BS",IFERROR(VLOOKUP(TRIM($E{0}),'BS Mapping std'!$A:$H,8,0),VLOOKUP(TRIM($D{0}),'BS Mapping std'!$A:$H,8,0)),IFERROR(VLOOKUP(TRIM($E{0}),'PL mapping Std'!$A:$E,5,0),VLOOKUP(TRIM($D{0}),'PL mapping Std'!$A:$E,5,0))))'''.format(i+14)
 			for i in range(1,len(Account)+1):
 				test.cell(row=i+14,column=23).value="=_xlfn.IFERROR(VLOOKUP(E"+str(14+i)+",'F30 mapping'!A:D,4,0),VLOOKUP(D"+str(14+i)+",'F30 mapping'!A:D,4,0))"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=24).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:M,13,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:M,13,0)),0)"
+			for i in range(1,len(Account)+1):
+				test.cell(row=i+14,column=25).value="=IF(B"+str(14+i)+"<6,IFERROR(VLOOKUP(E"+str(14+i)+",'BS Mapping std'!A:N,14,0),VLOOKUP(D"+str(14+i)+",'BS Mapping std'!A:N,14,0)),0)"
 
 			# for i in range(len(Account)+1,800):
 			# 	test.cell(row=i+14,column=14).value=""
