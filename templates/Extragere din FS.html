@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Accounting App</title>
+    <title>Extragere din FS</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -70,8 +70,8 @@ body {
     border-color: #02d3f5;
     -webkit-transform: translate(30px, 0px);
     transform: translate(30px, 0px);
-    background: -webkit-linear-gradient(left, #006a7b, #002340);
-    background: linear-gradient(to right, #006a7b, #002340); 
+    background: rgb(72,25,122);
+    background: linear-gradient(0deg, RGB(0,89,97) 0%, RGB(9,180,174) 13%, rgba(198,186,212,0.8046568969384629) 31%, rgba(235,234,237,1) 50%, rgba(243,241,246,1) 60%, rgba(255,255,255,255) 100%);
 }
 
 .admin-sidenav li:active {
@@ -242,12 +242,12 @@ img {
 }
     </style>
 <a href="/"id="logo">
-    <img src="/static/mirus.png" Style="position:left" width="280" height="80"><a href="/"></a>
+    <img src="/static/mirus.png" Style="position:left" width="230" height="80"><a href="/"></a>
     
     
 </a>
  </head>
-<body>
+ <body>
     <!-- <div>
         <img src="D:\WEBDEV\Platforma apps web\1186766353337358335_1186766353337358335.png">
         <div cStyle="width: 100px; margin-bottom:10px;"></div>
@@ -261,50 +261,31 @@ img {
                        
                        <ul class="location">
                          <li class="curve">
-                            <a href="/buton3/FS">Financial Statements</a>
+                            <a href="/">Financial Statements</a>
                          </li>
                       </ul>                    
                         <ul class="location">
                          <li class="curve">
-                            <a href="/buton3/TB">Trial Balances</a>
+                            <a href="/TrialBalances/GT3SjGyxpbcxV35PeSUpKJQIOgY">Trial Balances</a>
                          </li>
                       </ul>
                       <ul class="location">
                         <li class="curve">
-                            <a href="/buton3/VAT">VAT</a>
+                            <a href="/VAT/GTbJY47MKf1oajfEqntaRFSt8fw">VAT</a>
                         </li>
                       </ul>
                       <ul class="location">
                         <li class="curve">
-                            <a href="/buton3/Ageing">Ageing</a>
+                            <a href="/Ageing/GTv51bfdGKkuaKo9ggrm7plxbjn">Ageing</a>
                          </li>
                       </ul>
-                        <ul class="location">
+                      <ul class="location">
                         <li class="curve">
-                            <a href="/buton3/FAR">FAR</a>
-                         </li>
-                      </ul>
-                        <ul class="location">
-                        <li class="curve">
-                            <a href="/buton3/Equity">Equity</a>
-                         </li>
-                      </ul>
-                        <ul class="location">
-                        <li class="curve">
-                            <a href="/buton3/Monthly">Monthly P&L</a>
-                         </li>
-                      </ul>
-                        <ul class="location">
-                        <li class="curve">
-                            <a href="/buton3/Payroll">Payroll</a>
-                         </li>
-                      </ul>
-                        <ul class="location">
-                        <li class="curve">
-                            <a href="/buton3/JE">Journal Entries</a>
+                            <a href="/Extragere/GT3SjGyxpbcxV35PeSUpKJQIddd">FS Extractions</a>
                          </li>
                       </ul>
                        </div>
+                       
 
                        
                     <!-- </div> -->
@@ -349,7 +330,7 @@ img {
         <div class="container" style="float:center">
             <div class="row">
                 <div class="col">
-                    <button type="button"  onclick="location.href = '/buton3/FS/Instructions';" class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961;"> Instructions</button>
+                    <button type="button"  onclick="location.href = '/Instructions';" class="btn btn-primary btn-lg" value="all" Style="width: 300px; margin-bottom:10px; background-color: #005961;"> Instructions</button>
                     <!-- <label class="form-label" for="customFile">Default file input example</label> -->
                     <!-- <input type="file" class="btn btn-primary btn-lg" id="customFile" Style="width: 300px; margin-bottom:10px; background-color: #742D9B;"> Instructions </input> -->
                     <!-- <input id="uploadFile" placeholder="File Name here" disabled="disabled" /> -->
@@ -363,20 +344,8 @@ img {
             </div>
                 
     
-            <div class="row">
-                <div class="col">
-                    <label>
-                        Please select your preferred language:
-                    </label>
-                </div>
-            </div>
+           
 
-            <div class="row">
-                <select name="limba">
-                        <option value="Romana(RO)">Romana(RO)</option>
-                        <option value="English(EN)">English(EN)</option>
-                </select>
-            </div>
 
             <div> 
                 <p>
@@ -387,15 +356,16 @@ img {
             <div class="row">
                 <div class="col">
                     <label>
-                        Type of financial Statements:
+                        Type of entity:
                     </label>
                 </div>
             </div>
 
             <div class="row">
-                <select name="forma">
-                        <option value="Romana(RO)">Financial Statements "Forma Lunga"</option>
-                        <option value="English(EN)">Financial Statements "Forma scurta"</option>
+                <select name="entitate">
+                        <option value="Mari">Entitati mari</option>
+                        <option value="Mici">Entitati mici</option>
+                        <option value="Microentitati">Microentitati</option>
                 </select>
             </div>
 
@@ -413,44 +383,14 @@ img {
                 <div class="col">
                     <!-- <button type="button" class="btn btn-primary btn-lg" value="1" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;" input type="file"> Import monthly trial balances</button> -->
                      <div class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961;">
-                        <span>Import TB</span>
-                        <input id="uploadBtn" name="TB" type="file" class="upload" />
+                        <span>Import XML Files</span>
+                        <input id="uploadBtn" name="xml" accept=".XML" type="file" class="upload" multiple />
                      </div>
                     
                                    
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <input  type="checkbox" name="XMLADD" value="" id="XMLADD" class="chckbox">
-                    <label for="D300" >
-                        DO you want also to add XML 
-                    </label>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col">
-                    <!-- <button type="button" class="btn btn-primary btn-lg" value="1" Style="width: 300px;margin-bottom:10px; background-color: #742D9B;" input type="file"> Import monthly trial balances</button> -->
-                     <div class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961;">
-                        <span>Import XML</span>
-                        <input id="fileToUpload2" accept=".XML" name="xml" type="file" class="upload" multiple />
-                     </div>
-                    
-                                   
-                </div>
-            </div>
-           
-  <!--           <div class="row">
-                <div class="col">
-                    <button id="fileToUpload2" type="file"  class="fileUpload btn btn-primary btn-lg"  Style="width: 300px; margin-bottom:10px; background-color: #005961; display: none;" > Import XML</button>
-                                   
-                </div>
-            </div> -->
-
-<p> 
-</p>            
+            
             <div class="row" >
                 <div class="col">
                     <input type="text" name="company" placeholder="Company" aria-label="Client name" Style="margin-bottom:10px; width:300px;" >
@@ -458,7 +398,7 @@ img {
                     
                 
             </div>
-
+<!-- 
             <div class="row">
                 <div class="col">
                     <input class="text"  name="address" placeholder="Address"  aria-label="Year End" Style="margin-bottom:10px; width:300px;">
@@ -470,9 +410,9 @@ img {
                     <input type="text" name="code" placeholder="VAT tax code" aria-label="Current Year" Style="margin-bottom:10px; width:300px;" >
                 </div>    
                 
-            </div>
+            </div> -->
 
-            <div class="row" >
+<!--             <div class="row" >
                 <div class="col">
                     <input type="text" name="registration" placeholder="Registration no" aria-label="Previous Year" Style="margin-bottom:10px; width:300px;" >
                 </div>    
@@ -502,7 +442,7 @@ img {
                     
                     
                 
-            </div> 
+            </div>  -->
             
             <!-- </div>  
             <div class="row">

@@ -148,6 +148,14 @@ def FS_process():
 	year= request.form['year']
 	dropdownlimba = request.form.get('limba')
 	dropdownfroma = request.form.get('forma')
+	val1 = request.form.get('XMLADD')
+	filez = request.files.getlist('xml')
+	print(filez,"askdjhaghcasaqbwduhajisdoucygaudscj")
+
+	if val1=="":
+		val1=1
+	else:
+		val1=0
 
 	if str(dropdownlimba)=="Romana(RO)":
 		option=1
@@ -161,7 +169,7 @@ def FS_process():
 
 
 	folderpath="/home/fsbot/storage"
-	# folderpath="D:\\FSFinal\\FSBotMirus"
+	# folderpath="D:/MirusFSRO/FSBotMirus"
 
 	if request.method == 'POST':
 
@@ -223,7 +231,156 @@ def FS_process():
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
-
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=12).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=13).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=14).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 
 			for row in TBCY1.iter_rows():
 					for cell in row:
@@ -467,6 +624,159 @@ def FS_process():
 			else:
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS RO.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS RO.xlsx')
+
+
+
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=14).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=11).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=12).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -708,6 +1018,404 @@ def FS_process():
 			n16opex.print_area="A10:C30"
 			mapping.save(str(folderpath)+"/Financial Statements-"+str(company)+".xlsx")
 	return send_from_directory(folderpath,"Financial Statements-"+str(company)+".xlsx",as_attachment=True)
+
+
+
+# @app.route('/Extragere/GT3SjGyxpbcxV35PeSUpKJQIddd')
+# def Extragere():
+# 	return render_template('Extragere din FS.html')
+# @app.route('/Extragere/GT3SjGyxpbcxV35PeSUpKJQIddd', methods=['POST', 'GET'])
+# def Extragere_process():
+# 	filez = request.files.getlist('xml')   
+# 	dropdownentitate = request.form.get('entitate')
+# 	if str(dropdownentitate)=="Mari":
+# 		out=openpyxl.load_workbook('C:\\Users\\Denis.David\\FS\\FS\\FSBotMirus1\\FSBotMirus\\Entitati_Mari_2022.xlsx',data_only=True)
+
+# 	if str(dropdownentitate)=="Mici":
+# 		out=openpyxl.load_workbook('C:\\Users\\Denis.David\\FS\\FS\\FSBotMirus1\\FSBotMirus\\Entitati_Mici_2022.xlsx',data_only=True)
+
+# 	if str(dropdownentitate)=="Microentitati":
+# 		out=openpyxl.load_workbook('C:\\Users\\Denis.David\\FS\\FS\\FSBotMirus1\\FSBotMirus\\Microentitati_2022.xlsx',data_only=True)
+
+	
+# 	folderpath="C:\\Users\\Denis.David\\FS\\FS\\FSBotMirus1\\FSBotMirus"
+
+# 	# mapping.save(str(folderpath)+"/Financial Statements.xlsx")
+
+
+
+# 	fisiere=list(filez)
+
+# 	y=0
+# 	start="/"
+
+# 	# y=fisiere[0].count(start)
+
+# 	# fisiere2=[]
+# 	# for i in range(0,len(fisiere)):
+# 	# 	fisiere2.append(fisiere[i].replace("/","",y-1))
+
+# 	# fisiere3=[]
+# 	# for i in range(0,len(fisiere)):
+# 	# 	fisiere3.append(fisiere2[i][fisiere2[i].find("/")+len("/"):fisiere2[i].rfind(".")]) 
+
+
+# 	for z in range(0, len(fisiere)):
+# 		xmlx=fisiere[z]
+# 		tree=ET.parse(xmlx)
+# 		root=tree.getroot()
+
+# 		output=out["BS F10"]
+# 		for row in output.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code OB":
+# 		            codOB=cell.column
+# 		            codrOB=cell.row
+
+# 		for row in output.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code CB":
+# 		            codCB=cell.column
+
+# 		for row in output.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Amount OB":
+# 		            colOB=cell.column
+
+# 		for row in output.iter_rows():
+
+# 		    for cell in row:
+# 		        if cell.value=="Amount CB":
+# 		            colCB=cell.column
+
+
+# 		# try:
+# 		luntb=len(output[codOB])
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+# 		#     sys.exit()
+# 		# try:
+# 		lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+# 		#     sys.exit()
+# 		# try:
+# 		lamob=[b.value for b in output[colOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		for i in range(0,len(lcodob)):
+# 			for child in root:
+# 				if("F10" in child.tag):
+# 					try:
+# 						output.cell(row=i+2,column=5).value=int(child.attrib[str(lcodob[i])])
+# 					except:
+# 						print("None")
+
+
+# 		for i in range(0,len(lcodcb)):
+# 			for child in root:
+# 				if("F10" in child.tag):
+# 					try:
+# 						output.cell(row=i+2,column=7).value=int(child.attrib[str(lcodcb[i])])
+# 					except:
+# 						print("None")
+
+# 		output2=out["IS F20"]
+# 		for row in output2.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code OB":
+# 		            codOB=cell.column
+# 		            codrOB=cell.row
+
+# 		for row in output2.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code CB":
+# 		            codCB=cell.column
+
+# 		for row in output2.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Amount OB":
+# 		            colOB=cell.column
+
+# 		for row in output2.iter_rows():
+
+# 		    for cell in row:
+# 		        if cell.value=="Amount CB":
+# 		            colCB=cell.column
+
+
+# 		# try:
+# 		luntb=len(output2[codOB])
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+# 		#     sys.exit()
+# 		# try:
+# 		plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+# 		#     sys.exit()
+# 		# try:
+# 		plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		for i in range(0,len(plcodob)):
+# 			for child in root:
+# 				if("F20" in child.tag):
+# 					try:
+# 						output2.cell(row=i+2,column=13).value=int(child.attrib[str(plcodob[i])])
+# 					except:
+# 						print("None")
+
+
+# 		for i in range(0,len(plcodcb)):
+# 			for child in root:
+# 				if("F20" in child.tag):
+# 					try:
+# 						output2.cell(row=i+2,column=14).value=int(child.attrib[str(plcodcb[i])])
+# 					except:
+# 						print("None")
+
+# 		output3=out["Other Information (30)"]
+# 		for row in output3.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code col 1":
+# 		            codOB=cell.column
+# 		            codrOB=cell.row
+
+# 		for row in output3.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code col 2":
+# 		            codCB=cell.column
+
+# 		for row in output3.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code col 3":
+# 		            codcol3=cell.column
+
+
+# 		for row in output3.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Amount col1":
+# 		            colOB=cell.column
+
+# 		for row in output3.iter_rows():
+
+# 		    for cell in row:
+# 		        if cell.value=="Amount col2":
+# 		            colCB=cell.column
+
+# 		for row in output3.iter_rows():
+
+# 		    for cell in row:
+# 		        if cell.value=="Amount col3":
+# 		            colCB=cell.column
+
+# 		# try:
+# 		luntb=len(output3[codOB])
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+# 		#     sys.exit()
+# 		# try:
+# 		plcodob=[b.value for b in output3[codOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+
+
+# 		# try:
+# 		plcodcb=[b.value for b in output3[codCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+# 		#     sys.exit()
+# 		# try:
+# 		plcodcol=[b.value for b in output3[codcol3][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+
+# 		# try:
+# 		plamob=[b.value for b in output3[colOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		plamcb=[b.value for b in output3[colCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		for i in range(0,len(plcodob)):
+# 			for child in root:
+# 				if("F30" in child.tag):
+# 					try:
+# 						output3.cell(row=i+2,column=5).value=int(child.attrib[str(plcodob[i])])
+# 					except:
+# 						print("None")
+
+
+# 		for i in range(0,len(plcodcb)):
+# 			for child in root:
+# 				if("F30" in child.tag):
+# 					try:
+# 						output3.cell(row=i+2,column=7).value=int(child.attrib[str(plcodcb[i])])
+# 					except:
+# 						print("None")
+
+# 		for i in range(0,len(plcodcol)):
+# 			for child in root:
+# 				if("F30" in child.tag):
+# 					try:
+# 						output3.cell(row=i+2,column=9).value=int(child.attrib[str(plcodcol[i])])
+# 					except:
+# 						print("None")
+# 		output4=out["PPE (40)"]
+# 		for row in output4.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code OB":
+# 		            codOB=cell.column
+# 		            codrOB=cell.row
+
+# 		for row in output4.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code inc":
+# 		            codCB=cell.column
+
+# 		for row in output4.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code decr1":
+# 		            codcol3=cell.column
+
+
+# 		for row in output4.iter_rows():
+# 		    for cell in row:
+# 		        if cell.value=="Code decr2":
+# 		            colOB=cell.column
+
+# 		for row in output4.iter_rows():
+
+# 		    for cell in row:
+# 		        if cell.value=="Code CB":
+# 		            colCB=cell.column
+
+# 		# try:
+# 		luntb=len(output4[codOB])
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+# 		#     sys.exit()
+# 		# try:
+# 		codopen=[b.value for b in output4[codOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+
+
+# 		# try:
+# 		codinc=[b.value for b in output4[codCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+# 		#     sys.exit()
+# 		# try:
+# 		coddec1=[b.value for b in output4[codcol3][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+# 		#     sys.exit()
+
+
+# 		# try:
+# 		coddec2=[b.value for b in output4[colOB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		# try:
+# 		codclo=[b.value for b in output4[colCB][codrOB:luntb]]
+# 		# except:
+# 		#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+# 		#     sys.exit()
+
+# 		for i in range(0,len(codopen)):
+# 			for child in root:
+# 				if("F40" in child.tag):
+# 					try:
+# 						output4.cell(row=i+2,column=5).value=int(child.attrib[str(codopen[i])])
+# 					except:
+# 						print("None")
+
+
+# 		for i in range(0,len(codinc)):
+# 			for child in root:
+# 				if("F40" in child.tag):
+# 					try:
+# 						output4.cell(row=i+2,column=7).value=int(child.attrib[str(codinc[i])])
+# 					except:
+# 						print("None")
+
+# 		for i in range(0,len(coddec1)):
+# 			for child in root:
+# 				if("F40" in child.tag):
+# 					try:
+# 						output4.cell(row=i+2,column=9).value=int(child.attrib[str(coddec1[i])])
+# 					except:
+# 						print("None")
+
+# 		for i in range(0,len(coddec2)):
+# 			for child in root:
+# 				if("F40" in child.tag):
+# 					try:
+# 						output4.cell(row=i+2,column=11).value=int(child.attrib[str(coddec2[i])])
+# 					except:
+# 						print("None")
+
+# 		for i in range(0,len(codclo)):
+# 			for child in root:
+# 				if("F40" in child.tag):
+# 					try:
+# 						output4.cell(row=i+2,column=13).value=int(child.attrib[str(codclo[i])])
+# 					except:
+# 						print("None")
+
+
+# 		out.save(folderpath+"/Extragere FS.xlsx")
+
+
+
+
+
+
+# 	return send_from_directory(folderpath,"Extragere FS.xlsx",as_attachment=True)
+
 
 
 @app.route('/TrialBalances/Instructions', methods=['GET'])
@@ -5675,12 +6383,6 @@ def downloadPMG3():
 	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
 @app.route('/buton2/FS', methods=['POST', 'GET'])
 def FS1_process():
-	path = '/home/fsbot/storage'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
 	company = request.form['company']
 	address = request.form['address']
 	vatTaxCode = request.form['code']
@@ -5690,6 +6392,14 @@ def FS1_process():
 	year= request.form['year']
 	dropdownlimba = request.form.get('limba')
 	dropdownfroma = request.form.get('forma')
+	val1 = request.form.get('XMLADD')
+	filez = request.files.getlist('xml')
+	print(filez,"askdjhaghcasaqbwduhajisdoucygaudscj")
+
+	if val1=="":
+		val1=1
+	else:
+		val1=0
 
 	if str(dropdownlimba)=="Romana(RO)":
 		option=1
@@ -5703,7 +6413,7 @@ def FS1_process():
 
 
 	folderpath="/home/fsbot/storage"
-	# folderpath="D:\\FSFinal\\FSBotMirus"
+	# folderpath="D:/MirusFSRO/FSBotMirus"
 
 	if request.method == 'POST':
 
@@ -5765,7 +6475,156 @@ def FS1_process():
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
-
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=12).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=13).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=14).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 
 			for row in TBCY1.iter_rows():
 					for cell in row:
@@ -6009,6 +6868,159 @@ def FS1_process():
 			else:
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS RO.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS RO.xlsx')
+
+
+
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=14).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=11).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=12).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -11222,12 +12234,6 @@ def downloadPMG():
 	return send_from_directory("/home/fsbot/exceltemp","Instructions - FS.docx", as_attachment=True)
 @app.route('/buton3/FS', methods=['POST', 'GET'])
 def FS2_process():
-	path = '/home/fsbot/storage'
-	if not os.path.exists(path):
-		os.makedirs(path)
-	else:
-		shutil.rmtree(path)           # Removes all the subdirectories!
-		os.makedirs(path)
 	company = request.form['company']
 	address = request.form['address']
 	vatTaxCode = request.form['code']
@@ -11237,6 +12243,14 @@ def FS2_process():
 	year= request.form['year']
 	dropdownlimba = request.form.get('limba')
 	dropdownfroma = request.form.get('forma')
+	val1 = request.form.get('XMLADD')
+	filez = request.files.getlist('xml')
+	print(filez,"askdjhaghcasaqbwduhajisdoucygaudscj")
+
+	if val1=="":
+		val1=1
+	else:
+		val1=0
 
 	if str(dropdownlimba)=="Romana(RO)":
 		option=1
@@ -11250,7 +12264,7 @@ def FS2_process():
 
 
 	folderpath="/home/fsbot/storage"
-	# folderpath="D:\\FSFinal\\FSBotMirus"
+	# folderpath="D:/MirusFSRO/FSBotMirus"
 
 	if request.method == 'POST':
 
@@ -11312,7 +12326,156 @@ def FS2_process():
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
-
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=12).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=13).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=14).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 
 			for row in TBCY1.iter_rows():
 					for cell in row:
@@ -11556,6 +12719,159 @@ def FS2_process():
 			else:
 				mapping=openpyxl.load_workbook('/home/fsbot/exceltemp/Template FS RO.xlsx')
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\Template FS RO.xlsx')
+
+
+
+			if(val1==1):
+ 
+				fisiere=list(filez)
+	 
+				y=0
+				start="/"
+				print("==================================================aiiiiiciiiiii se lucreazaaaaaa============================")
+	 
+				for z in range(0, len(fisiere)):
+					xmlx=fisiere[z]
+					tree=ET.parse(xmlx)
+					root=tree.getroot()
+	 
+					output=mapping["1. F10"]
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					lcodob=[b.value for b in output[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					lcodcb=[b.value for b in output[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					lamob=[b.value for b in output[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					lamcb=[b.value for b in output[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(lcodob)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=13).value=int(child.attrib[str(lcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(lcodcb)):
+						for child in root:
+							if("F10" in child.tag):
+								try:
+									output.cell(row=i+12,column=14).value=int(child.attrib[str(lcodcb[i])])
+								except:
+									print("None")
+	 
+					output2=mapping["2. F20"]
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code OB":
+					            codOB=cell.column
+					            codrOB=cell.row
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Code CB":
+					            codCB=cell.column
+	 
+					for row in output2.iter_rows():
+					    for cell in row:
+					        if cell.value=="Amount OB":
+					            colOB=cell.column
+	 
+					for row in output2.iter_rows():
+	 
+					    for cell in row:
+					        if cell.value=="Amount CB":
+					            colCB=cell.column
+	 
+	 
+					# try:
+					luntb=len(output2[codOB])
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Code OB'")
+					#     sys.exit()
+					# try:
+					plcodob=[b.value for b in output2[codOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					#     sys.exit()
+	 
+					# try:
+					plcodcb=[b.value for b in output2[codCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					#     sys.exit()
+					# try:
+					plamob=[b.value for b in output2[colOB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					# try:
+					plamcb=[b.value for b in output2[colCB][codrOB:luntb]]
+					# except:
+					#     messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					#     sys.exit()
+	 
+					for i in range(0,len(plcodob)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=11).value=int(child.attrib[str(plcodob[i])])
+								except:
+									print("None")
+	 
+	 
+					for i in range(0,len(plcodcb)):
+						for child in root:
+							if("F20" in child.tag):
+								try:
+									output2.cell(row=i+12,column=12).value=int(child.attrib[str(plcodcb[i])])
+								except:
+									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald)
 			TBCY1 = TBCY.active
@@ -33420,5 +34736,8 @@ def JE_process():
 	return render_template('JE.html')
 
 
+# if __name__ == '__main__':
+#    	app.run()
+
 if __name__ == '__main__':
-   	app.run()
+    app.run(debug="True",host="0.0.0.0", port=3009)
