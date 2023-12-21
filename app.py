@@ -24802,6 +24802,7 @@ def FAR_process():
 		# except:
 		#   a=1
 
+
 		for row in FAR1.iter_rows():
 			for cell in row:
 				if cell.value=="Item":
@@ -24868,6 +24869,10 @@ def FAR_process():
 				  for cell in row:
 					  if cell.value=="Value after revaluation":
 						  Valuerev=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Cost":
+						  cost=cell.column
 
 		try:
 			lunfar=len(FAR1[FARAcount])
@@ -24914,6 +24919,12 @@ def FAR_process():
 		except:
 			ValueCapitalization=[]
 			# return render_template("index.html")
+		CostCap=[]
+		try:
+		  CostCap=[b.value for b in FAR1[cost][FARrow:lunfar+1]]
+		except:
+			CostCap=[]
+			# return render_template("index.html")
 		DateRevaluation=[]
 		try:
 		  DateRevaluation=[b.value for b in FAR1[Daterev][FARrow:lunfar+1]]
@@ -24951,154 +24962,294 @@ def FAR_process():
 			return render_template("index.html")
 		template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
 		if( val4==1 and val5==0):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/FAR cu capitalizari - updated GT.xlsx",data_only=True)
 			FARRR = template["FAR Capitalization"]
+			FARRR.cell(row=15, column=13).value=postdate
+			FARRR.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=13).value=yearentry
+			FARRR.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=9).value='=SUM(I17:I1000)'
+			FARRR.cell(row=14, column=10).value='=SUM(J17:J1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=27).value='=SUM(AA17:AA1000)'
+			FARRR.cell(row=14, column=28).value='=SUM(AB17:AB1000)'
+			FARRR.cell(row=14, column=30).value='=SUM(AD17:AD1000)'
+			FARRR.cell(row=14, column=31).value='=SUM(AE17:AE1000)'
 			# FARRR.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				FARRR.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'	
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				FARRR.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+				FARRR.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+				FARRR.cell(row=i+16, column=6).value=PIFDate[i-1]		
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
-			for i in range(1, len(AccDeprFAR)+1):
-				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+				FARRR.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(ChargeFAR)+1):
-				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
-			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
-			for i in range(1, len(DateCapitalization)+1):
-				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+				FARRR.cell(row=i+16, column=10).value=ChargeFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+16, column=11).value=AccDeprFAR[i-1]
+
+			for i in range(1, len(CostCap)+1):
+				FARRR.cell(row=i+16, column=13).value=CostCap[i-1]
+
+
+
+
+
 			for i in range(1, len(ValueCapitalization)+1):
-				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+				FARRR.cell(row=i+16, column=14).value=ValueCapitalization[i-1]		
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+16, column=15).value=DateCapitalization[i-1]	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				FARRR.cell(row=i+16, column=16).value='=H'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+				FARRR.cell(row=i+16, column=17).value='=P'+str(16+i)+'-W'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+				FARRR.cell(row=i+16, column=18).value='=DATE(YEAR(F'+str(16+i)+'),MONTH(F'+str(16+i)+')+1,1)'	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+				FARRR.cell(row=i+16, column=19).value='=IF(MID(A'+str(16+i)+',4,1)="D",MIN(G'+str(16+i)+',DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',DAY(R'+str(16+i)+'))),(DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',1)))'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+				FARRR.cell(row=i+16, column=20).value='=DATEDIF(IF(MAX(R'+str(16+i)+',$M$15)>$M$14+1,$M$14+1,MAX(R'+str(16+i)+',$M$15)),MAX($M$15,MIN($M$14+1,S'+str(16+i)+')),"m")'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+				FARRR.cell(row=i+16, column=21).value='=DATEDIF(F'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=22).value='=IF(YEAR(O'+str(16+i)+')=YEAR($M$14),DATEDIF(O'+str(16+i)+',$M$14,"m"),12)'
+
+
+
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=23).value='=DATEDIF(F'+str(16+i)+',O'+str(16+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=24).value='=DATEDIF(O'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=25).value='=((M'+str(16+i)+'/P'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=26).value='=(N'+str(16+i)+'/Q'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=27).value='=(Y'+str(16+i)+'*T'+str(16+i)+')+(Z'+str(16+i)+'*V'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=28).value='=IF($E$'+str(16+i)+'=0,"N/A – no depr expense in FAR PBC",IF(J'+str(16+i)+'<0,J'+str(16+i)+'+AA'+str(16+i)+',J'+str(16+i)+'-AA'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=30).value='=(Y'+str(16+i)+'*U'+str(16+i)+')+(Z'+str(16+i)+'*X'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=31).value='=IF(K'+str(16+i)+'<0,K'+str(16+i)+'+AD'+str(16+i)+',K'+str(16+i)+'-AD'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=32).value='=IF(AD'+str(16+i)+'<=I'+str(16+i)+',"OK","Not OK")'
+
+
+
 		elif(val4==0 and val5==1):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Rev.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/FAR cu reevaluari - updated GT.xlsx",data_only=True)
 
 			REEV = template["FAR Reevaluation"]
+			REEV.cell(row=15, column=13).value=postdate
+			REEV.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=14, column=13).value=yearentry
+			REEV.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=13, column=9).value='=SUM(I17:I1000)'
+			REEV.cell(row=13, column=10).value='=SUM(J17:J1000)'
+			REEV.cell(row=13, column=11).value='=SUM(K17:K1000)'
 			# REEV.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				REEV.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				REEV.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				REEV.cell(row=i+13, column=4).value=UL[i-1]
+				REEV.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+				REEV.cell(row=i+16, column=6).value=PIFDate[i-1]			
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+				REEV.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(AccDeprFAR)+1):
-				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
-			for i in range(1, len(ChargeFAR)+1):
-				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+				REEV.cell(row=i+16, column=10).value='=((YEAR(M'+str(16+i)+')-E'+str(16+i)+')*12+(12-MONTH(F'+str(16+i)+')))*I'+str(16+i)+'/H'+str(16+i)+''
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+16, column=11).value='=I'+str(16+i)+'-J'+str(16+i)+''
+
+
+
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+				REEV.cell(row=i+16, column=13).value=DateRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+				REEV.cell(row=i+16, column=14).value=Method[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=12).value=Method[i-1]
+				REEV.cell(row=i+16, column=15).value=ValueRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+				REEV.cell(row=i+16, column=16).value='=O'+str(16+i)+'-K'+str(16+i)+''
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+				REEV.cell(row=i+16, column=17).value='=H'+str(16+i)+'-DATEDIF(F'+str(16+i)+',M'+str(16+i)+',"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				REEV.cell(row=i+16, column=18).value='=Q'+str(16+i)+'-DATEDIF(M'+str(16+i)+',$M$14,"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+				REEV.cell(row=i+16, column=19).value='=IF(YEAR($M$14)=YEAR(M'+str(16+i)+'),DATEDIF(M'+str(16+i)+',$M$14,"m"),12)'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'			
+				REEV.cell(row=i+16, column=20).value='=(Q'+str(16+i)+'-R'+str(16+i)+')*O'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=21).value='=O'+str(16+i)+'-T'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=22).value='=P'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=23).value='=V'+str(16+i)+'*S'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=24).value='=V'+str(16+i)+'*(Q'+str(16+i)+'-R'+str(16+i)+')'			
+
+
+
 		elif(val4==1 and val5==1):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap+rev.xlsx",data_only=True)
 			FARRR = template["FAR Capitalization"]
+			FARRR.cell(row=15, column=13).value=postdate
+			FARRR.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=13).value=yearentry
+			FARRR.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=9).value='=SUM(I17:I1000)'
+			FARRR.cell(row=14, column=10).value='=SUM(J17:J1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=27).value='=SUM(AA17:AA1000)'
+			FARRR.cell(row=14, column=28).value='=SUM(AB17:AB1000)'
+			FARRR.cell(row=14, column=30).value='=SUM(AD17:AD1000)'
+			FARRR.cell(row=14, column=31).value='=SUM(AE17:AE1000)'
 			# FARRR.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				FARRR.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'	
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				FARRR.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+				FARRR.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+				FARRR.cell(row=i+16, column=6).value=PIFDate[i-1]		
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
-			for i in range(1, len(AccDeprFAR)+1):
-				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+				FARRR.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(ChargeFAR)+1):
-				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
-			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
-			for i in range(1, len(DateCapitalization)+1):
-				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+				FARRR.cell(row=i+16, column=10).value=ChargeFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+16, column=11).value=AccDeprFAR[i-1]
+
+			for i in range(1, len(CostCap)+1):
+				FARRR.cell(row=i+16, column=13).value=CostCap[i-1]
+
+
+
+
+
 			for i in range(1, len(ValueCapitalization)+1):
-				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+				FARRR.cell(row=i+16, column=14).value=ValueCapitalization[i-1]		
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+16, column=15).value=DateCapitalization[i-1]	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				FARRR.cell(row=i+16, column=16).value='=H'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+				FARRR.cell(row=i+16, column=17).value='=P'+str(16+i)+'-W'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+				FARRR.cell(row=i+16, column=18).value='=DATE(YEAR(F'+str(16+i)+'),MONTH(F'+str(16+i)+')+1,1)'	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+				FARRR.cell(row=i+16, column=19).value='=IF(MID(A'+str(16+i)+',4,1)="D",MIN(G'+str(16+i)+',DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',DAY(R'+str(16+i)+'))),(DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',1)))'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+				FARRR.cell(row=i+16, column=20).value='=DATEDIF(IF(MAX(R'+str(16+i)+',$M$15)>$M$14+1,$M$14+1,MAX(R'+str(16+i)+',$M$15)),MAX($M$15,MIN($M$14+1,S'+str(16+i)+')),"m")'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+				FARRR.cell(row=i+16, column=21).value='=DATEDIF(F'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=22).value='=IF(YEAR(O'+str(16+i)+')=YEAR($M$14),DATEDIF(O'+str(16+i)+',$M$14,"m"),12)'
+
+
+
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=23).value='=DATEDIF(F'+str(16+i)+',O'+str(16+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=24).value='=DATEDIF(O'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=25).value='=((M'+str(16+i)+'/P'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=26).value='=(N'+str(16+i)+'/Q'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=27).value='=(Y'+str(16+i)+'*T'+str(16+i)+')+(Z'+str(16+i)+'*V'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=28).value='=IF($E$'+str(16+i)+'=0,"N/A – no depr expense in FAR PBC",IF(J'+str(16+i)+'<0,J'+str(16+i)+'+AA'+str(16+i)+',J'+str(16+i)+'-AA'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=30).value='=(Y'+str(16+i)+'*U'+str(16+i)+')+(Z'+str(16+i)+'*X'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=31).value='=IF(K'+str(16+i)+'<0,K'+str(16+i)+'+AD'+str(16+i)+',K'+str(16+i)+'-AD'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=32).value='=IF(AD'+str(16+i)+'<=I'+str(16+i)+',"OK","Not OK")'
 
 
 			REEV = template["FAR Reevaluation"]
+			REEV.cell(row=15, column=13).value=postdate
+			REEV.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=14, column=13).value=yearentry
+			REEV.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=13, column=9).value='=SUM(I17:I1000)'
+			REEV.cell(row=13, column=10).value='=SUM(J17:J1000)'
+			REEV.cell(row=13, column=11).value='=SUM(K17:K1000)'
 			# REEV.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				REEV.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				REEV.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				REEV.cell(row=i+13, column=4).value=UL[i-1]
+				REEV.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+				REEV.cell(row=i+16, column=6).value=PIFDate[i-1]			
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+				REEV.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(AccDeprFAR)+1):
-				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
-			for i in range(1, len(ChargeFAR)+1):
-				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+				REEV.cell(row=i+16, column=10).value='=((YEAR(M'+str(16+i)+')-E'+str(16+i)+')*12+(12-MONTH(F'+str(16+i)+')))*I'+str(16+i)+'/H'+str(16+i)+''
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+16, column=11).value='=I'+str(16+i)+'-J'+str(16+i)+''
+
+
+
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+				REEV.cell(row=i+16, column=13).value=DateRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+				REEV.cell(row=i+16, column=14).value=Method[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=12).value=Method[i-1]
+				REEV.cell(row=i+16, column=15).value=ValueRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+				REEV.cell(row=i+16, column=16).value='=O'+str(16+i)+'-K'+str(16+i)+''
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+				REEV.cell(row=i+16, column=17).value='=H'+str(16+i)+'-DATEDIF(F'+str(16+i)+',M'+str(16+i)+',"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				REEV.cell(row=i+16, column=18).value='=Q'+str(16+i)+'-DATEDIF(M'+str(16+i)+',$M$14,"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+				REEV.cell(row=i+16, column=19).value='=IF(YEAR($M$14)=YEAR(M'+str(16+i)+'),DATEDIF(M'+str(16+i)+',$M$14,"m"),12)'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
+				REEV.cell(row=i+16, column=20).value='=(Q'+str(16+i)+'-R'+str(16+i)+')*O'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=21).value='=O'+str(16+i)+'-T'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=22).value='=P'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=23).value='=V'+str(16+i)+'*S'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=24).value='=V'+str(16+i)+'*(Q'+str(16+i)+'-R'+str(16+i)+')'	
 		else:
 			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Gol.xlsx",data_only=True)
 
@@ -28633,6 +28784,10 @@ def FAR1_process():
 				  for cell in row:
 					  if cell.value=="Value after revaluation":
 						  Valuerev=cell.column
+		for row in FAR1.iter_rows():
+				  for cell in row:
+					  if cell.value=="Cost":
+						  cost=cell.column
 
 		try:
 			lunfar=len(FAR1[FARAcount])
@@ -28679,6 +28834,12 @@ def FAR1_process():
 		except:
 			ValueCapitalization=[]
 			# return render_template("index.html")
+		CostCap=[]
+		try:
+		  CostCap=[b.value for b in FAR1[cost][FARrow:lunfar+1]]
+		except:
+			CostCap=[]
+			# return render_template("index.html")
 		DateRevaluation=[]
 		try:
 		  DateRevaluation=[b.value for b in FAR1[Daterev][FARrow:lunfar+1]]
@@ -28716,154 +28877,294 @@ def FAR1_process():
 			return render_template("index.html")
 		template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
 		if( val4==1 and val5==0):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/FAR cu capitalizari - updated GT.xlsx",data_only=True)
 			FARRR = template["FAR Capitalization"]
+			FARRR.cell(row=15, column=13).value=postdate
+			FARRR.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=13).value=yearentry
+			FARRR.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=9).value='=SUM(I17:I1000)'
+			FARRR.cell(row=14, column=10).value='=SUM(J17:J1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=27).value='=SUM(AA17:AA1000)'
+			FARRR.cell(row=14, column=28).value='=SUM(AB17:AB1000)'
+			FARRR.cell(row=14, column=30).value='=SUM(AD17:AD1000)'
+			FARRR.cell(row=14, column=31).value='=SUM(AE17:AE1000)'
 			# FARRR.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				FARRR.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'	
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				FARRR.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+				FARRR.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+				FARRR.cell(row=i+16, column=6).value=PIFDate[i-1]		
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
-			for i in range(1, len(AccDeprFAR)+1):
-				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+				FARRR.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(ChargeFAR)+1):
-				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
-			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
-			for i in range(1, len(DateCapitalization)+1):
-				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+				FARRR.cell(row=i+16, column=10).value=ChargeFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+16, column=11).value=AccDeprFAR[i-1]
+
+			for i in range(1, len(CostCap)+1):
+				FARRR.cell(row=i+16, column=13).value=CostCap[i-1]
+
+
+
+
+
 			for i in range(1, len(ValueCapitalization)+1):
-				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+				FARRR.cell(row=i+16, column=14).value=ValueCapitalization[i-1]		
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+16, column=15).value=DateCapitalization[i-1]	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				FARRR.cell(row=i+16, column=16).value='=H'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+				FARRR.cell(row=i+16, column=17).value='=P'+str(16+i)+'-W'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+				FARRR.cell(row=i+16, column=18).value='=DATE(YEAR(F'+str(16+i)+'),MONTH(F'+str(16+i)+')+1,1)'	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+				FARRR.cell(row=i+16, column=19).value='=IF(MID(A'+str(16+i)+',4,1)="D",MIN(G'+str(16+i)+',DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',DAY(R'+str(16+i)+'))),(DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',1)))'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+				FARRR.cell(row=i+16, column=20).value='=DATEDIF(IF(MAX(R'+str(16+i)+',$M$15)>$M$14+1,$M$14+1,MAX(R'+str(16+i)+',$M$15)),MAX($M$15,MIN($M$14+1,S'+str(16+i)+')),"m")'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+				FARRR.cell(row=i+16, column=21).value='=DATEDIF(F'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=22).value='=IF(YEAR(O'+str(16+i)+')=YEAR($M$14),DATEDIF(O'+str(16+i)+',$M$14,"m"),12)'
+
+
+
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=23).value='=DATEDIF(F'+str(16+i)+',O'+str(16+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=24).value='=DATEDIF(O'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=25).value='=((M'+str(16+i)+'/P'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=26).value='=(N'+str(16+i)+'/Q'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=27).value='=(Y'+str(16+i)+'*T'+str(16+i)+')+(Z'+str(16+i)+'*V'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=28).value='=IF($E$'+str(16+i)+'=0,"N/A – no depr expense in FAR PBC",IF(J'+str(16+i)+'<0,J'+str(16+i)+'+AA'+str(16+i)+',J'+str(16+i)+'-AA'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=30).value='=(Y'+str(16+i)+'*U'+str(16+i)+')+(Z'+str(16+i)+'*X'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=31).value='=IF(K'+str(16+i)+'<0,K'+str(16+i)+'+AD'+str(16+i)+',K'+str(16+i)+'-AD'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=32).value='=IF(AD'+str(16+i)+'<=I'+str(16+i)+',"OK","Not OK")'
+
+
+
 		elif(val4==0 and val5==1):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Rev.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/FAR cu reevaluari - updated GT.xlsx",data_only=True)
 
 			REEV = template["FAR Reevaluation"]
+			REEV.cell(row=15, column=13).value=postdate
+			REEV.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=14, column=13).value=yearentry
+			REEV.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=13, column=9).value='=SUM(I17:I1000)'
+			REEV.cell(row=13, column=10).value='=SUM(J17:J1000)'
+			REEV.cell(row=13, column=11).value='=SUM(K17:K1000)'
 			# REEV.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				REEV.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				REEV.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				REEV.cell(row=i+13, column=4).value=UL[i-1]
+				REEV.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+				REEV.cell(row=i+16, column=6).value=PIFDate[i-1]			
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+				REEV.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(AccDeprFAR)+1):
-				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
-			for i in range(1, len(ChargeFAR)+1):
-				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+				REEV.cell(row=i+16, column=10).value='=((YEAR(M'+str(16+i)+')-E'+str(16+i)+')*12+(12-MONTH(F'+str(16+i)+')))*I'+str(16+i)+'/H'+str(16+i)+''
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+16, column=11).value='=I'+str(16+i)+'-J'+str(16+i)+''
+
+
+
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+				REEV.cell(row=i+16, column=13).value=DateRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+				REEV.cell(row=i+16, column=14).value=Method[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=12).value=Method[i-1]
+				REEV.cell(row=i+16, column=15).value=ValueRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+				REEV.cell(row=i+16, column=16).value='=O'+str(16+i)+'-K'+str(16+i)+''
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+				REEV.cell(row=i+16, column=17).value='=H'+str(16+i)+'-DATEDIF(F'+str(16+i)+',M'+str(16+i)+',"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				REEV.cell(row=i+16, column=18).value='=Q'+str(16+i)+'-DATEDIF(M'+str(16+i)+',$M$14,"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+				REEV.cell(row=i+16, column=19).value='=IF(YEAR($M$14)=YEAR(M'+str(16+i)+'),DATEDIF(M'+str(16+i)+',$M$14,"m"),12)'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'			
+				REEV.cell(row=i+16, column=20).value='=(Q'+str(16+i)+'-R'+str(16+i)+')*O'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=21).value='=O'+str(16+i)+'-T'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=22).value='=P'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=23).value='=V'+str(16+i)+'*S'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=24).value='=V'+str(16+i)+'*(Q'+str(16+i)+'-R'+str(16+i)+')'			
+
+
+
 		elif(val4==1 and val5==1):
-			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Template FA cap&reev.xlsx",data_only=True)
+			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Cap+rev.xlsx",data_only=True)
 			FARRR = template["FAR Capitalization"]
+			FARRR.cell(row=15, column=13).value=postdate
+			FARRR.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=13).value=yearentry
+			FARRR.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			FARRR.cell(row=14, column=9).value='=SUM(I17:I1000)'
+			FARRR.cell(row=14, column=10).value='=SUM(J17:J1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=11).value='=SUM(K17:K1000)'
+			FARRR.cell(row=14, column=27).value='=SUM(AA17:AA1000)'
+			FARRR.cell(row=14, column=28).value='=SUM(AB17:AB1000)'
+			FARRR.cell(row=14, column=30).value='=SUM(AD17:AD1000)'
+			FARRR.cell(row=14, column=31).value='=SUM(AE17:AE1000)'
 			# FARRR.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				FARRR.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'	
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				FARRR.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				FARRR.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				FARRR.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				FARRR.cell(row=i+13, column=4).value=UL[i-1]
+				FARRR.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				FARRR.cell(row=i+13, column=5).value=PIFDate[i-1]
+				FARRR.cell(row=i+16, column=6).value=PIFDate[i-1]		
+			for i in range(1, len(UL)+1):
+				FARRR.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				FARRR.cell(row=i+13, column=6).value=GBVFAR[i-1]
-			for i in range(1, len(AccDeprFAR)+1):
-				FARRR.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
+				FARRR.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(ChargeFAR)+1):
-				FARRR.cell(row=i+13, column=8).value=ChargeFAR[i-1]
-			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
-			for i in range(1, len(DateCapitalization)+1):
-				FARRR.cell(row=i+13, column=11).value=DateCapitalization[i-1]
+				FARRR.cell(row=i+16, column=10).value=ChargeFAR[i-1]
+			for i in range(1, len(AccDeprFAR)+1):
+				FARRR.cell(row=i+16, column=11).value=AccDeprFAR[i-1]
+
+			for i in range(1, len(CostCap)+1):
+				FARRR.cell(row=i+16, column=13).value=CostCap[i-1]
+
+
+
+
+
 			for i in range(1, len(ValueCapitalization)+1):
-				FARRR.cell(row=i+13, column=12).value=ValueCapitalization[i-1]
+				FARRR.cell(row=i+16, column=14).value=ValueCapitalization[i-1]		
+			for i in range(1, len(DateCapitalization)+1):
+				FARRR.cell(row=i+16, column=15).value=DateCapitalization[i-1]	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=13).value='=D'+str(13+i)+'-DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				FARRR.cell(row=i+16, column=16).value='=H'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=14).value='=L'+str(13+i)+'/M'+str(13+i)+'*(12-MONTH(K'+str(13+i)+')+1)'
+				FARRR.cell(row=i+16, column=17).value='=P'+str(16+i)+'-W'+str(16+i)+''		
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=15).value='=L'+str(13+i)+'-N'+str(13+i)+''
+				FARRR.cell(row=i+16, column=18).value='=DATE(YEAR(F'+str(16+i)+'),MONTH(F'+str(16+i)+')+1,1)'	
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=17).value='=F'+str(13+i)+'+L'+str(13+i)+''
+				FARRR.cell(row=i+16, column=19).value='=IF(MID(A'+str(16+i)+',4,1)="D",MIN(G'+str(16+i)+',DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',DAY(R'+str(16+i)+'))),(DATE(YEAR(R'+str(16+i)+'),MONTH(R'+str(16+i)+')+P'+str(16+i)+',1)))'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=18).value='=N'+str(13+i)+'+H'+str(13+i)+''
+				FARRR.cell(row=i+16, column=20).value='=DATEDIF(IF(MAX(R'+str(16+i)+',$M$15)>$M$14+1,$M$14+1,MAX(R'+str(16+i)+',$M$15)),MAX($M$15,MIN($M$14+1,S'+str(16+i)+')),"m")'
 			for i in range(1, len(AccountFAR)+1):
-				FARRR.cell(row=i+13, column=19).value='=Q'+str(13+i)+'-R'+str(13+i)+''
+				FARRR.cell(row=i+16, column=21).value='=DATEDIF(F'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=22).value='=IF(YEAR(O'+str(16+i)+')=YEAR($M$14),DATEDIF(O'+str(16+i)+',$M$14,"m"),12)'
+
+
+
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=23).value='=DATEDIF(F'+str(16+i)+',O'+str(16+i)+',"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=24).value='=DATEDIF(O'+str(16+i)+',$M$14,"m")'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=25).value='=((M'+str(16+i)+'/P'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=26).value='=(N'+str(16+i)+'/Q'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=27).value='=(Y'+str(16+i)+'*T'+str(16+i)+')+(Z'+str(16+i)+'*V'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=28).value='=IF($E$'+str(16+i)+'=0,"N/A – no depr expense in FAR PBC",IF(J'+str(16+i)+'<0,J'+str(16+i)+'+AA'+str(16+i)+',J'+str(16+i)+'-AA'+str(16+i)+'))'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=30).value='=(Y'+str(16+i)+'*U'+str(16+i)+')+(Z'+str(16+i)+'*X'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=31).value='=IF(K'+str(16+i)+'<0,K'+str(16+i)+'+AD'+str(16+i)+',K'+str(16+i)+'-AD'+str(16+i)+')'
+			for i in range(1, len(AccountFAR)+1):
+				FARRR.cell(row=i+16, column=32).value='=IF(AD'+str(16+i)+'<=I'+str(16+i)+',"OK","Not OK")'
 
 
 			REEV = template["FAR Reevaluation"]
+			REEV.cell(row=15, column=13).value=postdate
+			REEV.cell(row=15, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=14, column=13).value=yearentry
+			REEV.cell(row=14, column=13).number_format='mm/dd/yyyy'
+			REEV.cell(row=13, column=9).value='=SUM(I17:I1000)'
+			REEV.cell(row=13, column=10).value='=SUM(J17:J1000)'
+			REEV.cell(row=13, column=11).value='=SUM(K17:K1000)'
 			# REEV.cell (row=10,column=10).value="aa"
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=2).value=AccountFAR[i-1]
+				REEV.cell(row=i+16, column=1).value='=LEFT(TRIM(B'+str(16+i)+'),3)'
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=2).value=AccountFAR[i-1]
 			for i in range(1, len(ItemFAR)+1):
-				REEV.cell(row=i+13, column=1).value=ItemFAR[i-1]
+				REEV.cell(row=i+16, column=3).value=ItemFAR[i-1]
 			for i in range(1, len(DescriptionFAR)+1):
-				REEV.cell(row=i+13, column=3).value=DescriptionFAR[i-1]
-			for i in range(1, len(UL)+1):
-				REEV.cell(row=i+13, column=4).value=UL[i-1]
+				REEV.cell(row=i+16, column=4).value=DescriptionFAR[i-1]
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=5).value='=YEAR(F'+str(16+i)+')'	
 			for i in range(1, len(PIFDate)+1):
-				REEV.cell(row=i+13, column=5).value=PIFDate[i-1]
+				REEV.cell(row=i+16, column=6).value=PIFDate[i-1]			
+			for i in range(1, len(UL)+1):
+				REEV.cell(row=i+16, column=8).value=UL[i-1]
 			for i in range(1, len(GBVFAR)+1):
-				REEV.cell(row=i+13, column=6).value=GBVFAR[i-1]
+				REEV.cell(row=i+16, column=9).value=GBVFAR[i-1]
 			for i in range(1, len(AccDeprFAR)+1):
-				REEV.cell(row=i+13, column=7).value=AccDeprFAR[i-1]
-			for i in range(1, len(ChargeFAR)+1):
-				REEV.cell(row=i+13, column=8).value=ChargeFAR[i-1]
+				REEV.cell(row=i+16, column=10).value='=((YEAR(M'+str(16+i)+')-E'+str(16+i)+')*12+(12-MONTH(F'+str(16+i)+')))*I'+str(16+i)+'/H'+str(16+i)+''
+			for i in range(1, len(AccDeprFAR)+1):
+				REEV.cell(row=i+16, column=11).value='=I'+str(16+i)+'-J'+str(16+i)+''
+
+
+
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=9).value='=F'+str(13+i)+'-H'+str(13+i)+''
+				REEV.cell(row=i+16, column=13).value=DateRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=11).value=DateRevaluation[i-1]
+				REEV.cell(row=i+16, column=14).value=Method[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=12).value=Method[i-1]
+				REEV.cell(row=i+16, column=15).value=ValueRevaluation[i-1]
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=13).value=ValueRevaluation[i-1]
+				REEV.cell(row=i+16, column=16).value='=O'+str(16+i)+'-K'+str(16+i)+''
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=15).value='=(M'+str(13+i)+'-F'+str(13+i)+'+H'+str(13+i)+')*0+(M'+str(13+i)+'-I'+str(13+i)+')'
+				REEV.cell(row=i+16, column=17).value='=H'+str(16+i)+'-DATEDIF(F'+str(16+i)+',M'+str(16+i)+',"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=16).value='=DATEDIF(E'+str(13+i)+',K'+str(13+i)+',"m")'
+				REEV.cell(row=i+16, column=18).value='=Q'+str(16+i)+'-DATEDIF(M'+str(16+i)+',$M$14,"m")'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=17).value='=P'+str(13+i)+'-12'
+				REEV.cell(row=i+16, column=19).value='=IF(YEAR($M$14)=YEAR(M'+str(16+i)+'),DATEDIF(M'+str(16+i)+',$M$14,"m"),12)'
 			for i in range(1, len(AccountFAR)+1):
-				REEV.cell(row=i+13, column=18).value='=IF(Q'+str(13+i)+'>0,O'+str(13+i)+'/P'+str(13+i)+'*12,0)'
+				REEV.cell(row=i+16, column=20).value='=(Q'+str(16+i)+'-R'+str(16+i)+')*O'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=21).value='=O'+str(16+i)+'-T'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=22).value='=P'+str(16+i)+'/Q'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=23).value='=V'+str(16+i)+'*S'+str(16+i)+''	
+			for i in range(1, len(AccountFAR)+1):
+				REEV.cell(row=i+16, column=24).value='=V'+str(16+i)+'*(Q'+str(16+i)+'-R'+str(16+i)+')'	
 		else:
 			template=openpyxl.load_workbook("/home/fsbot/exceltemp/Gol.xlsx",data_only=True)
 
