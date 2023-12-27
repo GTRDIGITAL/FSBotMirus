@@ -327,7 +327,7 @@ def FS_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
@@ -723,7 +723,7 @@ def FS_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
@@ -6571,7 +6571,7 @@ def FS1_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
@@ -6967,7 +6967,7 @@ def FS1_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
@@ -12422,7 +12422,7 @@ def FS2_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
@@ -12818,7 +12818,7 @@ def FS2_process():
 	 
 					for row in output2.iter_rows():
 					    for cell in row:
-					        if cell.value=="Amount OB":
+					        if cell.value=="Signed FS PY":
 					            colOB=cell.column
 	 
 					for row in output2.iter_rows():
