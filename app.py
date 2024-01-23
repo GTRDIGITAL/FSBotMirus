@@ -15009,8 +15009,8 @@ def my_form_post4():
 			a=str(*dictionary.values())
 			b=a.replace('\\n','').replace("b'","").replace("></declaratie300>'","></declaratie300>").replace('encoding="utf-8"', "").replace('''"/>''', "</declaratie300>").replace("</declaratie300>'", '"></declaratie300>').replace('\\r', '')
 			# print(b)
-			f=open("/home/fsbot/storage/vat"+str(nr)+".xml","w").write(b)
-			abc.append("/home/fsbot/storage/vat"+str(nr)+".xml")
+			f=open("/home/fsbot/storage/vat/"+str(nr)+".xml","w").write(b)
+			abc.append("/home/fsbot/storage/vat/"+str(nr)+".xml")
 			
 		fisiere=list(abc)
 		for v in range(0,len(fisiere)):
