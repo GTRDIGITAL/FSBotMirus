@@ -1640,7 +1640,14 @@ def TB_process():
 			RCC=[]
 			SFD=[]
 			SFC=[]
-			for i in range(3,TBCY1.max_row):
+			y=0
+			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
+				y=4
+			else:
+				y=3
+
+
+			for i in range(y,TBCY1.max_row):
 				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
 					Account.append(TBCY1.cell(row=i,column=1).value)
 					Description.append(TBCY1.cell(row=i,column=2).value)
@@ -7486,7 +7493,7 @@ def TB1_process():
 			SFD=[]
 			SFC=[]
 			y=0
-			if(TBCY1.cell(row=3,column=1).value="Cont" or TBCY1.cell(row=3,column=1).value="Account"):
+			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
 				y=4
 			else:
 				y=3
@@ -13343,7 +13350,14 @@ def TB2_process():
 			RCC=[]
 			SFD=[]
 			SFC=[]
-			for i in range(3,TBCY1.max_row):
+			y=0
+			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
+				y=4
+			else:
+				y=3
+
+
+			for i in range(y,TBCY1.max_row):
 				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
 					Account.append(TBCY1.cell(row=i,column=1).value)
 					Description.append(TBCY1.cell(row=i,column=2).value)
