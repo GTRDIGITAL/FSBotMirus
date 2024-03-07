@@ -778,7 +778,7 @@ def FS_process():
 								except:
 									print("None")
 			ws=mapping.active		
-			TBCY = openpyxl.load_workbook(triald)
+			TBCY = openpyxl.load_workbook(triald,data_only='True')
 			TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
@@ -790,6 +790,7 @@ def FS_process():
 						if cell.value=="Account":
 							tbCyAcount=cell.column
 							tbrow=cell.row
+
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
@@ -7029,7 +7030,7 @@ def FS1_process():
 								except:
 									print("None")
 			ws=mapping.active		
-			TBCY = openpyxl.load_workbook(triald)
+			TBCY = openpyxl.load_workbook(triald,data_only='True')
 			TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
@@ -12887,7 +12888,7 @@ def FS2_process():
 								except:
 									print("None")
 			ws=mapping.active		
-			TBCY = openpyxl.load_workbook(triald)
+			TBCY = openpyxl.load_workbook(triald,data_only='True')
 			TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
