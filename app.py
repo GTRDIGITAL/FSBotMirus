@@ -1532,7 +1532,7 @@ def TB_process():
 			TBCY1 = TBCY.active
 			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
 			PBC_CY=output["TB Keez"]
-			PB=output["F_10_Trial_Balance"]
+			PB=output["TB for Import in FS App"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
@@ -7611,7 +7611,7 @@ def TB1_process():
 			TBCY1 = TBCY.active
 			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
 			PBC_CY=output["TB Keez"]
-			PB=output["F_10_Trial_Balance"]
+			PB=output["TB for Import in FS App"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
@@ -13688,7 +13688,7 @@ def TB2_process():
 			TBCY1 = TBCY.active
 			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
 			PBC_CY=output["TB Keez"]
-			PB=output["F_10_Trial_Balance"]
+			PB=output["TB for Import in FS App"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
