@@ -32,6 +32,10 @@ import datetime
 import os
 import shutil
 from string import ascii_uppercase
+from openpyxl import load_workbook
+from openpyxl.formula import Tokenizer
+from openpyxl.utils import FORMULAE
+# from openpyxl.utils.cell import coordinate_to_index
 app=Flask(__name__)
 app.secret_key = "GT ROMANIA Delivery Center"
 var_list=[]
@@ -169,7 +173,7 @@ def FS_process():
 
 
 	folderpath="/home/fsbot/storage"
-	# folderpath="D:/MirusFSRO/FSBotMirus"
+	# folderpath="D://FS 12 Martie"
 
 	if request.method == 'POST':
 
@@ -227,7 +231,10 @@ def FS_process():
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,  data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -415,9 +422,17 @@ def FS_process():
 						tbCyCB=cell.column
 
 
+			luntb2=len(TBCY1[tbCyAcount])
+
 
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+							luntb=k
+					except:
+						pass
+
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -779,7 +794,10 @@ def FS_process():
 									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -818,16 +836,24 @@ def FS_process():
 					if cell.value=="CB":
 						tbCyCB=cell.column
 
+			luntb2=len(TBCY1[tbCyAcount])
 
 
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+							luntb=k
+					except:
+						pass
+
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
 				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
 				# sys.exit()
 			try:
+				luntb=luntb
 				Account=[b.value for b in TBCY1[tbCyAcount][tbrow:luntb+1]]
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
@@ -1437,6 +1463,7 @@ def TB_process():
 	preparedBy1 = request.form['preparedBy']
 	isChecked4=request.form.get("pyEx")
 	isChecked5=request.form.get("ciel")
+	isChecked6=request.form.get("keez")
 	# denis=datetime.now()
 
 
@@ -1445,9 +1472,10 @@ def TB_process():
 	# else:
 	#     isChecked=0
 	
-	# folderpath="/home/auditappnexia/output/tb"
+	# folderpath="D://FS 12 Martie"
 	folderpath="/home/fsbot/storage"
-	if isChecked5=="":
+
+	if isChecked6=="":
 		def make_archive(source, destination):
 			base = os.path.basename(destination)
 			name = base.split('.')[0]
@@ -1502,850 +1530,96 @@ def TB_process():
 			trialp=request.files["trialBalPYPBC"]
 			TBCY = openpyxl.load_workbook(trialc,data_only=True)
 			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			# for row in TBCY1.iter_rows():
-			# 		for cell in row:
-			# 			if cell.value=="Account":
-			# 				tbCyAcount=cell.column
-			# 				tbrow=cell.row
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Account title":
-			# 			tbCyDescription=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Debit":
-			# 			tbCySID=cell.column
-
-			# for row in TBCY1.iter_rows():
-
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Credit":
-			# 			tbCySIC=cell.column
-					
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Debit":
-			# 			tbCyRCD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Credit":
-			# 			tbCyRCC=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Debit":
-			# 			tbCySFD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Credit":
-			# 			tbCySFC=cell.column
-
-
-			# try:
-			# 	luntb=len(TBCY1['A'])
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# try:
-			# 	Account=[b.value for b in TBCY1['A'][2:luntb-1]]
-			# 	print(Account)
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# for k in range(0,len(Account)):
-			# 	Account[k]=str(Account[k])
-			# try:
-			# 	Description=[b.value for b in TBCY1['B'][2:luntb-1]]
-			# 	print(Description)
-			# except:
-			# 	flash("Please insert the correct header for Description in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-			# 	# sys.exit()
-			# try:
-			# 	SID=[b.value for b in TBCY1['C'][2:luntb-1]]
-			# 	print(SID)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	SIC=[b.value for b in TBCY1['D'][2:luntb-1]]
-			# 	print(SIC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCD=[b.value for b in TBCY1['G'][2:luntb-1]]
-			# 	print(RCD)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCC=[b.value for b in TBCY1['H'][2:luntb-1]]
-			# 	print(RCC)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
-			# 	# sys.exit()
-			# try:
-			# 	SFD=[b.value for b in TBCY1['I'][2:luntb-1]]
-			# 	print(SFD)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-			# 	# sys.exit()
-			# try: 
-			# 	SFC=[b.value for b in TBCY1['J'][2:luntb-1]]
-			# 	print(SFC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
-			# 	# sys.exit()
-			# "Create CY PBC"
-			Account=[]
-			Description=[]
-			SID=[]
-			SIC=[]
-			RCD=[]
-			RCC=[]
-			SFD=[]
-			SFC=[]
-			y=0
-			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
-				y=4
-			else:
-				y=3
-
-
-			for i in range(y,TBCY1.max_row):
-				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
-					Account.append(TBCY1.cell(row=i,column=1).value)
-					Description.append(TBCY1.cell(row=i,column=2).value)
-					SID.append(TBCY1.cell(row=i,column=3).value)
-					SIC.append(TBCY1.cell(row=i,column=4).value)
-					RCD.append(TBCY1.cell(row=i,column=7).value)
-					RCC.append(TBCY1.cell(row=i,column=8).value)
-					SFD.append(TBCY1.cell(row=i,column=9).value)
-					SFC.append(TBCY1.cell(row=i,column=10).value)
-			# valoare=len(Account)
-			# k=0
-			# while(k<valoare):
-			# 	if("TOTAL" in Account[k]):
-			# 		Account.remove(Account[k])
-			# 		Description.remove(Description[k])
-			# 		SID.remove(SID[k])
-			# 		SIC.remove(SIC[k])
-			# 		RCD.remove(RCD[k])
-			# 		RCC.remove(RCC[k])
-			# 		SFD.remove(SFD[k])
-			# 		SFC.remove(SFC[k])
-			# 		valoare=valoare-1
-			# 	else:
-			# 		k=k+1
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
-
-			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
-
-			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
-
-			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
-
-			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
-
-			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
-
-			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
-
-			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
-					mylist2 = list(dict.fromkeys(Account))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
-
-
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
-
-
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
-
-			"Calculation"
-
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
-						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
-
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
-
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
-
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
-
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
-
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
-
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
-
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
-
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
-
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
-
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
-
-			F10TB.auto_filter.ref = 'A14:P14'
-
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
-
-
-			x
-			"Adjust Column Width"
-
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
-					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
-					except:
-						pass
-				adjusted_width=(max_length-5)
-
-
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
-
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
-
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
-	else:
-		def make_archive(source, destination):
-			base = os.path.basename(destination)
-			name = base.split('.')[0]
-			format = base.split('.')[1]
-			archive_from = os.path.dirname(source)
-			archive_to = os.path.basename(source.strip(os.sep))
-			shutil.make_archive(name, format, archive_from, archive_to)
-			shutil.move('%s.%s'%(name,format), destination)
-		# yearEnd = str(request.form['yearEnd'])
-		# processed_text = client.upper()
-		# fisier=request.files.get('monthlyTB')
-		if request.method == 'POST':
-			workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
-			lbluefill = PatternFill(start_color='7030A0',
-								end_color='7030A0',
-								fill_type='solid')
-			grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
-			yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
-			blueFill = PatternFill(start_color='00AEAC',
-								end_color='00AEAC',
-								fill_type='solid')
-			doubleborder = Border(bottom=Side(style='double'))
-			solidborder = Border(bottom=Side(style='thick'))
-			solidborderstanga = Border(left=Side(style='thin'))
-			rightborder = Border(right=Side(style='thin'))
-			rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
-			rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
-			solidborderdreapta = Border(right=Side(style='thin'))
-			solidbordersus = Border(top=Side(style='thin'))
-			fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
-			font = Font(name='Tahoma', size=8, bold=True)
-			font1 = Font(name='Tahoma', size=8)
-			font2 = Font(name='Tahoma', size=10, bold=True)
-			fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
-			fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
-			fontGT = Font (name='GT Logo', size=8)
-			workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
-			headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
-			headersblue = PatternFill(start_color='7030A0',
-							end_color='7030A0',
-							fill_type='solid')
-			headerspurple= PatternFill(start_color='65CDCC',
-								end_color='65CDCC',
-								fill_type='solid')
-			total=PatternFill(start_color='DDD9C4',
-							end_color='DDD9C4',
-							fill_type='solid')
-			greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
-			greenbolditalic= Font(bold=True, italic=True,  color='00af50')
-			fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
-			trialc=request.files["trialBalCYPBC"]
-			trialp=request.files["trialBalPYPBC"]
-			TBCY = openpyxl.load_workbook(trialc,data_only=True)
-			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			for row in TBCY1.iter_rows():
-					for cell in row:
-						if cell.value=="Account":
-							tbCyAcount=cell.column
-							tbrow=cell.row
+			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
+			PBC_CY=output["TB Keez"]
+			PB=output["F_10_Trial_Balance"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="Description":
+					if cell.value=="Cont":
+						tbCyAcount=cell.column
+						tbrow=cell.row
+
+
+			# for row in PB.iter_rows():
+			# 	for cell in row:
+			# 		if cell.value=="Cont":
+			# 			tbCyAco=cell.column
+			# 			tbrow=cell.row
+			# try:
+			# 	luntb=len(PB[tbCyAco])
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+			# 	# sys.exit()
+			# try:
+			# 	Account2=[b.value for b in PB[tbCyAco][tbrow:luntb+1]]
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+
+			# # print(Account2,"--------------")
+
+
+
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="Titlu Cont":
 						tbCyDescription=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SID":
+					if cell.value=="SOLD INITIAL DEBIT":
 						tbCySID=cell.column
 
 			for row in TBCY1.iter_rows():
 
 				for cell in row:
-					if cell.value=="SIC":
+					if cell.value=="SOLD INITIAL CREDIT":
 						tbCySIC=cell.column
 					
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCD":
+					if cell.value=="TOTAL DEBIT":
 						tbCyRCD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCC":
+					if cell.value=="TOTAL CREDIT":
 						tbCyRCC=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFD":
+					if cell.value=="SOLD FINAL DEBIT":
 						tbCySFD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFC":
+					if cell.value=="SOLD FINAL CREDIT":
 						tbCySFC=cell.column
 
 
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR DEBIT":
+						tbCyAD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR CREDIT":
+						tbCyAC=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ DEBIT":
+						tbCyRD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ CREDIT":
+						tbCyRC=cell.column
 			try:
 				luntb=len(TBCY1[tbCyAcount])
 			except:
@@ -2409,355 +1683,579 @@ def TB_process():
 			except:
 				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
 				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+
+
+			try:
+				AD=[b.value for b in TBCY1[tbCyAD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
 				# sys.exit()
-			"Create CY PBC"
-
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
+			try: 
+				AC=[b.value for b in TBCY1[tbCyAC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
+			try:
+				RD=[b.value for b in TBCY1[tbCyRD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+				# sys.exit()
+			try: 
+				RC=[b.value for b in TBCY1[tbCyRC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
 
 
 			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+				PBC_CY.cell(row=i+13, column=3).value=Account[i-1]
 
 			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+				PBC_CY.cell(row=i+13, column=4).value= Description[i-1]
 
 			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+				PBC_CY.cell(row=i+13, column=5).value=SID[i-1]
 
 			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+				PBC_CY.cell (row=i+13, column =6).value=SIC[i-1]
 
 			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+				PBC_CY.cell (row=i+13, column=11).value=RCD[i-1]
 
 			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+				PBC_CY.cell (row=i+13, column=12).value=RCC[i-1]
 
 			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+				PBC_CY.cell (row=i+13, column=13).value=SFD[i-1]
 
 			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
+				PBC_CY.cell (row=i+13, column=14).value=SFC[i-1]
+
+			for i in range (1,len(RCD)+1):
+				PBC_CY.cell (row=i+13, column=7).value=AD[i-1]
+
+			for i in range (1,len(RCC)+1):
+				PBC_CY.cell (row=i+13, column=8).value=AC[i-1]
+
+			for i in range (1,len(SFD)+1):
+				PBC_CY.cell (row=i+13, column=9).value=RD[i-1]
+
+			for i in range(1,len(SFC)+1):
+				PBC_CY.cell (row=i+13, column=10).value=RC[i-1]
+			# for row in range(PBC_CY.max_row, luntb+13, -1):
+			#     if not PBC_CY.cell(row=row, column=4).value:  # Verifică dacă celula din coloana D este goală
+			#         for col in range(1, PBC_CY.max_column + 1):
+			#             cell_above = PBC_CY.cell(row=row-1, column=col)
+			#             cell = PBC_CY.cell(row=row, column=col)
+			#             cell_above.value = cell.value
+			#             cell.value = None
+
+
+
+
+			# rows_to_delete = []
+
+			# # Iterează prin rânduri
+			# for row in range(PB.max_row, 302, -1):
+			#     formula_result = PB.cell(row=row, column=1).value
+			#     if formula_result is None or formula_result == "":
+			#         rows_to_delete.append(row)
+
+			# # Șterge rândurile marcate
+			# for row_index in rows_to_delete:
+			#     PB.delete_rows(row_index)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=2).value = "=LEFT(C" + str(i+13) + ",3)"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=1).value = '''=IF(VALUE(LEFT(C{},1)) < 6, "BS", IF(VALUE(LEFT(C{},3)) = 6, "Exp", "Rev"))'''.format(i+13, i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=15).value = '=IF(LEFT(D'+str(i+13)+',6)="TOTAL","nu",IF(EXACT(C'+str(i+13)+',LEFT(C'+str(i+14)+',LEN(C'+str(i+13)+'))),"nu","da"))'
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=16).value="=E" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=17).value="=K" + str(i+13) + "-E" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=18).value="=L" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=19).value="=IF(VALUE(LEFT(C"+str(i+13)+"))=6,Q"+str(i+13)+",IF(VALUE(LEFT(C"+str(i+13)+"))=7,-R"+str(i+13)+",M"+str(i+13)+"-N"+str(i+13)+"))"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=20).value="=IF(VALUE(LEFT(C"+str(i+13)+"))>5,Q"+str(i+13)+"-R"+str(i+13)+",P"+str(i+13)+"+Q"+str(i+13)+"-R"+str(i+13)+"-S"+str(i+13)+")"
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+			output.save(folderpath+"/Trial Balance Keez.xlsx")
+			return send_from_directory(folderpath,"Trial Balance Keez.xlsx",as_attachment=True)
+		# print("e bine")
+
+
+	else:
+
+		if isChecked5=="":
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+
+				Account=[]
+				Description=[]
+				SID=[]
+				SIC=[]
+				RCD=[]
+				RCC=[]
+				SFD=[]
+				SFC=[]
+				y=0
+				if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
+					y=4
+				else:
+					y=3
+
+
+				for i in range(y,TBCY1.max_row):
+					if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
+						Account.append(TBCY1.cell(row=i,column=1).value)
+						Description.append(TBCY1.cell(row=i,column=2).value)
+						SID.append(TBCY1.cell(row=i,column=3).value)
+						SIC.append(TBCY1.cell(row=i,column=4).value)
+						RCD.append(TBCY1.cell(row=i,column=7).value)
+						RCC.append(TBCY1.cell(row=i,column=8).value)
+						SFD.append(TBCY1.cell(row=i,column=9).value)
+						SFC.append(TBCY1.cell(row=i,column=10).value)
+				# valoare=len(Account)
+				# k=0
+				# while(k<valoare):
+				# 	if("TOTAL" in Account[k]):
+				# 		Account.remove(Account[k])
+				# 		Description.remove(Description[k])
+				# 		SID.remove(SID[k])
+				# 		SIC.remove(SIC[k])
+				# 		RCD.remove(RCD[k])
+				# 		RCC.remove(RCC[k])
+				# 		SFD.remove(SFD[k])
+				# 		SFC.remove(SFC[k])
+				# 		valoare=valoare-1
+				# 	else:
+				# 		k=k+1
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
+					try:
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
+					except:
+						pass
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
+
+
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
 					mylist2 = list(dict.fromkeys(Account))
 					mylist=[]
 					for xxx in range(0,len(mylist2)):
@@ -2765,217 +2263,949 @@ def TB_process():
 					mylist.sort()
 
 					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
 
 
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
 
 
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
 
-			"Calculation"
+				"Calculation"
 
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
 
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
 
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
 
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
 
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
 
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
 
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
 
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
 
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
 
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
 
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
 
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
 
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
 
-			F10TB.auto_filter.ref = 'A14:P14'
+				F10TB.auto_filter.ref = 'A14:P14'
 
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
 
 
-			x
-			"Adjust Column Width"
+				x
+				"Adjust Column Width"
 
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+		else:
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+				for row in TBCY1.iter_rows():
+						for cell in row:
+							if cell.value=="Account":
+								tbCyAcount=cell.column
+								tbrow=cell.row
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="Description":
+							tbCyDescription=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SID":
+							tbCySID=cell.column
+
+				for row in TBCY1.iter_rows():
+
+					for cell in row:
+						if cell.value=="SIC":
+							tbCySIC=cell.column
+						
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCD":
+							tbCyRCD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCC":
+							tbCyRCC=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFD":
+							tbCySFD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFC":
+							tbCySFC=cell.column
+
+
+				try:
+					luntb=len(TBCY1[tbCyAcount])
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				try:
+					Account=[b.value for b in TBCY1[tbCyAcount][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				for k in range(0,len(Account)):
+					Account[k]=str(Account[k])
+				try:
+					Description=[b.value for b in TBCY1[tbCyDescription][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Description in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					# sys.exit()
+				try:
+					SID=[b.value for b in TBCY1[tbCySID][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					# sys.exit()
+				try:
+					SIC=[b.value for b in TBCY1[tbCySIC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
+					# sys.exit()
+				try:
+					RCD=[b.value for b in TBCY1[tbCyRCD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
+					# sys.exit()
+				try:
+					RCC=[b.value for b in TBCY1[tbCyRCC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
+					# sys.exit()
+				try:
+					SFD=[b.value for b in TBCY1[tbCySFD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+					# sys.exit()
+				try: 
+					SFC=[b.value for b in TBCY1[tbCySFC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+					# sys.exit()
+				"Create CY PBC"
+
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
 					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
 					except:
 						pass
-				adjusted_width=(max_length-5)
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
 
 
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
 
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
 
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
 
-		# print(text)
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
+					mylist2 = list(dict.fromkeys(Account))
+					mylist=[]
+					for xxx in range(0,len(mylist2)):
+						mylist.append(str(mylist2[xxx]))
+					mylist.sort()
+
+					print(mylist)
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+
+
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+
+
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
+
+				"Calculation"
+
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
+
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
+
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
+
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
+
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
+
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
+
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
+
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
+
+				F10TB.auto_filter.ref = 'A14:P14'
+
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
+
+
+				x
+				"Adjust Column Width"
+
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+
+			# print(text)
 
 @app.route('/VAT/Instructions', methods=['GET'])
 def downloadVAT1():
@@ -6479,7 +6709,10 @@ def FS1_process():
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -6668,8 +6901,16 @@ def FS1_process():
 
 
 
+			luntb2=len(TBCY1[tbCyAcount])
+
+
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+							luntb=k
+					except:
+						pass
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -7031,7 +7272,10 @@ def FS1_process():
 									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -7071,8 +7315,16 @@ def FS1_process():
 
 
 
+			luntb2=len(TBCY1[tbCyAcount])
+
+
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+							luntb=k
+					except:
+						pass
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -7282,6 +7534,7 @@ def TB3():
 	return render_template('TB.html')
 @app.route('/buton2/TB', methods=['POST', 'GET'])
 def TB1_process():
+
 	namec = request.form['client']
 	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
@@ -7289,6 +7542,7 @@ def TB1_process():
 	preparedBy1 = request.form['preparedBy']
 	isChecked4=request.form.get("pyEx")
 	isChecked5=request.form.get("ciel")
+	isChecked6=request.form.get("keez")
 	# denis=datetime.now()
 
 
@@ -7297,9 +7551,10 @@ def TB1_process():
 	# else:
 	#     isChecked=0
 	
-	# folderpath="/home/auditappnexia/output/tb"
+	# folderpath="D://FS 12 Martie"
 	folderpath="/home/fsbot/storage"
-	if isChecked5=="":
+
+	if isChecked6=="":
 		def make_archive(source, destination):
 			base = os.path.basename(destination)
 			name = base.split('.')[0]
@@ -7354,850 +7609,96 @@ def TB1_process():
 			trialp=request.files["trialBalPYPBC"]
 			TBCY = openpyxl.load_workbook(trialc,data_only=True)
 			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			# for row in TBCY1.iter_rows():
-			# 		for cell in row:
-			# 			if cell.value=="Account":
-			# 				tbCyAcount=cell.column
-			# 				tbrow=cell.row
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Account title":
-			# 			tbCyDescription=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Debit":
-			# 			tbCySID=cell.column
-
-			# for row in TBCY1.iter_rows():
-
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Credit":
-			# 			tbCySIC=cell.column
-					
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Debit":
-			# 			tbCyRCD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Credit":
-			# 			tbCyRCC=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Debit":
-			# 			tbCySFD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Credit":
-			# 			tbCySFC=cell.column
-
-
-			# try:
-			# 	luntb=len(TBCY1['A'])
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# try:
-			# 	Account=[b.value for b in TBCY1['A'][2:luntb-1]]
-			# 	print(Account)
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# for k in range(0,len(Account)):
-			# 	Account[k]=str(Account[k])
-			# try:
-			# 	Description=[b.value for b in TBCY1['B'][2:luntb-1]]
-			# 	print(Description)
-			# except:
-			# 	flash("Please insert the correct header for Description in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-			# 	# sys.exit()
-			# try:
-			# 	SID=[b.value for b in TBCY1['C'][2:luntb-1]]
-			# 	print(SID)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	SIC=[b.value for b in TBCY1['D'][2:luntb-1]]
-			# 	print(SIC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCD=[b.value for b in TBCY1['G'][2:luntb-1]]
-			# 	print(RCD)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCC=[b.value for b in TBCY1['H'][2:luntb-1]]
-			# 	print(RCC)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
-			# 	# sys.exit()
-			# try:
-			# 	SFD=[b.value for b in TBCY1['I'][2:luntb-1]]
-			# 	print(SFD)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-			# 	# sys.exit()
-			# try: 
-			# 	SFC=[b.value for b in TBCY1['J'][2:luntb-1]]
-			# 	print(SFC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
-			# 	# sys.exit()
-			# "Create CY PBC"
-			Account=[]
-			Description=[]
-			SID=[]
-			SIC=[]
-			RCD=[]
-			RCC=[]
-			SFD=[]
-			SFC=[]
-			y=0
-			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
-				y=4
-			else:
-				y=3
-
-
-			for i in range(y,TBCY1.max_row):
-				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
-					Account.append(TBCY1.cell(row=i,column=1).value)
-					Description.append(TBCY1.cell(row=i,column=2).value)
-					SID.append(TBCY1.cell(row=i,column=3).value)
-					SIC.append(TBCY1.cell(row=i,column=4).value)
-					RCD.append(TBCY1.cell(row=i,column=7).value)
-					RCC.append(TBCY1.cell(row=i,column=8).value)
-					SFD.append(TBCY1.cell(row=i,column=9).value)
-					SFC.append(TBCY1.cell(row=i,column=10).value)
-			# valoare=len(Account)
-			# k=0
-			# while(k<valoare):
-			# 	if("TOTAL" in Account[k]):
-			# 		Account.remove(Account[k])
-			# 		Description.remove(Description[k])
-			# 		SID.remove(SID[k])
-			# 		SIC.remove(SIC[k])
-			# 		RCD.remove(RCD[k])
-			# 		RCC.remove(RCC[k])
-			# 		SFD.remove(SFD[k])
-			# 		SFC.remove(SFC[k])
-			# 		valoare=valoare-1
-			# 	else:
-			# 		k=k+1
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
-
-			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
-
-			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
-
-			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
-
-			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
-
-			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
-
-			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
-
-			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
-					mylist2 = list(dict.fromkeys(Account))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
-
-
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
-
-
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
-
-			"Calculation"
-
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
-						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
-
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
-
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
-
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
-
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
-
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
-
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
-
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
-
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
-
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
-
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
-
-			F10TB.auto_filter.ref = 'A14:P14'
-
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
-
-
-			x
-			"Adjust Column Width"
-
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
-					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
-					except:
-						pass
-				adjusted_width=(max_length-5)
-
-
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
-
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
-
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
-	else:
-		def make_archive(source, destination):
-			base = os.path.basename(destination)
-			name = base.split('.')[0]
-			format = base.split('.')[1]
-			archive_from = os.path.dirname(source)
-			archive_to = os.path.basename(source.strip(os.sep))
-			shutil.make_archive(name, format, archive_from, archive_to)
-			shutil.move('%s.%s'%(name,format), destination)
-		# yearEnd = str(request.form['yearEnd'])
-		# processed_text = client.upper()
-		# fisier=request.files.get('monthlyTB')
-		if request.method == 'POST':
-			workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
-			lbluefill = PatternFill(start_color='7030A0',
-								end_color='7030A0',
-								fill_type='solid')
-			grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
-			yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
-			blueFill = PatternFill(start_color='00AEAC',
-								end_color='00AEAC',
-								fill_type='solid')
-			doubleborder = Border(bottom=Side(style='double'))
-			solidborder = Border(bottom=Side(style='thick'))
-			solidborderstanga = Border(left=Side(style='thin'))
-			rightborder = Border(right=Side(style='thin'))
-			rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
-			rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
-			solidborderdreapta = Border(right=Side(style='thin'))
-			solidbordersus = Border(top=Side(style='thin'))
-			fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
-			font = Font(name='Tahoma', size=8, bold=True)
-			font1 = Font(name='Tahoma', size=8)
-			font2 = Font(name='Tahoma', size=10, bold=True)
-			fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
-			fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
-			fontGT = Font (name='GT Logo', size=8)
-			workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
-			headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
-			headersblue = PatternFill(start_color='7030A0',
-							end_color='7030A0',
-							fill_type='solid')
-			headerspurple= PatternFill(start_color='65CDCC',
-								end_color='65CDCC',
-								fill_type='solid')
-			total=PatternFill(start_color='DDD9C4',
-							end_color='DDD9C4',
-							fill_type='solid')
-			greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
-			greenbolditalic= Font(bold=True, italic=True,  color='00af50')
-			fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
-			trialc=request.files["trialBalCYPBC"]
-			trialp=request.files["trialBalPYPBC"]
-			TBCY = openpyxl.load_workbook(trialc,data_only=True)
-			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			for row in TBCY1.iter_rows():
-					for cell in row:
-						if cell.value=="Account":
-							tbCyAcount=cell.column
-							tbrow=cell.row
+			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
+			PBC_CY=output["TB Keez"]
+			PB=output["F_10_Trial_Balance"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="Description":
+					if cell.value=="Cont":
+						tbCyAcount=cell.column
+						tbrow=cell.row
+
+
+			# for row in PB.iter_rows():
+			# 	for cell in row:
+			# 		if cell.value=="Cont":
+			# 			tbCyAco=cell.column
+			# 			tbrow=cell.row
+			# try:
+			# 	luntb=len(PB[tbCyAco])
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+			# 	# sys.exit()
+			# try:
+			# 	Account2=[b.value for b in PB[tbCyAco][tbrow:luntb+1]]
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+
+			# # print(Account2,"--------------")
+
+
+
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="Titlu Cont":
 						tbCyDescription=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SID":
+					if cell.value=="SOLD INITIAL DEBIT":
 						tbCySID=cell.column
 
 			for row in TBCY1.iter_rows():
 
 				for cell in row:
-					if cell.value=="SIC":
+					if cell.value=="SOLD INITIAL CREDIT":
 						tbCySIC=cell.column
 					
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCD":
+					if cell.value=="TOTAL DEBIT":
 						tbCyRCD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCC":
+					if cell.value=="TOTAL CREDIT":
 						tbCyRCC=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFD":
+					if cell.value=="SOLD FINAL DEBIT":
 						tbCySFD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFC":
+					if cell.value=="SOLD FINAL CREDIT":
 						tbCySFC=cell.column
 
 
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR DEBIT":
+						tbCyAD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR CREDIT":
+						tbCyAC=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ DEBIT":
+						tbCyRD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ CREDIT":
+						tbCyRC=cell.column
 			try:
 				luntb=len(TBCY1[tbCyAcount])
 			except:
@@ -8261,355 +7762,579 @@ def TB1_process():
 			except:
 				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
 				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+
+
+			try:
+				AD=[b.value for b in TBCY1[tbCyAD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
 				# sys.exit()
-			"Create CY PBC"
-
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
+			try: 
+				AC=[b.value for b in TBCY1[tbCyAC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
+			try:
+				RD=[b.value for b in TBCY1[tbCyRD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+				# sys.exit()
+			try: 
+				RC=[b.value for b in TBCY1[tbCyRC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
 
 
 			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+				PBC_CY.cell(row=i+13, column=3).value=Account[i-1]
 
 			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+				PBC_CY.cell(row=i+13, column=4).value= Description[i-1]
 
 			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+				PBC_CY.cell(row=i+13, column=5).value=SID[i-1]
 
 			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+				PBC_CY.cell (row=i+13, column =6).value=SIC[i-1]
 
 			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+				PBC_CY.cell (row=i+13, column=11).value=RCD[i-1]
 
 			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+				PBC_CY.cell (row=i+13, column=12).value=RCC[i-1]
 
 			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+				PBC_CY.cell (row=i+13, column=13).value=SFD[i-1]
 
 			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
+				PBC_CY.cell (row=i+13, column=14).value=SFC[i-1]
+
+			for i in range (1,len(RCD)+1):
+				PBC_CY.cell (row=i+13, column=7).value=AD[i-1]
+
+			for i in range (1,len(RCC)+1):
+				PBC_CY.cell (row=i+13, column=8).value=AC[i-1]
+
+			for i in range (1,len(SFD)+1):
+				PBC_CY.cell (row=i+13, column=9).value=RD[i-1]
+
+			for i in range(1,len(SFC)+1):
+				PBC_CY.cell (row=i+13, column=10).value=RC[i-1]
+			# for row in range(PBC_CY.max_row, luntb+13, -1):
+			#     if not PBC_CY.cell(row=row, column=4).value:  # Verifică dacă celula din coloana D este goală
+			#         for col in range(1, PBC_CY.max_column + 1):
+			#             cell_above = PBC_CY.cell(row=row-1, column=col)
+			#             cell = PBC_CY.cell(row=row, column=col)
+			#             cell_above.value = cell.value
+			#             cell.value = None
+
+
+
+
+			# rows_to_delete = []
+
+			# # Iterează prin rânduri
+			# for row in range(PB.max_row, 302, -1):
+			#     formula_result = PB.cell(row=row, column=1).value
+			#     if formula_result is None or formula_result == "":
+			#         rows_to_delete.append(row)
+
+			# # Șterge rândurile marcate
+			# for row_index in rows_to_delete:
+			#     PB.delete_rows(row_index)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=2).value = "=LEFT(C" + str(i+13) + ",3)"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=1).value = '''=IF(VALUE(LEFT(C{},1)) < 6, "BS", IF(VALUE(LEFT(C{},3)) = 6, "Exp", "Rev"))'''.format(i+13, i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=15).value = '=IF(LEFT(D'+str(i+13)+',6)="TOTAL","nu",IF(EXACT(C'+str(i+13)+',LEFT(C'+str(i+14)+',LEN(C'+str(i+13)+'))),"nu","da"))'
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=16).value="=E" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=17).value="=K" + str(i+13) + "-E" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=18).value="=L" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=19).value="=IF(VALUE(LEFT(C"+str(i+13)+"))=6,Q"+str(i+13)+",IF(VALUE(LEFT(C"+str(i+13)+"))=7,-R"+str(i+13)+",M"+str(i+13)+"-N"+str(i+13)+"))"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=20).value="=IF(VALUE(LEFT(C"+str(i+13)+"))>5,Q"+str(i+13)+"-R"+str(i+13)+",P"+str(i+13)+"+Q"+str(i+13)+"-R"+str(i+13)+"-S"+str(i+13)+")"
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+			output.save(folderpath+"/Trial Balance Keez.xlsx")
+			return send_from_directory(folderpath,"Trial Balance Keez.xlsx",as_attachment=True)
+		# print("e bine")
+
+
+	else:
+
+		if isChecked5=="":
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+
+				Account=[]
+				Description=[]
+				SID=[]
+				SIC=[]
+				RCD=[]
+				RCC=[]
+				SFD=[]
+				SFC=[]
+				y=0
+				if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
+					y=4
+				else:
+					y=3
+
+
+				for i in range(y,TBCY1.max_row):
+					if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
+						Account.append(TBCY1.cell(row=i,column=1).value)
+						Description.append(TBCY1.cell(row=i,column=2).value)
+						SID.append(TBCY1.cell(row=i,column=3).value)
+						SIC.append(TBCY1.cell(row=i,column=4).value)
+						RCD.append(TBCY1.cell(row=i,column=7).value)
+						RCC.append(TBCY1.cell(row=i,column=8).value)
+						SFD.append(TBCY1.cell(row=i,column=9).value)
+						SFC.append(TBCY1.cell(row=i,column=10).value)
+				# valoare=len(Account)
+				# k=0
+				# while(k<valoare):
+				# 	if("TOTAL" in Account[k]):
+				# 		Account.remove(Account[k])
+				# 		Description.remove(Description[k])
+				# 		SID.remove(SID[k])
+				# 		SIC.remove(SIC[k])
+				# 		RCD.remove(RCD[k])
+				# 		RCC.remove(RCC[k])
+				# 		SFD.remove(SFD[k])
+				# 		SFC.remove(SFC[k])
+				# 		valoare=valoare-1
+				# 	else:
+				# 		k=k+1
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
+					try:
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
+					except:
+						pass
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
+
+
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
 					mylist2 = list(dict.fromkeys(Account))
 					mylist=[]
 					for xxx in range(0,len(mylist2)):
@@ -8617,217 +8342,949 @@ def TB1_process():
 					mylist.sort()
 
 					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
 
 
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
 
 
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
 
-			"Calculation"
+				"Calculation"
 
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
 
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
 
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
 
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
 
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
 
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
 
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
 
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
 
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
 
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
 
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
 
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
 
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
 
-			F10TB.auto_filter.ref = 'A14:P14'
+				F10TB.auto_filter.ref = 'A14:P14'
 
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
 
 
-			x
-			"Adjust Column Width"
+				x
+				"Adjust Column Width"
 
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+		else:
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+				for row in TBCY1.iter_rows():
+						for cell in row:
+							if cell.value=="Account":
+								tbCyAcount=cell.column
+								tbrow=cell.row
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="Description":
+							tbCyDescription=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SID":
+							tbCySID=cell.column
+
+				for row in TBCY1.iter_rows():
+
+					for cell in row:
+						if cell.value=="SIC":
+							tbCySIC=cell.column
+						
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCD":
+							tbCyRCD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCC":
+							tbCyRCC=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFD":
+							tbCySFD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFC":
+							tbCySFC=cell.column
+
+
+				try:
+					luntb=len(TBCY1[tbCyAcount])
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				try:
+					Account=[b.value for b in TBCY1[tbCyAcount][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				for k in range(0,len(Account)):
+					Account[k]=str(Account[k])
+				try:
+					Description=[b.value for b in TBCY1[tbCyDescription][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Description in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					# sys.exit()
+				try:
+					SID=[b.value for b in TBCY1[tbCySID][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					# sys.exit()
+				try:
+					SIC=[b.value for b in TBCY1[tbCySIC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
+					# sys.exit()
+				try:
+					RCD=[b.value for b in TBCY1[tbCyRCD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
+					# sys.exit()
+				try:
+					RCC=[b.value for b in TBCY1[tbCyRCC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
+					# sys.exit()
+				try:
+					SFD=[b.value for b in TBCY1[tbCySFD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+					# sys.exit()
+				try: 
+					SFC=[b.value for b in TBCY1[tbCySFC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+					# sys.exit()
+				"Create CY PBC"
+
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
 					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
 					except:
 						pass
-				adjusted_width=(max_length-5)
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
 
 
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
 
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
 
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
 
-		# print(text)
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
+					mylist2 = list(dict.fromkeys(Account))
+					mylist=[]
+					for xxx in range(0,len(mylist2)):
+						mylist.append(str(mylist2[xxx]))
+					mylist.sort()
+
+					print(mylist)
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+
+
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+
+
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
+
+				"Calculation"
+
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
+
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
+
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
+
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
+
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
+
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
+
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
+
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
+
+				F10TB.auto_filter.ref = 'A14:P14'
+
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
+
+
+				x
+				"Adjust Column Width"
+
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+
+			# print(text)
 
 @app.route('/buton3/VAT/Instructions', methods=['GET'])
 def downloadVAT3():
@@ -12337,7 +12794,10 @@ def FS2_process():
 				# mapping=openpyxl.load_workbook('C:\\Users\\denis.david\\Training materials\\SF Entitati mici_RO.xlsx')
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -12889,7 +13349,10 @@ def FS2_process():
 									print("None")
 			ws=mapping.active		
 			TBCY = openpyxl.load_workbook(triald,data_only='True')
-			TBCY1 = TBCY.active
+			try:
+				TBCY1=TBCY["TB for Import in FS App"]
+			except:
+				TBCY1 = TBCY.active
 			# PBC_CY=mapping.create_sheet("TB_PBC")
 			test=mapping["Trial Balance"]
 			test2=mapping["Check if manual ADJE"]
@@ -12929,8 +13392,16 @@ def FS2_process():
 
 
 
+			luntb2=len(TBCY1[tbCyAcount])
+
+
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+							luntb=k
+					except:
+						pass
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -13140,6 +13611,7 @@ def TB():
 	return render_template('TB.html')
 @app.route('/buton3/TB', methods=['POST', 'GET'])
 def TB2_process():
+
 	namec = request.form['client']
 	ant= datetime.datetime.strptime(
 					 request.form['yearEnd'],
@@ -13147,6 +13619,7 @@ def TB2_process():
 	preparedBy1 = request.form['preparedBy']
 	isChecked4=request.form.get("pyEx")
 	isChecked5=request.form.get("ciel")
+	isChecked6=request.form.get("keez")
 	# denis=datetime.now()
 
 
@@ -13155,9 +13628,10 @@ def TB2_process():
 	# else:
 	#     isChecked=0
 	
-	# folderpath="/home/auditappnexia/output/tb"
+	# folderpath="D://FS 12 Martie"
 	folderpath="/home/fsbot/storage"
-	if isChecked5=="":
+
+	if isChecked6=="":
 		def make_archive(source, destination):
 			base = os.path.basename(destination)
 			name = base.split('.')[0]
@@ -13212,850 +13686,96 @@ def TB2_process():
 			trialp=request.files["trialBalPYPBC"]
 			TBCY = openpyxl.load_workbook(trialc,data_only=True)
 			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			# for row in TBCY1.iter_rows():
-			# 		for cell in row:
-			# 			if cell.value=="Account":
-			# 				tbCyAcount=cell.column
-			# 				tbrow=cell.row
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Account title":
-			# 			tbCyDescription=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Debit":
-			# 			tbCySID=cell.column
-
-			# for row in TBCY1.iter_rows():
-
-			# 	for cell in row:
-			# 		if cell.value=="Initial balance Credit":
-			# 			tbCySIC=cell.column
-					
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Debit":
-			# 			tbCyRCD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Total Credit":
-			# 			tbCyRCC=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Debit":
-			# 			tbCySFD=cell.column
-
-			# for row in TBCY1.iter_rows():
-			# 	for cell in row:
-			# 		if cell.value=="Final balance Credit":
-			# 			tbCySFC=cell.column
-
-
-			# try:
-			# 	luntb=len(TBCY1['A'])
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# try:
-			# 	Account=[b.value for b in TBCY1['A'][2:luntb-1]]
-			# 	print(Account)
-			# except:
-			# 	flash("Please insert the correct header for Account in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-			# 	# sys.exit()
-			# for k in range(0,len(Account)):
-			# 	Account[k]=str(Account[k])
-			# try:
-			# 	Description=[b.value for b in TBCY1['B'][2:luntb-1]]
-			# 	print(Description)
-			# except:
-			# 	flash("Please insert the correct header for Description in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-			# 	# sys.exit()
-			# try:
-			# 	SID=[b.value for b in TBCY1['C'][2:luntb-1]]
-			# 	print(SID)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	SIC=[b.value for b in TBCY1['D'][2:luntb-1]]
-			# 	print(SIC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCD=[b.value for b in TBCY1['G'][2:luntb-1]]
-			# 	print(RCD)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
-			# 	# sys.exit()
-			# try:
-			# 	RCC=[b.value for b in TBCY1['H'][2:luntb-1]]
-			# 	print(RCC)
-			# except:
-			# 	flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
-			# 	# sys.exit()
-			# try:
-			# 	SFD=[b.value for b in TBCY1['I'][2:luntb-1]]
-			# 	print(SFD)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-			# 	# sys.exit()
-			# try: 
-			# 	SFC=[b.value for b in TBCY1['J'][2:luntb-1]]
-			# 	print(SFC)
-			# except:
-			# 	flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
-			# 	return render_template("index.html")
-			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
-			# 	# sys.exit()
-			# "Create CY PBC"
-			Account=[]
-			Description=[]
-			SID=[]
-			SIC=[]
-			RCD=[]
-			RCC=[]
-			SFD=[]
-			SFC=[]
-			y=0
-			if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
-				y=4
-			else:
-				y=3
-
-
-			for i in range(y,TBCY1.max_row):
-				if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
-					Account.append(TBCY1.cell(row=i,column=1).value)
-					Description.append(TBCY1.cell(row=i,column=2).value)
-					SID.append(TBCY1.cell(row=i,column=3).value)
-					SIC.append(TBCY1.cell(row=i,column=4).value)
-					RCD.append(TBCY1.cell(row=i,column=7).value)
-					RCC.append(TBCY1.cell(row=i,column=8).value)
-					SFD.append(TBCY1.cell(row=i,column=9).value)
-					SFC.append(TBCY1.cell(row=i,column=10).value)
-			# valoare=len(Account)
-			# k=0
-			# while(k<valoare):
-			# 	if("TOTAL" in Account[k]):
-			# 		Account.remove(Account[k])
-			# 		Description.remove(Description[k])
-			# 		SID.remove(SID[k])
-			# 		SIC.remove(SIC[k])
-			# 		RCD.remove(RCD[k])
-			# 		RCC.remove(RCC[k])
-			# 		SFD.remove(SFD[k])
-			# 		SFC.remove(SFC[k])
-			# 		valoare=valoare-1
-			# 	else:
-			# 		k=k+1
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
-
-			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
-
-			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
-
-			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
-
-			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
-
-			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
-
-			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
-
-			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
-					mylist2 = list(dict.fromkeys(Account))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
-
-
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
-
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
-
-
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
-
-			"Calculation"
-
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
-						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
-
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
-
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
-
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
-
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
-
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
-
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
-
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
-
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
-
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
-
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
-
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
-
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
-
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
-
-			F10TB.auto_filter.ref = 'A14:P14'
-
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
-
-
-			x
-			"Adjust Column Width"
-
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
-					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
-					except:
-						pass
-				adjusted_width=(max_length-5)
-
-
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
-
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
-
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
-	else:
-		def make_archive(source, destination):
-			base = os.path.basename(destination)
-			name = base.split('.')[0]
-			format = base.split('.')[1]
-			archive_from = os.path.dirname(source)
-			archive_to = os.path.basename(source.strip(os.sep))
-			shutil.make_archive(name, format, archive_from, archive_to)
-			shutil.move('%s.%s'%(name,format), destination)
-		# yearEnd = str(request.form['yearEnd'])
-		# processed_text = client.upper()
-		# fisier=request.files.get('monthlyTB')
-		if request.method == 'POST':
-			workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
-			lbluefill = PatternFill(start_color='7030A0',
-								end_color='7030A0',
-								fill_type='solid')
-			grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
-			yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
-			blueFill = PatternFill(start_color='00AEAC',
-								end_color='00AEAC',
-								fill_type='solid')
-			doubleborder = Border(bottom=Side(style='double'))
-			solidborder = Border(bottom=Side(style='thick'))
-			solidborderstanga = Border(left=Side(style='thin'))
-			rightborder = Border(right=Side(style='thin'))
-			rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
-			rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
-			solidborderdreapta = Border(right=Side(style='thin'))
-			solidbordersus = Border(top=Side(style='thin'))
-			fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
-			font = Font(name='Tahoma', size=8, bold=True)
-			font1 = Font(name='Tahoma', size=8)
-			font2 = Font(name='Tahoma', size=10, bold=True)
-			fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
-			fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
-			fontGT = Font (name='GT Logo', size=8)
-			workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
-			headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
-			headersblue = PatternFill(start_color='7030A0',
-							end_color='7030A0',
-							fill_type='solid')
-			headerspurple= PatternFill(start_color='65CDCC',
-								end_color='65CDCC',
-								fill_type='solid')
-			total=PatternFill(start_color='DDD9C4',
-							end_color='DDD9C4',
-							fill_type='solid')
-			greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
-			greenbolditalic= Font(bold=True, italic=True,  color='00af50')
-			fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
-			trialc=request.files["trialBalCYPBC"]
-			trialp=request.files["trialBalPYPBC"]
-			TBCY = openpyxl.load_workbook(trialc,data_only=True)
-			TBCY1 = TBCY.active
-
-			# if isChecked4=="":
-			# 	try:
-			
-			"Open files"
-
-
-
-
-			"Iterate from imported PBC's:"
-
-
-			'Iterate from CY TB'
-
-			for row in TBCY1.iter_rows():
-					for cell in row:
-						if cell.value=="Account":
-							tbCyAcount=cell.column
-							tbrow=cell.row
+			output=openpyxl.load_workbook('/home/fsbot/exceltemp/Balanta_Keez V2 - to be used.xlsx')
+			PBC_CY=output["TB Keez"]
+			PB=output["F_10_Trial_Balance"]
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="Description":
+					if cell.value=="Cont":
+						tbCyAcount=cell.column
+						tbrow=cell.row
+
+
+			# for row in PB.iter_rows():
+			# 	for cell in row:
+			# 		if cell.value=="Cont":
+			# 			tbCyAco=cell.column
+			# 			tbrow=cell.row
+			# try:
+			# 	luntb=len(PB[tbCyAco])
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+			# 	# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+			# 	# sys.exit()
+			# try:
+			# 	Account2=[b.value for b in PB[tbCyAco][tbrow:luntb+1]]
+			# except:
+			# 	flash("Please insert the correct header for Account in Trial Balance file")
+			# 	return render_template("index.html")
+
+			# # print(Account2,"--------------")
+
+
+
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="Titlu Cont":
 						tbCyDescription=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SID":
+					if cell.value=="SOLD INITIAL DEBIT":
 						tbCySID=cell.column
 
 			for row in TBCY1.iter_rows():
 
 				for cell in row:
-					if cell.value=="SIC":
+					if cell.value=="SOLD INITIAL CREDIT":
 						tbCySIC=cell.column
 					
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCD":
+					if cell.value=="TOTAL DEBIT":
 						tbCyRCD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="RCC":
+					if cell.value=="TOTAL CREDIT":
 						tbCyRCC=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFD":
+					if cell.value=="SOLD FINAL DEBIT":
 						tbCySFD=cell.column
 
 			for row in TBCY1.iter_rows():
 				for cell in row:
-					if cell.value=="SFC":
+					if cell.value=="SOLD FINAL CREDIT":
 						tbCySFC=cell.column
 
 
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR DEBIT":
+						tbCyAD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="ANTERIOR CREDIT":
+						tbCyAC=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ DEBIT":
+						tbCyRD=cell.column
+
+			for row in TBCY1.iter_rows():
+				for cell in row:
+					if cell.value=="RULAJ CREDIT":
+						tbCyRC=cell.column
 			try:
 				luntb=len(TBCY1[tbCyAcount])
 			except:
@@ -14119,355 +13839,579 @@ def TB2_process():
 			except:
 				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
 				return render_template("index.html")
-				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+
+
+			try:
+				AD=[b.value for b in TBCY1[tbCyAD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
 				# sys.exit()
-			"Create CY PBC"
-
-			if isChecked4=="":
-				TBPY = openpyxl.load_workbook(trialp,data_only=True)
-				TBPY1 = TBPY.active
-				try:
-					for row in TBPY1.iter_rows():
-							for cell in row:
-								if cell.value=="Account":
-									tbPyAcount=cell.column
-									tbPYrow=cell.row
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="Description":
-								tbPyDescription=cell.column
-
-
-					for row in TBPY1.iter_rows():
-						for cell in row:
-							if cell.value=="CB":
-								tbPySFD=cell.column
-
-
-					try:
-						luntbp=len(TBPY1[tbPyAcount])
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-					try:
-						Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Account in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
-						# sys.exit()
-
-					for k in range(0,len(Accountp)):
-						Accountp[k]=str(Accountp[k])
-
-					try:
-						Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for Description in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
-						# sys.exit()
-
-					try:
-						CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
-					except:
-						flash("Please insert the correct header for CB in Trial Balance Prior Year file")
-						return render_template("index.html")
-						# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
-						# sys.exit()
-				except:
-					pass
-			
-			# if isChecked1=="":
-			# 	mapp=request.files["Mapping"]
-			output=openpyxl.Workbook()
-			# else:
-			# 	if isChecked2=="":
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
-			# 	else:
-			# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
-
-			PBC_CY =output.create_sheet("PBC_CY")
-
-			PBC_CY.cell(row=1, column=1).value="Class"
-			PBC_CY.cell(row=1, column=2).value="Synt3"
-			PBC_CY.cell(row=1, column=3).value="Synt4"
-			PBC_CY.cell(row=1, column=4).value="Account"
-			PBC_CY.cell(row=1, column=5).value="Description"
-			PBC_CY.cell(row=1, column=6).value="SID"
-			PBC_CY.cell(row=1, column=7).value="SIC"
-			PBC_CY.cell(row=1, column=8).value="RCD"
-			PBC_CY.cell(row=1, column=9).value="RCC"
-			PBC_CY.cell(row=1, column=10).value="SFD"
-			PBC_CY.cell(row=1, column=11).value="SFC"
-
-
-			for i in range (1,10):
-				PBC_CY.cell (row=1, column=i).border=doubleborder
-				PBC_CY.cell (row=1, column=i).font=font2
+			try: 
+				AC=[b.value for b in TBCY1[tbCyAC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
+			try:
+				RD=[b.value for b in TBCY1[tbCyRD][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+				return render_template("index.html")
+				# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+				# sys.exit()
+			try: 
+				RC=[b.value for b in TBCY1[tbCyRC][tbrow:luntb+1]]
+			except:
+				flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+				return render_template("index.html")
 
 
 			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+				PBC_CY.cell(row=i+13, column=3).value=Account[i-1]
 
 			for i in range (1, len(Description)+1):
-				PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+				PBC_CY.cell(row=i+13, column=4).value= Description[i-1]
 
 			for i in range (1, len(SID)+1):
-				PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+				PBC_CY.cell(row=i+13, column=5).value=SID[i-1]
 
 			for i in range (1, len(SIC)+1):
-				PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+				PBC_CY.cell (row=i+13, column =6).value=SIC[i-1]
 
 			for i in range (1,len(RCD)+1):
-				PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+				PBC_CY.cell (row=i+13, column=11).value=RCD[i-1]
 
 			for i in range (1,len(RCC)+1):
-				PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+				PBC_CY.cell (row=i+13, column=12).value=RCC[i-1]
 
 			for i in range (1,len(SFD)+1):
-				PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+				PBC_CY.cell (row=i+13, column=13).value=SFD[i-1]
 
 			for i in range(1,len(SFC)+1):
-				PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
-
-			for i in range (1,12):
-				PBC_CY.cell(row=1, column=i).font=font2
-				PBC_CY.cell(row=1, column=i).border=doubleborder
-				PBC_CY.cell(row=1, column=i).fill=blueFill
-
-			for i in range (1, len(SFD)+1):
-				for j in range (6, 12):
-					PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-			for i in range(1, len(Account)+1):
-				PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-			for i in range(1,len(Account)+1):
-				PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-
-
-			PBC_PY =output.create_sheet("PBC_PY")
-
-			if isChecked4=="":
-				try:
-					PBC_PY.cell(row=1, column=1).value="Class"
-					PBC_PY.cell(row=1, column=2).value="Synt3"
-					PBC_PY.cell(row=1, column=3).value="Synt4"
-					PBC_PY.cell(row=1, column=4).value="Account"
-					PBC_PY.cell(row=1, column=5).value="Description"
-					PBC_PY.cell(row=1, column=6).value="CB"
-
-
-					for i in range (1,8):
-						PBC_PY.cell (row=1, column=i).border=doubleborder
-						PBC_PY.cell (row=1, column=i).font=font2
-
-
-					for i in range(1, len(Accountp)+1):
-							PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
-
-					for i in range (1, len(Descriptionp)+1):
-						PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
-
-
-					for i in range (1,len(CB)+1):
-						PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
-
-					for i in range (1,8):
-						PBC_PY.cell(row=1, column=i).font=font2
-						PBC_PY.cell(row=1, column=i).border=doubleborder
-						PBC_PY.cell(row=1, column=i).fill=blueFill
-
-					for i in range (1, len(CB)+1):
-						for j in range (6, 8):
-							PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
-
-
-					for i in range(1, len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
-					for i in range(1,len(Accountp)+1):
-						PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
-				except:
-					pass
-
-			"Define F10 Worksheet"
-
-			F10TB=output.create_sheet("F_10_Trial_Balance")
-			F10TB.sheet_view.showGridLines = False
-			F10TB.cell(row=1, column=1).value="Client:"
-			F10TB.cell(row=1, column=1).font=font
-			F10TB.cell(row=1, column=2).value=namec
-			F10TB.cell(row=1, column=2).font=font
-
-
-			F10TB.cell(row=2, column=1).value="Period end:"
-			F10TB.cell(row=2, column=1).font=font
-			# F10TB.cell(row=2, column=2).value=ant
-			F10TB.cell(row=2, column=2).font=font
-			F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
-
-
-			F10TB.cell(row=1, column=11).value="Prepared by:"
-			F10TB.cell(row=1, column=11).font=font
-			F10TB.cell(row=1, column=12).value=preparedBy1
-			F10TB.cell(row=1, column=12).font=font
-
-			F10TB.cell(row=2, column=11).value="Date:"
-			F10TB.cell(row=2, column=11).font=font
-			# F10TB.cell(row=2, column=12).value=datetime.now()
-			F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
-			F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=3, column=11).value="Ref:"
-			F10TB.cell(row=3, column=11).font=font
-			F10TB.cell(row=3, column=12).value="F10"
-			F10TB.cell(row=3, column=12).font=fontRed
-
-			for i in range(1,4):
-				F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=4, column=2).value="Trial Balance"
-			F10TB.cell(row=4, column=2).font=font
-
-			F10TB.cell(row=6, column=1).value="Work done:"
-			F10TB.cell(row=6, column=1).font=font
-
-
-			F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
-			F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
-
-
-
-
-			F10TB.cell(row=14, column=1).value="Class"
-			F10TB.cell(row=14, column=2).value="Synt 1"
-			F10TB.cell(row=14, column=3).value="Synt 3"
-			F10TB.cell(row=14, column=4).value="Synt 4"
-			F10TB.cell(row=14, column=5).value="Account"
-			F10TB.cell(row=14, column=6).value="Description"
-			F10TB.cell(row=14, column=7).value="OB"
-			F10TB.cell(row=14, column=8).value="DM"
-			F10TB.cell(row=14, column=9).value="CM"
-			F10TB.cell(row=14, column=10).value="CB"
-			F10TB.cell(row=14, column=11).value="Check"
-			F10TB.cell(row=14, column=13).value="Abs CB-OB"
-			F10TB.cell(row=14, column=14).value="VAR %"
-
-			# F10TB.cell(row=14, column=16).value="OMF Row"
-			# F10TB.cell(row=14, column=17).value="OMF Description"
-			# F10TB.cell(row=14, column=18).value="LS"
-
-			F10TB.cell(row=14, column=16).value="Check OB"
-
-
-
-			for i in range(1,12):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			for i in range(13,15):
-				F10TB.cell(row=14, column=i).font=font2
-				F10TB.cell(row=14, column=i).fill=blueFill
-				F10TB.cell(row=14, column=i).border=doubleborder
-				F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=16).font=font2
-			# F10TB.cell(row=14, column=16).fill=blueFill
-			# F10TB.cell(row=14, column=16).border=doubleborder
-			# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=17).font=font2
-			# F10TB.cell(row=14, column=17).fill=blueFill
-			# F10TB.cell(row=14, column=17).border=doubleborder
-			# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
-
-			# F10TB.cell(row=14, column=18).font=font2
-			# F10TB.cell(row=14, column=18).fill=blueFill
-			# F10TB.cell(row=14, column=18).border=doubleborder
-			F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
-
-			F10TB.cell(row=8, column=6).value="Check BS"
-			F10TB.cell(row=9, column=6).value="Revenues"
-			F10TB.cell(row=10, column=6).value="Expenses"
-			F10TB.cell(row=11, column=6).value="Result"
-			F10TB.cell(row=11, column=6).border=doubleborder
-			F10TB.cell(row=12, column=6).value="Check"
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=6).font=font
-				F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-
-			for i in range (8,14):
-				F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
-
-
-			F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
-			F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
-			F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
-			F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
-			F10TB.cell(row=11, column=10).border=doubleborder
-			F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
-			F10TB.cell(row=12, column=10).font=fontRed
-
-			F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
-			F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
-			F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
-			F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
-			F10TB.cell(row=11, column=7).border=doubleborder
-			F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
-			F10TB.cell(row=12, column=7).font=fontRed
-
-
-
-			F10TB.cell(row=13, column=12).value="=SUM(K:K)"
-			F10TB.cell(row=13, column=12).font=fontRed
-
-			F10TB.cell(row=13,column=11).value="Total diff:"
-			F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
-
-			for i in range (8,13):
-				F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
-
-
-
-			for i in range (1,10):
-				F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
-
-			for i in range(14,16):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
-
-			"Importing Data"
-
-			if isChecked4=="":
-				try:
-
-					acc=Account+Accountp
-
-					mylist2 = list(set(dict.fromkeys(acc)))
-					mylist=[]
-					for xxx in range(0,len(mylist2)):
-						mylist.append(str(mylist2[xxx]))
-					mylist.sort()
-
-					print(mylist)
-				except:
-					# acc=Account
+				PBC_CY.cell (row=i+13, column=14).value=SFC[i-1]
+
+			for i in range (1,len(RCD)+1):
+				PBC_CY.cell (row=i+13, column=7).value=AD[i-1]
+
+			for i in range (1,len(RCC)+1):
+				PBC_CY.cell (row=i+13, column=8).value=AC[i-1]
+
+			for i in range (1,len(SFD)+1):
+				PBC_CY.cell (row=i+13, column=9).value=RD[i-1]
+
+			for i in range(1,len(SFC)+1):
+				PBC_CY.cell (row=i+13, column=10).value=RC[i-1]
+			# for row in range(PBC_CY.max_row, luntb+13, -1):
+			#     if not PBC_CY.cell(row=row, column=4).value:  # Verifică dacă celula din coloana D este goală
+			#         for col in range(1, PBC_CY.max_column + 1):
+			#             cell_above = PBC_CY.cell(row=row-1, column=col)
+			#             cell = PBC_CY.cell(row=row, column=col)
+			#             cell_above.value = cell.value
+			#             cell.value = None
+
+
+
+
+			# rows_to_delete = []
+
+			# # Iterează prin rânduri
+			# for row in range(PB.max_row, 302, -1):
+			#     formula_result = PB.cell(row=row, column=1).value
+			#     if formula_result is None or formula_result == "":
+			#         rows_to_delete.append(row)
+
+			# # Șterge rândurile marcate
+			# for row_index in rows_to_delete:
+			#     PB.delete_rows(row_index)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=2).value = "=LEFT(C" + str(i+13) + ",3)"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=1).value = '''=IF(VALUE(LEFT(C{},1)) < 6, "BS", IF(VALUE(LEFT(C{},3)) = 6, "Exp", "Rev"))'''.format(i+13, i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=15).value = '=IF(LEFT(D'+str(i+13)+',6)="TOTAL","nu",IF(EXACT(C'+str(i+13)+',LEFT(C'+str(i+14)+',LEN(C'+str(i+13)+'))),"nu","da"))'
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=16).value="=E" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=17).value="=K" + str(i+13) + "-E" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=18).value="=L" + str(i+13) + "-F" + str(i+13)
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=19).value="=IF(VALUE(LEFT(C"+str(i+13)+"))=6,Q"+str(i+13)+",IF(VALUE(LEFT(C"+str(i+13)+"))=7,-R"+str(i+13)+",M"+str(i+13)+"-N"+str(i+13)+"))"
+			# for i in range(1, len(Account)+1):
+			# 	PBC_CY.cell(row=i+13, column=20).value="=IF(VALUE(LEFT(C"+str(i+13)+"))>5,Q"+str(i+13)+"-R"+str(i+13)+",P"+str(i+13)+"+Q"+str(i+13)+"-R"+str(i+13)+"-S"+str(i+13)+")"
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+			output.save(folderpath+"/Trial Balance Keez.xlsx")
+			return send_from_directory(folderpath,"Trial Balance Keez.xlsx",as_attachment=True)
+		# print("e bine")
+
+
+	else:
+
+		if isChecked5=="":
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+
+				Account=[]
+				Description=[]
+				SID=[]
+				SIC=[]
+				RCD=[]
+				RCC=[]
+				SFD=[]
+				SFC=[]
+				y=0
+				if(TBCY1.cell(row=3,column=1).value=="Cont" or TBCY1.cell(row=3,column=1).value=="Account"):
+					y=4
+				else:
+					y=3
+
+
+				for i in range(y,TBCY1.max_row):
+					if("TOTAL" not in str(TBCY1.cell(row=i,column=1).value)):
+						Account.append(TBCY1.cell(row=i,column=1).value)
+						Description.append(TBCY1.cell(row=i,column=2).value)
+						SID.append(TBCY1.cell(row=i,column=3).value)
+						SIC.append(TBCY1.cell(row=i,column=4).value)
+						RCD.append(TBCY1.cell(row=i,column=7).value)
+						RCC.append(TBCY1.cell(row=i,column=8).value)
+						SFD.append(TBCY1.cell(row=i,column=9).value)
+						SFC.append(TBCY1.cell(row=i,column=10).value)
+				# valoare=len(Account)
+				# k=0
+				# while(k<valoare):
+				# 	if("TOTAL" in Account[k]):
+				# 		Account.remove(Account[k])
+				# 		Description.remove(Description[k])
+				# 		SID.remove(SID[k])
+				# 		SIC.remove(SIC[k])
+				# 		RCD.remove(RCD[k])
+				# 		RCC.remove(RCC[k])
+				# 		SFD.remove(SFD[k])
+				# 		SFC.remove(SFC[k])
+				# 		valoare=valoare-1
+				# 	else:
+				# 		k=k+1
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
+					try:
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
+					except:
+						pass
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
+
+
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
+
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
 					mylist2 = list(dict.fromkeys(Account))
 					mylist=[]
 					for xxx in range(0,len(mylist2)):
@@ -14475,217 +14419,949 @@ def TB2_process():
 					mylist.sort()
 
 					print(mylist)
-			else:
-				mylist2 = list(dict.fromkeys(Account))
-				mylist=[]
-				for xxx in range(0,len(mylist2)):
-					mylist.append(str(mylist2[xxx]))
-				mylist.sort()
-
-				print(mylist)
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
 
 
-			for i in range  (  1, len(mylist)+1):
-				if(mylist[i-1] in Account):
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
-				else:
-					F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=str(x[:4])
-				F10TB.cell(row=i+14, column=4).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				x=str(mylist[i-1])
-				y=x[:3]
-				F10TB.cell(row=i+14, column=3).value=str(y)
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
 
-			for i in range (1,len(mylist)+1):
-				F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
 
 
-			for i in range(1, len(mylist)+1):
-					F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
-			
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
 
-			"Calculation"
+				"Calculation"
 
-			for i in range(1, len(mylist)+1):
-				if(mylist[i-1] in Account):
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
 
-					if(int(str(mylist[i-1])[:1])<6):
-						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
 						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				else:
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==6):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
-				if(int(str(mylist[i-1])[:1])==7):
-					F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
-					F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
-				F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
-				F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!G:G)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
-				F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
 
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
-				F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14, column=11).font=fontRed
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
-				F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
 
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
-				F10TB.cell(row=i+14,column=14).number_format="0.0%"
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
 
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
-			# for i in range(1, len(mylist)+1):
-			# 	x=str(mylist[i-1])
-			# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
-			for i in range(1, len(mylist)+1):
-				F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
-				F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
-				F10TB.cell(row=i+14,column=16).font=fontRed
-				# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
-			"Closing 711"
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
 
-			F10TB.cell(row=1, column=14).value="Closing 711"
-			F10TB.cell(row=1, column=14).font=font2
-			F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=1, column=14).value="Acc."
-			F10TB.cell(row=1, column=15).value="OB"
-			F10TB.cell(row=1, column=16).value="CB"
-			F10TB.cell(row=1, column=17).value="VAR"
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
 
-			F10TB.cell(row=2, column=14).value="331"
-			F10TB.cell(row=3, column=14).value="341"
-			F10TB.cell(row=4, column=14).value="345"
-			F10TB.cell(row=5, column=14).value="348"
-			F10TB.cell(row=6, column=14).value="Total:"
-			F10TB.cell(row=6, column=14).font=font
-			F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
 
-			F10TB.cell(row=8, column=14).value="332" 
-			F10TB.cell(row=8, column=14).font=font
-			#wrerwe
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
 
-			for i in range(14,18):
-				F10TB.cell(row=1, column=i).font=font2
-				F10TB.cell(row=1, column=i).fill=blueFill
-				F10TB.cell(row=1, column=i).border=doubleborder
-				F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
 
-			for i in range (2,9):
-				F10TB.cell(row=i, column=14).font=font
-				F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
 
-			for i in range (14,18):
-				F10TB.cell(row=5, column=i).border=doubleborder
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
 
-			for i in range (2, 6):
-				F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
-				F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
-				F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
 
-			F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
-			F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
-			F10TB.cell(row=6, column=17).value='=P6-O6'
-			F10TB.cell(row=6, column=17).font=font2
-			F10TB.cell(row=6, column=17).fill=blueFill
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
 
-			for i in range (15,18):
-				F10TB.cell(row=6, column=i).font=font2
-			F10TB.cell(row=14,column=16).fill=blueFill
-			F10TB.cell(row=14,column=16).font=font2
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
 
-			for i in range(2,14):
-				for j in range(15,18):  
-					F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
 
-			F10TB.cell(row=7, column=14).value="Closing 712"
-			F10TB.cell(row=7, column=14).font=font2
-			F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
 
-			F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
-			F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
-			F10TB.cell(row=8, column=17).value='=P8-O8'
-			F10TB.cell(row=8, column=17).fill=blueFill
-			F10TB.cell(row=8, column=17).font=font2
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
 
-			for i in range (6,10):
-				F10TB.cell(row=11, column=i).border=doubleborder
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
 
-			F10TB.auto_filter.ref = 'A14:P14'
+				F10TB.auto_filter.ref = 'A14:P14'
 
-			c = F10TB['B15']
-			F10TB.freeze_panes = c
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
 
 
-			x
-			"Adjust Column Width"
+				x
+				"Adjust Column Width"
 
-			for col in F10TB.columns:
-				max_length = 0
-				for cell in col:
-					if cell.coordinate in F10TB.merged_cells:
-						continue
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+		else:
+			def make_archive(source, destination):
+				base = os.path.basename(destination)
+				name = base.split('.')[0]
+				format = base.split('.')[1]
+				archive_from = os.path.dirname(source)
+				archive_to = os.path.basename(source.strip(os.sep))
+				shutil.make_archive(name, format, archive_from, archive_to)
+				shutil.move('%s.%s'%(name,format), destination)
+			# yearEnd = str(request.form['yearEnd'])
+			# processed_text = client.upper()
+			# fisier=request.files.get('monthlyTB')
+			if request.method == 'POST':
+				workingsblue2= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF')
+				lbluefill = PatternFill(start_color='7030A0',
+									end_color='7030A0',
+									fill_type='solid')
+				grifill=PatternFill(start_color='c4d79b',end_color='c4d79b',fill_type='solid')
+				yellow=PatternFill(start_color='ffff00',end_color='ffff00',fill_type='solid')
+				blueFill = PatternFill(start_color='00AEAC',
+									end_color='00AEAC',
+									fill_type='solid')
+				doubleborder = Border(bottom=Side(style='double'))
+				solidborder = Border(bottom=Side(style='thick'))
+				solidborderstanga = Border(left=Side(style='thin'))
+				rightborder = Border(right=Side(style='thin'))
+				rightdouble = Border (right=Side(style='thin'), bottom=Side(style='double'))
+				rightmedium = Border (right=Side(style='thin'), bottom=Side(style='medium'))
+				solidborderdreapta = Border(right=Side(style='thin'))
+				solidbordersus = Border(top=Side(style='thin'))
+				fontitalic = Font(name='Tahoma', size=8, bold=True, italic=True)
+				font = Font(name='Tahoma', size=8, bold=True)
+				font1 = Font(name='Tahoma', size=8)
+				font2 = Font(name='Tahoma', size=10, bold=True)
+				fontRed = Font(name='Tahoma', size=10, bold=True, color= 'FF0000')
+				fontRedDiff=Font(name="Tahoma", color='FF0000', size=11, )
+				fontGT = Font (name='GT Logo', size=8)
+				workingsblue = Font(color='2F75B5', bold=True, name='Tahoma', size=8 )
+				headers= Font(bold=True, italic=True, name='Tahoma', size=8,color='FFFFFF') 
+				headersblue = PatternFill(start_color='7030A0',
+								end_color='7030A0',
+								fill_type='solid')
+				headerspurple= PatternFill(start_color='65CDCC',
+									end_color='65CDCC',
+									fill_type='solid')
+				total=PatternFill(start_color='DDD9C4',
+								end_color='DDD9C4',
+								fill_type='solid')
+				greenbolditalic= Font(bold=True, italic=True,  color='C0504D', name='Tahoma', size=8)
+				greenbolditalic= Font(bold=True, italic=True,  color='00af50')
+				fontalb = Font(italic=True, color="bfbfbf", size=8, name='Tahoma')
+				trialc=request.files["trialBalCYPBC"]
+				trialp=request.files["trialBalPYPBC"]
+				TBCY = openpyxl.load_workbook(trialc,data_only=True)
+				TBCY1 = TBCY.active
+
+				# if isChecked4=="":
+				# 	try:
+				
+				"Open files"
+
+
+
+
+				"Iterate from imported PBC's:"
+
+
+				'Iterate from CY TB'
+
+				for row in TBCY1.iter_rows():
+						for cell in row:
+							if cell.value=="Account":
+								tbCyAcount=cell.column
+								tbrow=cell.row
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="Description":
+							tbCyDescription=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SID":
+							tbCySID=cell.column
+
+				for row in TBCY1.iter_rows():
+
+					for cell in row:
+						if cell.value=="SIC":
+							tbCySIC=cell.column
+						
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCD":
+							tbCyRCD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="RCC":
+							tbCyRCC=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFD":
+							tbCySFD=cell.column
+
+				for row in TBCY1.iter_rows():
+					for cell in row:
+						if cell.value=="SFC":
+							tbCySFC=cell.column
+
+
+				try:
+					luntb=len(TBCY1[tbCyAcount])
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				try:
+					Account=[b.value for b in TBCY1[tbCyAcount][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Account in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+					# sys.exit()
+				for k in range(0,len(Account)):
+					Account[k]=str(Account[k])
+				try:
+					Description=[b.value for b in TBCY1[tbCyDescription][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Description in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+					# sys.exit()
+				try:
+					SID=[b.value for b in TBCY1[tbCySID][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Debit'")
+					# sys.exit()
+				try:
+					SIC=[b.value for b in TBCY1[tbCySIC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Initial Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Initial Credit'")
+					# sys.exit()
+				try:
+					RCD=[b.value for b in TBCY1[tbCyRCD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent Debit'")
+					# sys.exit()
+				try:
+					RCC=[b.value for b in TBCY1[tbCyRCC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Rulaj Curent Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Rulaj Curent credit'")
+					# sys.exit()
+				try:
+					SFD=[b.value for b in TBCY1[tbCySFD][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Debit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+					# sys.exit()
+				try: 
+					SFC=[b.value for b in TBCY1[tbCySFC][tbrow:luntb+1]]
+				except:
+					flash("Please insert the correct header for Sold Final Credit in Trial Balance file")
+					return render_template("index.html")
+					# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Credit'")
+					# sys.exit()
+				"Create CY PBC"
+
+				if isChecked4=="":
+					TBPY = openpyxl.load_workbook(trialp,data_only=True)
+					TBPY1 = TBPY.active
 					try:
-						if len(str(cell.value)) > max_length:
-							max_length = len(cell.value)
+						for row in TBPY1.iter_rows():
+								for cell in row:
+									if cell.value=="Account":
+										tbPyAcount=cell.column
+										tbPYrow=cell.row
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="Description":
+									tbPyDescription=cell.column
+
+
+						for row in TBPY1.iter_rows():
+							for cell in row:
+								if cell.value=="CB":
+									tbPySFD=cell.column
+
+
+						try:
+							luntbp=len(TBPY1[tbPyAcount])
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+						try:
+							Accountp=[b.value for b in TBPY1[tbPyAcount][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Account in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Account'")
+							# sys.exit()
+
+						for k in range(0,len(Accountp)):
+							Accountp[k]=str(Accountp[k])
+
+						try:
+							Descriptionp=[b.value for b in TBPY1[tbPyDescription][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for Description in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Description'")
+							# sys.exit()
+
+						try:
+							CB=[b.value for b in TBPY1[tbPySFD][tbPYrow:luntbp+1]]
+						except:
+							flash("Please insert the correct header for CB in Trial Balance Prior Year file")
+							return render_template("index.html")
+							# messagebox.showerror("Error", "File: Trial Balance. Please insert the correct header for 'Sold Final Debit'")
+							# sys.exit()
 					except:
 						pass
-				adjusted_width=(max_length-5)
+				
+				# if isChecked1=="":
+				# 	mapp=request.files["Mapping"]
+				output=openpyxl.Workbook()
+				# else:
+				# 	if isChecked2=="":
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Lunga.xlsx",data_only=True)
+				# 	else:
+				# 		output=openpyxl.load_workbook("/home/auditappnexia/output/otherfiles/Mapping Forma Scurta.xlsx",data_only=True)
+
+				PBC_CY =output.create_sheet("PBC_CY")
+
+				PBC_CY.cell(row=1, column=1).value="Class"
+				PBC_CY.cell(row=1, column=2).value="Synt3"
+				PBC_CY.cell(row=1, column=3).value="Synt4"
+				PBC_CY.cell(row=1, column=4).value="Account"
+				PBC_CY.cell(row=1, column=5).value="Description"
+				PBC_CY.cell(row=1, column=6).value="SID"
+				PBC_CY.cell(row=1, column=7).value="SIC"
+				PBC_CY.cell(row=1, column=8).value="RCD"
+				PBC_CY.cell(row=1, column=9).value="RCC"
+				PBC_CY.cell(row=1, column=10).value="SFD"
+				PBC_CY.cell(row=1, column=11).value="SFC"
 
 
-			listanoua=['F','G','H','I','J','K','M','N','O','L']
-			for column in ascii_uppercase:
-				for i in listanoua:
-					if (column==i):
-						F10TB.column_dimensions[column].width =15
+				for i in range (1,10):
+					PBC_CY.cell (row=1, column=i).border=doubleborder
+					PBC_CY.cell (row=1, column=i).font=font2
 
-			listanoua2=['A']
-			for column in ascii_uppercase:
-				for i in listanoua2:
-					if (column==i):
-						F10TB.column_dimensions[column].width = 10
-	#a
 
-			
-			file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
-			myorder=[3,2,1]
-			output._sheets =[output._sheets[i] for i in myorder]
-			output.save(folderpath+"/Trial Balance.xlsx")
-			return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1, column=4).value=Account[i-1]
 
-		# print(text)
+				for i in range (1, len(Description)+1):
+					PBC_CY.cell(row=i+1, column=5).value= Description[i-1]
+
+				for i in range (1, len(SID)+1):
+					PBC_CY.cell(row=i+1, column=6).value=SID[i-1]
+
+				for i in range (1, len(SIC)+1):
+					PBC_CY.cell (row=i+1, column =7).value=SIC[i-1]
+
+				for i in range (1,len(RCD)+1):
+					PBC_CY.cell (row=i+1, column=8).value=RCD[i-1]
+
+				for i in range (1,len(RCC)+1):
+					PBC_CY.cell (row=i+1, column=9).value=RCC[i-1]
+
+				for i in range (1,len(SFD)+1):
+					PBC_CY.cell (row=i+1, column=10).value=SFD[i-1]
+
+				for i in range(1,len(SFC)+1):
+					PBC_CY.cell (row=i+1, column=11).value=SFC[i-1]
+
+				for i in range (1,12):
+					PBC_CY.cell(row=1, column=i).font=font2
+					PBC_CY.cell(row=1, column=i).border=doubleborder
+					PBC_CY.cell(row=1, column=i).fill=blueFill
+
+				for i in range (1, len(SFD)+1):
+					for j in range (6, 12):
+						PBC_CY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(Account)+1):
+					PBC_CY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+				for i in range(1,len(Account)+1):
+					PBC_CY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+
+
+				PBC_PY =output.create_sheet("PBC_PY")
+
+				if isChecked4=="":
+					try:
+						PBC_PY.cell(row=1, column=1).value="Class"
+						PBC_PY.cell(row=1, column=2).value="Synt3"
+						PBC_PY.cell(row=1, column=3).value="Synt4"
+						PBC_PY.cell(row=1, column=4).value="Account"
+						PBC_PY.cell(row=1, column=5).value="Description"
+						PBC_PY.cell(row=1, column=6).value="CB"
+
+
+						for i in range (1,8):
+							PBC_PY.cell (row=1, column=i).border=doubleborder
+							PBC_PY.cell (row=1, column=i).font=font2
+
+
+						for i in range(1, len(Accountp)+1):
+								PBC_PY.cell(row=i+1, column=4).value=Accountp[i-1]
+
+						for i in range (1, len(Descriptionp)+1):
+							PBC_PY.cell(row=i+1, column=5).value= Descriptionp[i-1]
+
+
+						for i in range (1,len(CB)+1):
+							PBC_PY.cell (row=i+1, column=6).value=CB[i-1]
+
+						for i in range (1,8):
+							PBC_PY.cell(row=1, column=i).font=font2
+							PBC_PY.cell(row=1, column=i).border=doubleborder
+							PBC_PY.cell(row=1, column=i).fill=blueFill
+
+						for i in range (1, len(CB)+1):
+							for j in range (6, 8):
+								PBC_PY.cell(row=i+1, column=j).number_format='#,##0_);(#,##0)'
+
+
+						for i in range(1, len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=1).value='=Left(D{0},1)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=2).value='=Left(D{0},3)'.format(i+1)
+						for i in range(1,len(Accountp)+1):
+							PBC_PY.cell(row=i+1,column=3).value='=Left(D{0},4)'.format(i+1)
+					except:
+						pass
+
+				"Define F10 Worksheet"
+
+				F10TB=output.create_sheet("F_10_Trial_Balance")
+				F10TB.sheet_view.showGridLines = False
+				F10TB.cell(row=1, column=1).value="Client:"
+				F10TB.cell(row=1, column=1).font=font
+				F10TB.cell(row=1, column=2).value=namec
+				F10TB.cell(row=1, column=2).font=font
+
+
+				F10TB.cell(row=2, column=1).value="Period end:"
+				F10TB.cell(row=2, column=1).font=font
+				# F10TB.cell(row=2, column=2).value=ant
+				F10TB.cell(row=2, column=2).font=font
+				F10TB.cell(row=2, column=2).number_format="mm/dd/yyyy"
+
+
+				F10TB.cell(row=1, column=11).value="Prepared by:"
+				F10TB.cell(row=1, column=11).font=font
+				F10TB.cell(row=1, column=12).value=preparedBy1
+				F10TB.cell(row=1, column=12).font=font
+
+				F10TB.cell(row=2, column=11).value="Date:"
+				F10TB.cell(row=2, column=11).font=font
+				# F10TB.cell(row=2, column=12).value=datetime.now()
+				F10TB.cell(row=2, column=12).number_format="mm/dd/yyyy"
+				F10TB.cell(row=2, column=12).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=3, column=11).value="Ref:"
+				F10TB.cell(row=3, column=11).font=font
+				F10TB.cell(row=3, column=12).value="F10"
+				F10TB.cell(row=3, column=12).font=fontRed
+
+				for i in range(1,4):
+					F10TB.cell(row=i, column=11).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=4, column=2).value="Trial Balance"
+				F10TB.cell(row=4, column=2).font=font
+
+				F10TB.cell(row=6, column=1).value="Work done:"
+				F10TB.cell(row=6, column=1).font=font
+
+
+				F10TB.cell(row=8, column=1).value="(to be adjusted for P&L variation; e.g. if YE is different of 31.12)"
+				F10TB.cell(row=8, column=1).font=Font(name='Tahoma', size=8, italic=True)
+
+
+
+
+				F10TB.cell(row=14, column=1).value="Class"
+				F10TB.cell(row=14, column=2).value="Synt 1"
+				F10TB.cell(row=14, column=3).value="Synt 3"
+				F10TB.cell(row=14, column=4).value="Synt 4"
+				F10TB.cell(row=14, column=5).value="Account"
+				F10TB.cell(row=14, column=6).value="Description"
+				F10TB.cell(row=14, column=7).value="OB"
+				F10TB.cell(row=14, column=8).value="DM"
+				F10TB.cell(row=14, column=9).value="CM"
+				F10TB.cell(row=14, column=10).value="CB"
+				F10TB.cell(row=14, column=11).value="Check"
+				F10TB.cell(row=14, column=13).value="Abs CB-OB"
+				F10TB.cell(row=14, column=14).value="VAR %"
+
+				# F10TB.cell(row=14, column=16).value="OMF Row"
+				# F10TB.cell(row=14, column=17).value="OMF Description"
+				# F10TB.cell(row=14, column=18).value="LS"
+
+				F10TB.cell(row=14, column=16).value="Check OB"
+
+
+
+				for i in range(1,12):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range(13,15):
+					F10TB.cell(row=14, column=i).font=font2
+					F10TB.cell(row=14, column=i).fill=blueFill
+					F10TB.cell(row=14, column=i).border=doubleborder
+					F10TB.cell(row=14, column=i).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=16).font=font2
+				# F10TB.cell(row=14, column=16).fill=blueFill
+				# F10TB.cell(row=14, column=16).border=doubleborder
+				# F10TB.cell(row=14, column=16).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=17).font=font2
+				# F10TB.cell(row=14, column=17).fill=blueFill
+				# F10TB.cell(row=14, column=17).border=doubleborder
+				# F10TB.cell(row=14, column=17).alignment=Alignment(horizontal='left')
+
+				# F10TB.cell(row=14, column=18).font=font2
+				# F10TB.cell(row=14, column=18).fill=blueFill
+				# F10TB.cell(row=14, column=18).border=doubleborder
+				F10TB.cell(row=14, column=18).alignment=Alignment(horizontal='left')
+
+				F10TB.cell(row=8, column=6).value="Check BS"
+				F10TB.cell(row=9, column=6).value="Revenues"
+				F10TB.cell(row=10, column=6).value="Expenses"
+				F10TB.cell(row=11, column=6).value="Result"
+				F10TB.cell(row=11, column=6).border=doubleborder
+				F10TB.cell(row=12, column=6).value="Check"
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=6).font=font
+					F10TB.cell(row=i, column=6).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+
+				for i in range (8,14):
+					F10TB.cell(row=i, column=7).number_format='#,##0_);(#,##0)'
+
+
+				F10TB.cell(row=8, column=10).value = '=SUMIF(A:A,"BS",J:J)'
+				F10TB.cell(row=9, column=10).value='=SUMIF(B:B,"7",J:J)'
+				F10TB.cell(row=10, column=10).value='=SUMIF(B:B,"6",J:J)'
+				F10TB.cell(row=11, column=10).value='=SUMIF(C:C,"121",J:J)'
+				F10TB.cell(row=11, column=10).border=doubleborder
+				F10TB.cell(row=12, column=10).value="=SUM(J9:J10)-J11"
+				F10TB.cell(row=12, column=10).font=fontRed
+
+				F10TB.cell(row=8, column=7).value = '=SUMIF(A:A,"BS",G:G)'
+				F10TB.cell(row=9, column=7).value='=SUMIF(B:B,"7",G:G)'
+				F10TB.cell(row=10, column=7).value='=SUMIF(B:B,"6",G:G)'
+				F10TB.cell(row=11, column=7).value='=SUMIF(C:C,"121",G:G)'
+				F10TB.cell(row=11, column=7).border=doubleborder
+				F10TB.cell(row=12, column=7).value="=SUM(G9:G10)-G11"
+				F10TB.cell(row=12, column=7).font=fontRed
+
+
+
+				F10TB.cell(row=13, column=12).value="=SUM(K:K)"
+				F10TB.cell(row=13, column=12).font=fontRed
+
+				F10TB.cell(row=13,column=11).value="Total diff:"
+				F10TB.cell(row=13,column=11).alignment=Alignment(horizontal='right')
+
+				for i in range (8,13):
+					F10TB.cell(row=i, column=10).number_format='#,##0_);(#,##0)'
+
+
+
+				for i in range (1,10):
+					F10TB.cell(row=i, column=15).number_format='#,##0_);(#,##0)'
+
+				for i in range(14,16):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				"Importing Data"
+
+				if isChecked4=="":
+					try:
+
+						acc=Account+Accountp
+
+						mylist2 = list(set(dict.fromkeys(acc)))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+					except:
+						# acc=Account
+						mylist2 = list(dict.fromkeys(Account))
+						mylist=[]
+						for xxx in range(0,len(mylist2)):
+							mylist.append(str(mylist2[xxx]))
+						mylist.sort()
+
+						print(mylist)
+				else:
+					mylist2 = list(dict.fromkeys(Account))
+					mylist=[]
+					for xxx in range(0,len(mylist2)):
+						mylist.append(str(mylist2[xxx]))
+					mylist.sort()
+
+					print(mylist)
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=5).value=mylist[i-1]
+
+
+				for i in range  (  1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_CY!D:E,2,0)'.format(i+14)
+					else:
+						F10TB.cell(row=i+14, column=6).value='=VLOOKUP(E{0},PBC_PY!D:E,2,0)'.format(i+14)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=str(x[:4])
+					F10TB.cell(row=i+14, column=4).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					x=str(mylist[i-1])
+					y=x[:3]
+					F10TB.cell(row=i+14, column=3).value=str(y)
+
+				for i in range (1,len(mylist)+1):
+					F10TB.cell(row=i+14, column=2).value='=Left(E{0},1)'.format(i+14)
+
+
+				for i in range(1, len(mylist)+1):
+						F10TB.cell(row=i+14, column=1).value='=IF(B{0}<"6","BS",IF(AND(B{0}>"5",B{0}<"8"),"PL","Other Account-Off TB"))'.format(i+14)
+				
+
+				"Calculation"
+
+				for i in range(1, len(mylist)+1):
+					if(mylist[i-1] in Account):
+
+						if(int(str(mylist[i-1])[:1])<6):
+							F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!F:F)-SUMIF(PBC_CY!D:D,E{0},PBC_cY!G:G)'.format(i+14)
+							F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					else:
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==6):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+					if(int(str(mylist[i-1])[:1])==7):
+						F10TB.cell(row=i+14,column=7).value='=SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)'.format(i+14)
+						F10TB.cell(row=i+14,column=7).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=8).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!H:H)'.format(i+14)
+					F10TB.cell(row=i+14,column=8).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=9).value='=SUMIF(PBC_CY!D:D,E{0},PBC_CY!I:I)'.format(i+14)
+					F10TB.cell(row=i+14,column=9).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=10).value='=IF(B{0}<"6",SUMIF(PBC_CY!D:D,E{0},PBC_CY!J:J)-SUMIF(PBC_CY!D:D,E{0},PBC_CY!K:K),IF(AND(B{0}="6",C{0}="609",H{0}>0),-H{0},IF(AND(B{0}="6",H{0}<>I{0}),H{0}-I{0},IF(B{0}="6",H{0},IF(AND(B{0}="7",C{0}="709",I{0}<0),I{0},IF(AND(B{0}="7",C{0}="711"),-$U$6,IF(AND(B{0}="7",C{0}="712"),-$U$8,IF(AND(B{0}="7",H{0}<>I{0}),H{0}-I{0},IF(AND(B{0}="7",I{0}>0),-I{0},IF(AND(B{0}="7",I{0}<0),I{0},0))))))))))'.format(i+14)
+					F10TB.cell(row=i+14,column=10).number_format='#,##0_);(#,##0)'
+
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column =11).value='=IF(A{0}="BS",G{0}+H{0}-I{0}-J{0},IF(AND(A{0}="PL",H{0}<>I{0}),H{0}-I{0}-J{0},H{0}-I{0}))'.format(i+14)
+					F10TB.cell(row=i+14,column=11).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14, column=11).font=fontRed
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=13).value='=IF(A{0}="BS",J{0}-G{0},"")'.format(i+14)
+					F10TB.cell(row=i+14,column=13).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=13, column=12).number_format='#,##0_);(#,##0)'
+
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14, column=14).value='=IF(A{0}="BS",IF(AND(G{0}=0,J{0}=0),0,IF(AND(G{0}=0,J{0}>0),1,IF(AND(G{0}=0,J{0}<0),-1,IF(AND(J{0}=0,G{0}>0),-1,IF(AND(J{0}=0,G{0}<0),1,J{0}/G{0}-1))))),"")'.format(i+14)
+					F10TB.cell(row=i+14,column=14).number_format="0.0%"
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:C,3,0),vlookup(C{0},'BS Mapping'!A:C,3,0)),iferror(vlookup(D{0},'PL Mapping'!A:C,3,0),vlookup(C{0},'PL Mapping'!A:C,3,0)))".format(i+14)
+
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=17).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:D,4,0),vlookup(C{0},'BS Mapping'!A:D,4,0)),iferror(vlookup(D{0},'PL Mapping'!A:D,4,0),vlookup(C{0},'PL Mapping'!A:D,4,0)))".format(i+14)
+				# for i in range(1, len(mylist)+1):
+				# 	x=str(mylist[i-1])
+				# 	F10TB.cell(row=i+14,column=18).value='=if('+x[:1]+'<6'+",iferror(vlookup(D{0},'BS Mapping'!A:E,5,0),vlookup(C{0},'BS Mapping'!A:E,5,0)),iferror(vlookup(D{0},'PL Mapping'!A:E,5,0),vlookup(C{0},'PL Mapping'!A:E,5,0)))".format(i+14)
+				for i in range(1, len(mylist)+1):
+					F10TB.cell(row=i+14,column=16).value="=G{0}-SUMIF(PBC_PY!D:D,E{0},PBC_PY!F:F)".format(i+14)
+					F10TB.cell(row=i+14,column=16).number_format='#,##0_);(#,##0)'
+					F10TB.cell(row=i+14,column=16).font=fontRed
+					# F10TB.cell(row=i+14,column=16).value='=if('+x[:1]+'<6,iferror(vlookup('+str(x[0:4])+",'BS Mapping std'!A:E,5,0),vlookup("+str(x[0:3])+",'BS Mapping std'!A:E,5,0)),iferror(vlookup("+str(x[0:4])+",'PL mapping Std'!A:E,5,0),vlookup("+str(x[0:3])+",'PL mapping Std'!A:E,5,0))"
+				"Closing 711"
+
+				F10TB.cell(row=1, column=14).value="Closing 711"
+				F10TB.cell(row=1, column=14).font=font2
+				F10TB.cell(row=1, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=1, column=14).value="Acc."
+				F10TB.cell(row=1, column=15).value="OB"
+				F10TB.cell(row=1, column=16).value="CB"
+				F10TB.cell(row=1, column=17).value="VAR"
+
+				F10TB.cell(row=2, column=14).value="331"
+				F10TB.cell(row=3, column=14).value="341"
+				F10TB.cell(row=4, column=14).value="345"
+				F10TB.cell(row=5, column=14).value="348"
+				F10TB.cell(row=6, column=14).value="Total:"
+				F10TB.cell(row=6, column=14).font=font
+				F10TB.cell(row=6, column=14).alignment=Alignment(horizontal='right' )
+
+				F10TB.cell(row=8, column=14).value="332" 
+				F10TB.cell(row=8, column=14).font=font
+				#wrerwe
+
+				for i in range(14,18):
+					F10TB.cell(row=1, column=i).font=font2
+					F10TB.cell(row=1, column=i).fill=blueFill
+					F10TB.cell(row=1, column=i).border=doubleborder
+					F10TB.cell(row=1, column=i).alignment=Alignment(horizontal='left')
+
+				for i in range (2,9):
+					F10TB.cell(row=i, column=14).font=font
+					F10TB.cell(row=i, column=14).alignment=Alignment(horizontal='right')
+
+				for i in range (14,18):
+					F10TB.cell(row=5, column=i).border=doubleborder
+
+				for i in range (2, 6):
+					F10TB.cell(row=i, column=15).value='=SUMIF(C:C,N{0},G:G)'.format(i)
+					F10TB.cell(row=i, column=16).value='=SUMIF(C:C,N{0},J:J)'.format(i)
+					F10TB.cell(row=i, column=17).value='=P{0}-O{0}'.format(i)
+
+				F10TB.cell(row=6, column=15).value='=SUM(O2:O5)'
+				F10TB.cell(row=6, column=16).value='=SUM(P2:P5)'
+				F10TB.cell(row=6, column=17).value='=P6-O6'
+				F10TB.cell(row=6, column=17).font=font2
+				F10TB.cell(row=6, column=17).fill=blueFill
+
+				for i in range (15,18):
+					F10TB.cell(row=6, column=i).font=font2
+				F10TB.cell(row=14,column=16).fill=blueFill
+				F10TB.cell(row=14,column=16).font=font2
+
+				for i in range(2,14):
+					for j in range(15,18):  
+						F10TB.cell(row=i, column=j).number_format='#,##0_);(#,##0)'
+
+				F10TB.cell(row=7, column=14).value="Closing 712"
+				F10TB.cell(row=7, column=14).font=font2
+				F10TB.cell(row=7, column=14).alignment=Alignment(horizontal='right')
+
+				F10TB.cell(row=8, column=15).value='=SUMIF(C:C,N8,G:G)'
+				F10TB.cell(row=8, column=16).value='=SUMIF(C:C,N8,J:J)'
+				F10TB.cell(row=8, column=17).value='=P8-O8'
+				F10TB.cell(row=8, column=17).fill=blueFill
+				F10TB.cell(row=8, column=17).font=font2
+
+				for i in range (6,10):
+					F10TB.cell(row=11, column=i).border=doubleborder
+
+				F10TB.auto_filter.ref = 'A14:P14'
+
+				c = F10TB['B15']
+				F10TB.freeze_panes = c
+
+
+				x
+				"Adjust Column Width"
+
+				for col in F10TB.columns:
+					max_length = 0
+					for cell in col:
+						if cell.coordinate in F10TB.merged_cells:
+							continue
+						try:
+							if len(str(cell.value)) > max_length:
+								max_length = len(cell.value)
+						except:
+							pass
+					adjusted_width=(max_length-5)
+
+
+				listanoua=['F','G','H','I','J','K','M','N','O','L']
+				for column in ascii_uppercase:
+					for i in listanoua:
+						if (column==i):
+							F10TB.column_dimensions[column].width =15
+
+				listanoua2=['A']
+				for column in ascii_uppercase:
+					for i in listanoua2:
+						if (column==i):
+							F10TB.column_dimensions[column].width = 10
+		#a
+
+				
+				file_path=os.path.join(folderpath, "F100 Trial Balance.xlsx")
+				myorder=[3,2,1]
+				output._sheets =[output._sheets[i] for i in myorder]
+				output.save(folderpath+"/Trial Balance.xlsx")
+				return send_from_directory(folderpath,"Trial Balance.xlsx",as_attachment=True)
+
+			# print(text)
 		
 @app.route('/buton2/VAT/Instructions', methods=['GET'])
 def downloadVAT():
