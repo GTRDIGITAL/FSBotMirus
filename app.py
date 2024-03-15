@@ -428,7 +428,7 @@ def FS_process():
 			try:
 				for k in range(20,luntb2):
 					try:
-						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
 					except:
 						pass
@@ -842,7 +842,7 @@ def FS_process():
 			try:
 				for k in range(20,luntb2):
 					try:
-						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
 					except:
 						pass
@@ -6907,7 +6907,7 @@ def FS1_process():
 			try:
 				for k in range(20,luntb2):
 					try:
-						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
 					except:
 						pass
@@ -7321,7 +7321,7 @@ def FS1_process():
 			try:
 				for k in range(20,luntb2):
 					try:
-						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
 					except:
 						pass
@@ -12987,7 +12987,12 @@ def FS2_process():
 
 
 			try:
-				luntb=len(TBCY1[tbCyAcount])
+				for k in range(20,luntb2):
+					try:
+						if(TBCY1.cell(row=k,column=1).value!=None):
+							luntb=k
+					except:
+						pass
 			except:
 				flash("Please insert the correct header for Account in Trial Balance file")
 				return render_template("index.html")
@@ -13398,7 +13403,7 @@ def FS2_process():
 			try:
 				for k in range(20,luntb2):
 					try:
-						if(TBCY1.cell(row=k,column=1).value!=None and int(str(TBCY1.cell(row=k,column=1).value)[1:2])<8):
+						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
 					except:
 						pass
