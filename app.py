@@ -426,7 +426,7 @@ def FS_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
@@ -840,7 +840,7 @@ def FS_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
@@ -6905,7 +6905,7 @@ def FS1_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
@@ -7319,7 +7319,7 @@ def FS1_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
@@ -12987,7 +12987,7 @@ def FS2_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
@@ -13401,7 +13401,7 @@ def FS2_process():
 
 
 			try:
-				for k in range(20,luntb2):
+				for k in range(15,luntb2):
 					try:
 						if(TBCY1.cell(row=k,column=1).value!=None):
 							luntb=k
